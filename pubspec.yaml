@@ -1,0 +1,39 @@
+name: parknwash
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.6
+  flutter:
+    sdk: flutter
+  flutter_screenutil: 
+  get:
+  flutter_svg:
+  flutter_custom_clippers: ^2.1.0
+
+dev_dependencies:
+  flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/fonts/
+    - assets/svg/
+    - assets/anims/
+
+  fonts:
+    - family: Urbanist
+      fonts:
+        - asset: assets/fonts/Urbanist/Urbanist-Regular.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Bold.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Italic.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-SemiBold.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Medium.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Light.ttf
