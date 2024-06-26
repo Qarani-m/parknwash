@@ -1,10 +1,242 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:parknwash/src/features/home/controller/homecontroller.dart';
+import 'package:parknwash/src/utils/constants/colors.dart';
+import 'package:parknwash/src/features/home/controller/homecontroller.dart';
+
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    bool isLightMode = Theme.of(context).brightness == Brightness.light;
+    final Homecontroller controller = Get.find<Homecontroller>();
+
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.only(left: 23.w, right: 23.w, top: 50.h),
+        child: Column(
+          children: [
+            Align(
+              child: GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(Icons.arrow_back)),
+              alignment: Alignment.centerLeft,
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+            Container(
+              height: 141.h,
+              width: double.maxFinite,
+              // color: Colors.red,
+              child: Row(
+                children: [
+                  GestureDetector(
+                  onTap: () => controller.changeProfilePic(),
+                    
+                    
+                    child: Image.asset("assets/images/man.png")),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Martin Karani',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                                fontSize: 27.sp,
+                                color: AppColors.accentColor,
+                                fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Nairobi',
+                        style:
+                            Theme.of(context).textTheme.bodyLarge?.copyWith(),
+                      ),
+                      Text(
+                        'Since August 2021',
+                        style:
+                            Theme.of(context).textTheme.bodyLarge?.copyWith(),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
+              height: 100.h,
+              width: double.maxFinite,
+              child: Row(
+                children: [
+                  Container(
+                    height: 70.h,
+                    width: 164.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.sp),
+                            bottomLeft: Radius.circular(20.sp)),
+                        border: Border.all(
+                            color: !isLightMode
+                                ? AppColors.whiteTextColor.withOpacity(0.1)
+                                : AppColors.whiteTextColor)),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Spent',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.w300),
+                        ),
+                        Text(
+                          'Ksh. 7892',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                  color: AppColors.accentColor,
+                                  fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 70.h,
+                    width: 164.w,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: !isLightMode
+                                ? AppColors.whiteTextColor.withOpacity(0.1)
+                                : AppColors.whiteTextColor),
+
+                        // border: Border.all(color: AppColors.whiteTextColor),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20.sp),
+                            bottomRight: Radius.circular(20.sp))),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Time',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.w300),
+                        ),
+                        Text(
+                          '243 hrs',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                  color: AppColors.accentColor,
+                                  fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Column(
+              children: [
+                GestureDetector(
+                  onTap: () => controller.goToPayments(),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.payment,
+                        size: 35.h,
+                        color: AppColors.accentColor,
+                      ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Text(
+                        "Payments",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.w300),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                GestureDetector(
+                  onTap: () => controller.tellYourFriends(),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.share,
+                        size: 35.h,
+                        color: AppColors.accentColor,
+                      ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Text(
+                        "Tell Your Friends",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.w300),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                GestureDetector(
+                  onTap: () => controller.logout(),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        size: 35.h,
+                        weight: 0.1,
+                        color: AppColors.accentColor,
+                      ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Text(
+                        "Log Out",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.w300),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

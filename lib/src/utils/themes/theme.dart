@@ -14,7 +14,7 @@ class AppTheme {
               color: AppColors.whiteTextColor,
               fontSize: 20.sp,
               fontWeight: FontWeight.w500,
-              height: 3.3),
+              ),
           bodyMedium: TextStyle(
               color: AppColors.whiteTextColor,
               fontSize: 16.sp,

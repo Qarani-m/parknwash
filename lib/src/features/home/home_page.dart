@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 35.h),
             _buildGreeting(context),
             SizedBox(height: 35.h),
-            _buildCategoryButtons(controller),
+            _buildCategoryButtons(controller, context),
             _buildBottomSection(context),
           ],
         ),
@@ -41,29 +41,37 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    bool isLightMode = Theme.of(context).brightness == Brightness.light;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 23.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            height: 50.h,
-            width: 50.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.sp),
+          GestureDetector(
+            onTap: () => controller.goToProfile(),
+            child: Container(
+              height: 50.h,
+              width: 50.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.sp),
+              ),
+              child: Image.asset(
+                "assets/images/man.png",
+                width: 30.h,
+                height: 30.h,
+              ),
             ),
-            child: Image.asset(
-              "assets/images/man.png",
+          ),
+          GestureDetector(
+            onTap: () => controller.locationButton(),
+            child: SvgPicture.asset(
+              "assets/svg/bell-fill.svg",
               width: 30.h,
               height: 30.h,
+              color: isLightMode ? Color(0xFF252525) : Colors.white,
             ),
-          ),
-          SvgPicture.asset(
-            "assets/svg/geo-alt-fill.svg",
-            width: 30.h,
-            height: 30.h,
-            color: const Color(0xFFDDD9F0),
-          ),
+          )
         ],
       ),
     );
@@ -100,7 +108,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryButtons(Homecontroller controller) {
+  Widget _buildCategoryButtons(
+      Homecontroller controller, BuildContext context) {
+    bool isLightMode = Theme.of(context).brightness == Brightness.light;
     return Obx(() => Container(
           width: double.maxFinite,
           child: Row(
@@ -108,39 +118,56 @@ class HomePage extends StatelessWidget {
             children: List.generate(
               categories.length,
               (index) => GestureDetector(
-                onTap: () => controller.changeSelectedCategory(index),
-                child: Container(
-                  height: 120.h,
-                  width: 115.h,
-                  decoration: BoxDecoration(
-                    color: controller.selectedCategoryIndex.value == index
-                        ? Color(0xFFffdd40)
-                        : const Color(0xFF252525),
-                    borderRadius: BorderRadius.circular(15.sp),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/svg/${icons[index]}",
-                        color: controller.selectedCategoryIndex.value == index
-                            ? controller.changeColor.value
-                            : Color(0xFFcbcbcb),
-                        width: 60.h,
-                        height: 60.h,
-                      ),
-                      Text(
-                        categories[index],
-                        style: Get.textTheme.bodyMedium?.copyWith(
+                  onTap: () => controller.changeSelectedCategory(index),
+                  child: Container(
+                    height: 120.h,
+                    width: 115.h,
+                    decoration: BoxDecoration(
+                      color: controller.selectedCategoryIndex.value == index
+                          ? Color(0xFFffdd40)
+                          : isLightMode
+                              ? Colors.white
+                              : Color(0xFF252525),
+                      borderRadius: BorderRadius.circular(15.sp),
+                      boxShadow: isLightMode
+                          ? [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ]
+                          : [],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/svg/${icons[index]}",
                           color: controller.selectedCategoryIndex.value == index
                               ? controller.changeColor.value
-                              : Color(0xFFcbcbcb),
+                              : isLightMode
+                                  ? Colors.black
+                                  : Color(0xFFcbcbcb),
+                          width: 60.h,
+                          height: 60.h,
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+                        Text(
+                          categories[index],
+                          style: Get.textTheme.bodyMedium?.copyWith(
+                            color:
+                                controller.selectedCategoryIndex.value == index
+                                    ? controller.changeColor.value
+                                    : isLightMode
+                                        ? Colors.black
+                                        : Color(0xFFcbcbcb),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
             ),
           ),
         ));
@@ -159,20 +186,23 @@ class HomePage extends StatelessWidget {
         Positioned(
           top: 205.h,
           left: (MediaQuery.of(context).size.width / 2) - (153.h / 2) - 5,
-          child: Container(
-            width: 153.h,
-            height: 153.h,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFFffdd40),
-            ),
-            child: Center(
-              child: Text(
-                "Start\n to find parking",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.blackTextColor,
-                    ),
+          child: GestureDetector(
+            onTap: () => controller.startParking(),
+            child: Container(
+              width: 153.h,
+              height: 153.h,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFFffdd40),
+              ),
+              child: Center(
+                child: Text(
+                  "Start\n to find parking",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.blackTextColor,
+                      ),
+                ),
               ),
             ),
           ),

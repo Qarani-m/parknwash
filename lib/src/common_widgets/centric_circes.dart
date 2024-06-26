@@ -97,6 +97,8 @@ class Lanes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLightMode = Theme.of(context).brightness == Brightness.light;
+
     return Scaffold(
       body: Container(
         // padding: EdgeInsets.only(left: 30.w, right: 30.w),
@@ -126,7 +128,7 @@ class Lanes extends StatelessWidget {
                         (index) => Container(
                           width: 23.w,
                           height: 5.h,
-                          decoration: BoxDecoration(color: Colors.white),
+                          decoration: BoxDecoration(color:isLightMode?Colors.black: Colors.white),
                         ),
                       ),
                     )),
@@ -138,7 +140,8 @@ class Lanes extends StatelessWidget {
                         (index) => Container(
                           width: 23.w,
                           height: 5.h,
-                          decoration: BoxDecoration(color: Colors.white),
+                          decoration: BoxDecoration(color:isLightMode?Colors.black: Colors.white),
+
                         ),
                       ),
                     ))
