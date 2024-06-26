@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-          // initialBinding: AppBindings(),
+          initialBinding: AppBindings(),
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.darkTheme(),

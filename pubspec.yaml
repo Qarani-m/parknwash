@@ -37,3 +37,6 @@ flutter:
         - asset: assets/fonts/Urbanist/Urbanist-SemiBold.ttf
         - asset: assets/fonts/Urbanist/Urbanist-Medium.ttf
         - asset: assets/fonts/Urbanist/Urbanist-Light.ttf
+    - family: Kalam
+      fonts:
+        - asset: assets/fonts/Kalam/Kalam-Regular.ttf
