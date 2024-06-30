@@ -8,10 +8,10 @@ import 'package:parknwash/src/features/profile/controller/profile_controller.dar
 class AppBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<Homecontroller>(() => Homecontroller());
-    Get.lazyPut<LoginController>(() => LoginController());
-    Get.lazyPut<SignupController>(() => SignupController());
-    Get.lazyPut<OnboardingController>(() => OnboardingController());
-    Get.lazyPut<ProfileController>(() => ProfileController());
+    Get.put<Homecontroller>(Homecontroller());
+    Get.put<LoginController>(LoginController());
+    Get.put<SignupController>(SignupController());
+    Get.put<OnboardingController>(OnboardingController());
+    Get.put<ProfileController>(ProfileController());
   }
 }

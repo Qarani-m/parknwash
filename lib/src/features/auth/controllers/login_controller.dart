@@ -18,7 +18,7 @@ class LoginController extends GetxController {
           "Successfully signed in",
           snackPosition: SnackPosition.BOTTOM,
         );
-        Get.toNamed("/home");
+        Get.offNamed("/home");
       } else {
         throw Exception(result["message"]);
       }
