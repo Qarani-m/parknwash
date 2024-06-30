@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class RadialGradientCircle extends StatelessWidget {
   final bool light;
   const RadialGradientCircle({
-    Key? key,
+    super.key,
     required this.light,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class RadialGradientCircle extends StatelessWidget {
           shape: BoxShape.circle,
           gradient: RadialGradient(
             colors: isLightMode ? lightThemeColors[0] : darkThemeColors[0],
-            stops: [0.0, 0.3, 0.7, 1.0],
+            stops: const [0.0, 0.3, 0.7, 1.0],
             center: Alignment.center,
             focal: Alignment.center,
             focalRadius: 0.1,
@@ -149,7 +149,7 @@ class Lanes extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: 385.h,
               width: 5.w,
             )

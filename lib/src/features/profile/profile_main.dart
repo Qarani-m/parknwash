@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
-import 'package:parknwash/src/features/home/controller/homecontroller.dart';
 
 
 class ProfilePage extends StatelessWidget {
@@ -20,17 +19,17 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             Align(
+              alignment: Alignment.centerLeft,
               child: GestureDetector(
                   onTap: () {
                     Get.back();
                   },
-                  child: Icon(Icons.arrow_back)),
-              alignment: Alignment.centerLeft,
+                  child: const Icon(Icons.arrow_back)),
             ),
             SizedBox(
               height: 30.h,
             ),
-            Container(
+            SizedBox(
               height: 141.h,
               width: double.maxFinite,
               // color: Colors.red,
@@ -76,7 +75,7 @@ class ProfilePage extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            Container(
+            SizedBox(
               height: 100.h,
               width: double.maxFinite,
               child: Row(
@@ -207,7 +206,7 @@ class ProfilePage extends StatelessWidget {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: () => controller.logout(),
+                  onTap: () => controller.logout(context),
                   child: Row(
                     children: [
                       Icon(

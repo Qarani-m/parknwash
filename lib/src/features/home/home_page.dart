@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +8,7 @@ import 'package:parknwash/src/features/home/controller/homecontroller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({super.key});
 
   final List<String> categories = ["Car", "Bike", "Bus"];
   final List<String> icons = [
@@ -69,7 +68,7 @@ class HomePage extends StatelessWidget {
               "assets/svg/bell-fill.svg",
               width: 30.h,
               height: 30.h,
-              color: isLightMode ? Color(0xFF252525) : Colors.white,
+              color: isLightMode ? const Color(0xFF252525) : Colors.white,
             ),
           )
         ],
@@ -111,7 +110,7 @@ class HomePage extends StatelessWidget {
   Widget _buildCategoryButtons(
       Homecontroller controller, BuildContext context) {
     bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    return Obx(() => Container(
+    return Obx(() => SizedBox(
           width: double.maxFinite,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -124,10 +123,10 @@ class HomePage extends StatelessWidget {
                     width: 115.h,
                     decoration: BoxDecoration(
                       color: controller.selectedCategoryIndex.value == index
-                          ? Color(0xFFffdd40)
+                          ? const Color(0xFFffdd40)
                           : isLightMode
                               ? Colors.white
-                              : Color(0xFF252525),
+                              : const Color(0xFF252525),
                       borderRadius: BorderRadius.circular(15.sp),
                       boxShadow: isLightMode
                           ? [
@@ -136,7 +135,7 @@ class HomePage extends StatelessWidget {
                                 spreadRadius: 1,
                                 blurRadius: 5,
                                 offset:
-                                    Offset(0, 3), // changes position of shadow
+                                    const Offset(0, 3), // changes position of shadow
                               ),
                             ]
                           : [],
@@ -150,7 +149,7 @@ class HomePage extends StatelessWidget {
                               ? controller.changeColor.value
                               : isLightMode
                                   ? Colors.black
-                                  : Color(0xFFcbcbcb),
+                                  : const Color(0xFFcbcbcb),
                           width: 60.h,
                           height: 60.h,
                         ),
@@ -162,7 +161,7 @@ class HomePage extends StatelessWidget {
                                     ? controller.changeColor.value
                                     : isLightMode
                                         ? Colors.black
-                                        : Color(0xFFcbcbcb),
+                                        : const Color(0xFFcbcbcb),
                           ),
                         )
                       ],

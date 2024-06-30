@@ -40,14 +40,14 @@ class MainPageOnBoarding extends StatelessWidget {
     final isLightMode = theme.brightness == Brightness.light;
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: 385.h,
           width: 385.w,
           child: index == 0
               ? ShowRoom(
                   light: isLightMode,
                 )
-              : Lanes(),
+              : const Lanes(),
         ),
         SizedBox(
           height: 23.h,

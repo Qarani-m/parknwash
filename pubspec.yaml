@@ -14,6 +14,7 @@ dependencies:
   get:
   flutter_svg:
   flutter_custom_clippers: ^2.1.0
+  share_plus:
 
 dev_dependencies:
   flutter_lints: ^3.0.0
