@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class OnboardingController extends GetxController {
   RxInt currentIndex = 0.obs;
   PageController pageController = PageController();
+  final box = GetStorage();
+
 
 
   void next(int index) {
@@ -23,5 +26,10 @@ class OnboardingController extends GetxController {
 
   void skip() {
     Get.offNamed("/login");
+  box.write('isOnboardingComplete', true);
+
   }
+bool loadOnboarding() {
+  return box.read('isOnboardingComplete') ?? false;
+}
 }
