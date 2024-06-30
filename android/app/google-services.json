@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "713632909354",
+    "project_id": "parknwash-16587",
+    "storage_bucket": "parknwash-16587.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713632909354:android:9e34de0f09e8ca26219b53",
+        "android_client_info": {
+          "package_name": "org.mkarani.parknwash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWwMfXd5FfjNohab6O814SbNB_xhiIIOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
