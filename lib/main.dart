@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/home/home_page.dart';
 import 'package:parknwash/src/features/profile/profile_main.dart';
@@ -38,11 +39,12 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.system,
           theme: brightness == Brightness.light ? AppTheme.lightTheme() : AppTheme.darkTheme(),
-          initialRoute: '/home',
+          initialRoute: '/onboarding',
           getPages: [
-            GetPage(name: '/onboarding', page: () => const Onboarding()),
+            GetPage(name: '/onboarding', page: () =>  Onboarding()),
             GetPage(name: '/home', page: () => HomePage()),
             GetPage(name: '/profile-main', page: () => const ProfilePage()),
+            GetPage(name: '/login', page: () =>  Login()),
           ],
         );
       },

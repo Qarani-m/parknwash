@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Register extends StatelessWidget {
+  const Register({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +13,10 @@ class Login extends StatelessWidget {
           child: Column(
             children: [
 
+              Container(
+                
+              )
+              
             ],
           ),
         ),
