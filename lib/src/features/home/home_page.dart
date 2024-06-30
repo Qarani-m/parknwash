@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(()=>Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: 50.h),
         child: Column(
@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    )) ;
   }
 
   Widget _buildHeader(BuildContext context) {
@@ -77,16 +77,19 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildGreeting(BuildContext context) {
-    return Padding(
+    return
+    Padding(
       padding: EdgeInsets.only(left: 23.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Text(
-            "Hello, Muhamed",
+            controller.userName.value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w400,
-                  fontSize: 19.sp,
+                  fontSize: 25.sp,
+                  fontFamily: "Kalam"
                 ),
           ),
           SizedBox(height: 20.h),
@@ -110,7 +113,7 @@ class HomePage extends StatelessWidget {
   Widget _buildCategoryButtons(
       Homecontroller controller, BuildContext context) {
     bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    return Obx(() => SizedBox(
+    return SizedBox(
           width: double.maxFinite,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -169,7 +172,7 @@ class HomePage extends StatelessWidget {
                   )),
             ),
           ),
-        ));
+        );
   }
 
   Widget _buildBottomSection(BuildContext context) {

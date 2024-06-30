@@ -12,7 +12,20 @@
           "package_name": "org.mkarani.parknwash"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "713632909354-cm89po9ec3bv8a91o517n115oevdnahm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.mkarani.parknwash",
+            "certificate_hash": "c7a67ab51c97279bc77eb3878b3200d5cfcc6591"
+          }
+        },
+        {
+          "client_id": "713632909354-8ter1vof278rmukk3kldohop4brefb1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAWwMfXd5FfjNohab6O814SbNB_xhiIIOQ"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713632909354-8ter1vof278rmukk3kldohop4brefb1h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

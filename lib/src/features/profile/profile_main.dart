@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
+import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
-
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
+
+  final LoginController loginController =
+      Get.put<LoginController>(LoginController());
+  final Homecontroller homecontroller = Get.find<Homecontroller>();
+  final ProfileController controller = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
     bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    final Homecontroller controller = Get.find<Homecontroller>();
 
-    return Scaffold(
+    return Obx (()=>Scaffold(
       body: Padding(
         padding: EdgeInsets.only(left: 23.w, right: 23.w, top: 50.h),
         child: Column(
@@ -36,10 +41,8 @@ class ProfilePage extends StatelessWidget {
               child: Row(
                 children: [
                   GestureDetector(
-                  onTap: () => controller.changeProfilePic(),
-                    
-                    
-                    child: Image.asset("assets/images/man.png")),
+                      onTap: () => controller.changeProfilePic(),
+                      child: Image.asset("assets/images/man.png")),
                   SizedBox(
                     width: 10.w,
                   ),
@@ -48,24 +51,27 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Martin Karani',
+                        controller.displayName.value,
                         style: Theme.of(context)
                             .textTheme
                             .headlineMedium
                             ?.copyWith(
                                 fontSize: 27.sp,
                                 color: AppColors.accentColor,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w400),
                       ),
+                      SizedBox(height: 10.h,),
+
                       Text(
-                        'Nairobi',
+                        controller.email.value,
                         style:
-                            Theme.of(context).textTheme.bodyLarge?.copyWith(),
+                            Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w400),
                       ),
+                      SizedBox(height: 10.h,),
                       Text(
-                        'Since August 2021',
+                        'Since ${controller.createdAt.value}',
                         style:
-                            Theme.of(context).textTheme.bodyLarge?.copyWith(),
+                            Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w400),
                       ),
                     ],
                   )
@@ -206,7 +212,7 @@ class ProfilePage extends StatelessWidget {
                   height: 30.h,
                 ),
                 GestureDetector(
-                  onTap: () => controller.logout(context),
+                  onTap: () => homecontroller.logout(context),
                   child: Row(
                     children: [
                       Icon(
@@ -236,6 +242,6 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-    );
+     ) );
   }
 }
