@@ -126,7 +126,7 @@ class HomePage extends StatelessWidget {
                     width: 115.h,
                     decoration: BoxDecoration(
                       color: controller.selectedCategoryIndex.value == index
-                          ? const Color(0xFFffdd40)
+                          ? AppColors.accentColor
                           : isLightMode
                               ? Colors.white
                               : const Color(0xFF252525),
@@ -195,7 +195,7 @@ class HomePage extends StatelessWidget {
               height: 153.h,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFffdd40),
+                color:  AppColors.accentColor,
               ),
               child: Center(
                 child: Text(
