@@ -1,6 +1,6 @@
 # parknwash
 
-A new Flutter project.
+## About
 
 I dont feel like writing what this project is about, so here are some screenshots  
 
