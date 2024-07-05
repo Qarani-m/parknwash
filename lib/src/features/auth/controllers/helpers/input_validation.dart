@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 class InputValidator {
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final TextEditingController nameController;
+  final TextEditingController lastNameController;
   final TextEditingController phoneController;
+  final TextEditingController firstNameController;
+  final TextEditingController confirmPasswordController;
 
   InputValidator({
     required this.emailController,
     required this.passwordController,
-    required this.nameController,
+    required this.lastNameController,
+    required this.firstNameController,
+    required this.confirmPasswordController,
     required this.phoneController,
   });
 
@@ -24,8 +28,13 @@ class InputValidator {
     return password.length >= 8;
   }
 
-  bool isNameValid() {
-    final name = nameController.text.trim();
+  bool isFirstNameValid() {
+    final name = firstNameController.text.trim();
+    return name.isNotEmpty && name.length >= 3;
+  }
+
+  bool isLastNameValid() {
+    final name = lastNameController.text.trim();
     return name.isNotEmpty && name.length >= 3;
   }
 
@@ -45,7 +54,9 @@ class InputValidator {
   }
 
   String? validateName() {
-    return isNameValid() ? null : 'Name must be at least 2 characters';
+    return isFirstNameValid() && isLastNameValid()
+        ? null
+        : 'Name must be at least 2 characters';
   }
 
   String? validatePhone() {
@@ -55,7 +66,8 @@ class InputValidator {
   bool validateAll() {
     return isEmailValid() &&
         isPasswordValid() &&
-        isNameValid() &&
+        isLastNameValid() &&
+        isFirstNameValid() &&
         isPhoneValid();
   }
 }

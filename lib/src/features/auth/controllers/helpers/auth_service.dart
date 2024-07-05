@@ -56,14 +56,15 @@ class AuthService {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      Map<String, dynamic> userData = {
-        "displayName": name,
-        "email": email,
-        "phoneNumber": phone,
-        "uid": credential.user!.uid,
-        'createdAt': FieldValue.serverTimestamp(),
-      };
-      saveUserData(userData);
+      Map<String, dynamic> localData = {
+    "displayName": name,
+    "email": email,
+    "phoneNumber": phone,
+    "uid": credential.user!.uid,
+    'createdAt': DateTime.now().toIso8601String(), // Use regular DateTime for local storage
+  };
+
+      saveUserData(localData);
       box.write('useId', credential.user!.uid);
       res = "Success";
     } on FirebaseAuthException catch (e) {
@@ -73,7 +74,8 @@ class AuthService {
         showSnackBar(context!, "The account already exists for that email");
       }
     } catch (e) {
-      showSnackBar(context!, "An Unknown Error Occured");
+      // showSnackBar(context!, "An Unknown Error Occured: ${e}");
+      Get.snackbar('Failure', "$e");
     }
     return res;
   }

@@ -1,30 +1,31 @@
-import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/auth_service.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/input_validation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   late InputValidator _inputValidator;
   @override
   void onInit() {
     super.onInit();
-    emailController.text = "emqarani2@gmail.com";
-    passwordController.text = "Martin7982!";
-    nameController.text = "Martin";
-    phoneController.text = "1234567890";
+    // emailController.text = "emqarani2@gmail.com";
+    // passwordController.text = "Martin7982!";
+    // nameController.text = "Martin";
+    // phoneController.text = "1234567890";
     _inputValidator = InputValidator(
       emailController: emailController,
       passwordController: passwordController,
-      nameController: nameController,
+      firstNameController: firstNameController,
+      lastNameController: lastNameController,
+      confirmPasswordController: confirmPasswordController,
       phoneController: phoneController,
     );
   }
@@ -60,11 +61,14 @@ class SignupController extends GetxController {
   }
 
   Future<void> registerEmailAndPassword() async {
-    if (validateInput()) {
+    if (confirmPasswordController.text.trim() ==
+            passwordController.text.trim() &&
+        validateInput()) {
       print('Registering with email and password');
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
-      final name = nameController.text.trim();
+      final name =
+          '${firstNameController.text.trim()} ${lastNameController.text.trim()}';
       final phone = phoneController.text.trim();
 
       String response = await AuthService().signupUser(
@@ -73,9 +77,7 @@ class SignupController extends GetxController {
       if (response == "Success") {
         Get.snackbar('Success', 'Logged in successfully');
         Get.offNamed("/home");
-      } else {
-        
-      }
+      } else {}
     }
   }
 
@@ -93,7 +95,12 @@ class SignupController extends GetxController {
             snackPosition: SnackPosition.BOTTOM);
         return false;
       }
-      if (!_inputValidator.isNameValid()) {
+      if (!_inputValidator.isFirstNameValid()) {
+        Get.snackbar('Validation Error', _inputValidator.validateName()!,
+            snackPosition: SnackPosition.BOTTOM);
+        return false;
+      }
+       if (!_inputValidator.isLastNameValid()) {
         Get.snackbar('Validation Error', _inputValidator.validateName()!,
             snackPosition: SnackPosition.BOTTOM);
         return false;
@@ -107,15 +114,14 @@ class SignupController extends GetxController {
     return false;
   }
 
-
-   @override
+  @override
   void dispose() {
-    // Dispose of controllers to free up resources
     emailController.dispose();
     passwordController.dispose();
-    nameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    confirmPasswordController.dispose();
     phoneController.dispose();
-    super.dispose();  // Always call super.dispose() last
+    super.dispose(); // Always call super.dispose() last
   }
-
 }

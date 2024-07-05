@@ -36,7 +36,7 @@ class LoginController extends GetxController {
   Future<void> loginEmailAndPassword() async {
     try {
       final user = await _authService.signInWithEmailAndPassword(
-          "emqarani2@gmail.com", "Martin7982!");
+          emailController.text.trim(), passwordController.text.trim());
       if (user != null) {
         Get.snackbar('Success', 'Logged in successfully');
         Get.offAllNamed('/home');
@@ -47,12 +47,10 @@ class LoginController extends GetxController {
     }
   }
 
-
-   @override
+  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    super.dispose();  // Always call super.dispose() last
+    super.dispose(); // Always call super.dispose() last
   }
-
 }
