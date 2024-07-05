@@ -2,16 +2,20 @@
 
 A new Flutter project.
 
-## Getting Started
+I dont feel like writing what this project is about, so here are some screenshots  
 
-This project is a starting point for a Flutter application.
+## Screenshots 
+### Authentication
 
-A few resources to get you started if this is your first Flutter project:
+![alt text](images/login.png) 
+![alt text](images/register.png)
+![alt text](images/forgot_password.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# parknwash
+### Home Screen
+![alt text](images/home.png) 
+
+---
+### Profile Page
+![alt text](images/profile.png)
