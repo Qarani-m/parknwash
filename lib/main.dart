@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/auth_service.dart';
+import 'package:parknwash/src/features/auth/screens/forgot_password.dart';
 import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/auth/screens/register.dart';
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/profile-main', page: () => ProfilePage()),
             GetPage(name: '/login', page: () => Login()),
             GetPage(name: '/register', page: () => Register()),
+            GetPage(name: '/forgot_password', page: () => ForgotPassword()),
           ],
         );
       },

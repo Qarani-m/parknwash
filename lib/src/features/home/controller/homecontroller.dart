@@ -25,7 +25,7 @@ class Homecontroller extends GetxController {
     if (userJson != null) {
       Map<String, dynamic> userData = jsonDecode(userJson);
       String displayName = userData['displayName'];
-      userName.value = "Hello, 👋 ${displayName}";
+      userName.value = "Hello, 👋 ${displayName.split(' ')[0]}";
     } else {
       print('No user data found in storage.');
     }
@@ -67,7 +67,7 @@ class Homecontroller extends GetxController {
           GestureDetector(
             onTap: () {
               AuthService().signOut();
-              Get.toNamed("/login");
+              Get.offNamed("/login");
             },
             child: Container(
               padding: EdgeInsets.only(left: 23.w, right: 23.w),

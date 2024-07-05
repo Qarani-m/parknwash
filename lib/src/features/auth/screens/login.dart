@@ -50,13 +50,16 @@ class Login extends StatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: Text("Forgot Password?",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.accentColor)),
+                        child: GestureDetector(
+                          onTap: ()=>Get.toNamed("/forgot_password"),
+                          child: Text("Forgot Password?",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.accentColor)),
+                        ),
                       ),
                       SizedBox(
                         height: 50.h,

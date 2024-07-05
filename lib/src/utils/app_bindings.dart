@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:parknwash/src/features/auth/controllers/forgot_password_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/onboarding_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
@@ -13,5 +14,6 @@ class AppBindings extends Bindings {
     Get.put<SignupController>(SignupController());
     Get.put<OnboardingController>(OnboardingController());
     Get.put<ProfileController>(ProfileController());
+    Get.put<ForgotPasswordController>(ForgotPasswordController());
   }
 }

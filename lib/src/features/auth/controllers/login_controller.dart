@@ -27,13 +27,15 @@ class LoginController extends GetxController {
         "Error",
         "Sign-in failed: $e",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     }
   }
 
   Future<void> loginEmailAndPassword() async {
+        FocusScope.of(Get.context!).unfocus();
+
+    
     try {
       final user = await _authService.signInWithEmailAndPassword(
           emailController.text.trim(), passwordController.text.trim());
@@ -42,8 +44,7 @@ class LoginController extends GetxController {
         Get.offAllNamed('/home');
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar('Error', "Invalid email or Password");
     }
   }
 
