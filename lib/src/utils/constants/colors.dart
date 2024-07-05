@@ -8,5 +8,5 @@ class AppColors {
   static const Color grayTextColor = Color.fromRGBO(13, 13, 13, 0.2);
   static const Color blackTextColor = Color(0xFF0D0D0D);
 
-  static const Color accentColor = Color(0xFF655AE4);
+  static const Color accentColor = Color(0xFFffdd40);
 }

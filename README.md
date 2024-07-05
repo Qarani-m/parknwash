@@ -7,6 +7,7 @@ I dont feel like writing what this project is about, so here are some screenshot
 ## Screenshots 
 ### Authentication
 
+![alt text](images/Onboarding.png) 
 ![alt text](images/login.png) 
 ![alt text](images/register.png)
 ![alt text](images/forgot_password.png)
