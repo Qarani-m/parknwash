@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
+import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class Login extends StatelessWidget {
@@ -28,12 +29,11 @@ class Login extends StatelessWidget {
                 SizedBox(
                   height: 30.h,
                 ),
-
                 Container(
                   child: Column(
                     children: [
                       CustomEmailTextField(
-                        controller: loginController.emailController,
+                        textEditingController: loginController.emailController,
                         hintText: "example@example.com",
                         title: "Email",
                       ),
@@ -41,17 +41,18 @@ class Login extends StatelessWidget {
                         height: 20.h,
                       ),
                       CustomEmailTextField(
-                        controller: loginController.passwordController,
-                        hintText: "********",
-                        title: "Password",
-                      ),
+                          textEditingController:
+                              loginController.passwordController,
+                          hintText: "● ● ● ● ● ● ● ●",
+                          title: "Password",
+                          obscureText: true),
                       SizedBox(
                         height: 15.h,
                       ),
                       Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
-                          onTap: ()=>Get.toNamed("/forgot_password"),
+                          onTap: () => Get.toNamed("/forgot_password"),
                           child: Text("Forgot Password?",
                               style: Theme.of(context)
                                   .textTheme
@@ -127,19 +128,24 @@ class Login extends StatelessWidget {
 
 class CustomEmailTextField extends StatelessWidget {
   CustomEmailTextField(
-      {Key? key,
-      required this.controller,
+      {super.key,
+      this.error = false,
+      this.obscureText = false,
+      required this.textEditingController,
       required this.hintText,
-      required this.title})
-      : super(key: key);
+      required this.title});
 
-  final TextEditingController controller;
+  final TextEditingController textEditingController;
   final String hintText;
   final String title;
+  final bool error;
+  final bool obscureText;
+
+  SignupController controller = Get.find<SignupController>();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Obx (()=>Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title,
@@ -151,39 +157,61 @@ class CustomEmailTextField extends StatelessWidget {
           height: 10.h,
         ),
         TextField(
-          controller: controller,
+          obscureText: controller.obscureText.value,
+          obscuringCharacter: "●",
+          controller: textEditingController,
           decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey[400]),
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding:
-                const EdgeInsets.only(left: 16, top: 14, bottom: 14),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
-            ),
-          ),
-          style: const TextStyle(fontSize: 16),
+              hintText: hintText,
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding:
+                  const EdgeInsets.only(left: 16, top: 14, bottom: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                    color:
+                        error == true ? Color(0xFFDC143c) : Color(0xFFE0E0E0)!,
+                    width: 1),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                    color:
+                        error == true ? Color(0xFFDC143c) : Color(0xFFE0E0E0)!,
+                    width: 1),
+
+                // borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                // borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                borderSide: BorderSide(
+                    color:
+                        error == true ? Color(0xFFDC143c) : Color(0xFFE0E0E0)!,
+                    width: 1),
+              ),
+              suffixIcon:obscureText? controller.obscureText.value
+                  ? GestureDetector(
+                      onTap: () => controller.obscureToggle(),
+                      child: Icon(Icons. visibility))
+                  : GestureDetector(
+                      onTap: () => controller.obscureToggle(),
+                      child: Icon(Icons.visibility_off )): SizedBox()),
+          style: TextStyle(
+              fontSize: 16.sp,
+              color: error == true ? Color(0xFFDC143c) : Colors.grey[400]),
         ),
       ],
-    );
+    ));
   }
 }
 
 class CustomLoginButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-   CustomLoginButton({Key? key, required this.onPressed, required this.text})
-      : super(key: key);
+  const CustomLoginButton(
+      {super.key, required this.onPressed, required this.text});
 
   final String text;
   @override
@@ -197,7 +225,7 @@ class CustomLoginButton extends StatelessWidget {
           color: AppColors.accentColor, // Dark green color
           borderRadius: BorderRadius.circular(25),
         ),
-        child:  Center(
+        child: Center(
           child: Text(
             text,
             style: const TextStyle(
@@ -215,8 +243,7 @@ class CustomLoginButton extends StatelessWidget {
 class GoogleLoginButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const GoogleLoginButton({Key? key, required this.onPressed})
-      : super(key: key);
+  const GoogleLoginButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -234,9 +261,10 @@ class GoogleLoginButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.network(
-              'https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png',
-              height: 24,
+            Image.asset(
+              "assets/images/google.png"
+              
+              ,  height: 24,
               width: 24,
             ),
             const SizedBox(width: 12),

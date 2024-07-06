@@ -18,7 +18,7 @@ class OnboardingController extends GetxController {
       currentIndex.value++;
       pageController.animateToPage(
         currentIndex.value,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
     }

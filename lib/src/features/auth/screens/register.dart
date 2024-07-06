@@ -16,7 +16,7 @@ class Register extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 23.w, right: 23.h, top: 40.h),
-          child: Center(
+          child: Obx(()=>Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,17 +39,21 @@ class Register extends StatelessWidget {
                           SizedBox(
                             width: 163.w,
                             child: CustomEmailTextField(
-                              controller: signupController.firstNameController,
+                              textEditingController: signupController.firstNameController,
                               hintText: "John",
                               title: "First Name",
+                        error: signupController.isFirstNameError.value,
+
                             ),
                           ),
                             SizedBox(
                             width: 163.w,
                             child: CustomEmailTextField(
-                              controller: signupController.lastNameController,
+                              textEditingController: signupController.lastNameController,
                               hintText: "Doe",
                               title: "Last Name",
+                        error: signupController.isLastNameError.value,
+
                             ),
                           )
                         ],
@@ -59,33 +63,47 @@ class Register extends StatelessWidget {
                         height:15.h,
                       ),
                       CustomEmailTextField(
-                        controller: signupController.emailController,
+                        textEditingController: signupController.emailController,
                         hintText: "example@example.com",
                         title: "Email",
+                        error: signupController.isEmailError.value,
                       ),
                       SizedBox(
                         height:15.h,
                       ),
                       CustomEmailTextField(
-                        controller: signupController.phoneController,
+                        textEditingController: signupController.phoneController,
                         hintText: "0712345678",
                         title: "Phone number",
+                        error: signupController.isPhoneNumberError.value,
+
                       ),
                       SizedBox(
                         height:15.h,
                       ),
                       CustomEmailTextField(
-                        controller: signupController.passwordController,
-                        hintText: "********",
+                        textEditingController: signupController.passwordController,
+                        hintText: "● ● ● ● ● ● ● ●",
                         title: "Password",
+                        error: signupController.isPasswordError.value,
+                        obscureText:true,
+
+
+
                       ),
                       SizedBox(
                         height:15.h,
                       ),
                       CustomEmailTextField(
-                        controller: signupController.confirmPasswordController,
-                        hintText: "********",
+                        textEditingController: signupController.confirmPasswordController,
+                       
+                          hintText: "● ● ● ● ● ● ● ●",
+
                         title: "Confirm Password",
+                        error: signupController.isConfirmedPasswordError.value,
+                        obscureText:false,
+
+
                       ),
                       SizedBox(
                         height: 30.h,
@@ -144,63 +162,11 @@ class Register extends StatelessWidget {
                   ),
                 )
 
-                // ElevatedButton(
-                //     onPressed: loginController.loginEmailAndPassword,
-                //     child: Text("Email Password")),
-                // SizedBox(
-                //   height: 50.h,
-                // ),
-                // ElevatedButton(
-                //     onPressed: loginController.loginEmailAndPassword,
-                //     child: Text("Google")),
-                // SizedBox(
-                //   height: 50.h,
-                // ),
-                // ElevatedButton(
-                //     onPressed: () {
-                //       Get.toNamed("/register");
-                //     },
-                //     child: Text("Register"))
               ],
             ),
-          ),
+          ),)
         ),
       ),
     );
-
-    // return Scaffold(
-    //   body: SingleChildScrollView(
-    //     child: Padding(
-    //       padding: EdgeInsets.only(left: 23.w, right: 23.h, top: 100.h),
-    //       child: Center(
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           crossAxisAlignment: CrossAxisAlignment.center,
-    //           children: [
-    //             Text("Register Page"),
-
-    //             ElevatedButton(
-    //                 onPressed: signupController.registerEmailAndPassword,
-    //                 child: Text("Email Password")),
-    //             SizedBox(
-    //               height: 50.h,
-    //             ),
-    //             ElevatedButton(
-    //                 onPressed: signupController.registerGoogle,
-    //                 child: Text("Google")),
-    //             SizedBox(
-    //               height: 50.h,
-    //             ),
-    //             ElevatedButton(
-    //                 onPressed: () {
-    //                   Get.toNamed("/login");
-    //                 },
-    //                 child: Text("Login"))
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

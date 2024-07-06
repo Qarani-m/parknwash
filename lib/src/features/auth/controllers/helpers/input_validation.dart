@@ -39,10 +39,9 @@ class InputValidator {
   }
 
   bool isPhoneValid() {
-    return true;
-    // final phone = phoneController.text.trim();
-    // final phoneRegex = RegExp(r'^\d{9,}$');
-    // return phoneRegex.hasMatch(phone);
+    final phone = phoneController.text.trim();
+    final phoneRegex = RegExp(r'^\d{9,}$');
+    return phoneRegex.hasMatch(phone);
   }
 
   String? validateEmail() {

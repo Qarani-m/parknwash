@@ -1,6 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/auth_service.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/input_validation.dart';
 
@@ -12,14 +14,26 @@ class SignupController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
+  Rx<Color> normalColor = Color(0xFFE0E0E0).obs;
+  Rx<Color> errorlColor = Color(0xFFDC143c).obs;
+
+  RxBool isFirstNameError = false.obs;
+  RxBool isLastNameError = false.obs;
+  RxBool isEmailError = false.obs;
+  RxBool isPhoneNumberError = false.obs;
+  RxBool isPasswordError = false.obs;
+
+  RxBool isConfirmedPasswordError = false.obs;
+  RxBool obscureText = true.obs;
+
+  void obscureToggle() {
+    obscureText.value = !obscureText.value;
+  }
+
   late InputValidator _inputValidator;
   @override
   void onInit() {
     super.onInit();
-    // emailController.text = "emqarani2@gmail.com";
-    // passwordController.text = "Martin7982!";
-    // nameController.text = "Martin";
-    // phoneController.text = "1234567890";
     _inputValidator = InputValidator(
       emailController: emailController,
       passwordController: passwordController,
@@ -64,7 +78,6 @@ class SignupController extends GetxController {
     if (confirmPasswordController.text.trim() ==
             passwordController.text.trim() &&
         validateInput()) {
-      print('Registering with email and password');
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
       final name =
@@ -78,6 +91,13 @@ class SignupController extends GetxController {
         Get.snackbar('Success', 'Logged in successfully');
         Get.offNamed("/home");
       } else {}
+    } else {
+      if (confirmPasswordController.text.trim() !=
+          passwordController.text.trim()) {
+        isConfirmedPasswordError.value = true;
+        Get.snackbar('Validation Error', "Password mismatch!",
+            snackPosition: SnackPosition.TOP);
+      }
     }
   }
 
@@ -85,30 +105,48 @@ class SignupController extends GetxController {
     if (_inputValidator.validateAll()) {
       return true;
     } else {
-      if (!_inputValidator.isEmailValid()) {
-        Get.snackbar('Validation Error', _inputValidator.validateEmail()!,
-            snackPosition: SnackPosition.BOTTOM);
+      if (!_inputValidator.isFirstNameValid()) {
+        isFirstNameError.value = true;
+        Get.snackbar('Validation Error', _inputValidator.validateName()!,
+            snackPosition: SnackPosition.TOP);
         return false;
+      } else {
+        isFirstNameError.value = false;
+      }
+      if (!_inputValidator.isLastNameValid()) {
+        isLastNameError.value = true;
+        Get.snackbar('Validation Error', _inputValidator.validateName()!,
+            snackPosition: SnackPosition.TOP);
+        return false;
+      } else {
+        isLastNameError.value = false;
+      }
+
+      if (!_inputValidator.isEmailValid()) {
+        isEmailError.value = true;
+        Get.snackbar('Validation Error', _inputValidator.validateEmail()!,
+            snackPosition: SnackPosition.TOP);
+
+        return false;
+      } else {
+        isEmailError.value = false;
       }
       if (!_inputValidator.isPasswordValid()) {
+        isPasswordError.value = true;
         Get.snackbar('Validation Error', _inputValidator.validatePassword()!,
-            snackPosition: SnackPosition.BOTTOM);
+            snackPosition: SnackPosition.TOP);
         return false;
+      } else {
+        isPasswordError.value = false;
       }
-      if (!_inputValidator.isFirstNameValid()) {
-        Get.snackbar('Validation Error', _inputValidator.validateName()!,
-            snackPosition: SnackPosition.BOTTOM);
-        return false;
-      }
-       if (!_inputValidator.isLastNameValid()) {
-        Get.snackbar('Validation Error', _inputValidator.validateName()!,
-            snackPosition: SnackPosition.BOTTOM);
-        return false;
-      }
+
       if (!_inputValidator.isPhoneValid()) {
+        isPhoneNumberError.value = true;
         Get.snackbar('Validation Error', _inputValidator.validatePhone()!,
-            snackPosition: SnackPosition.BOTTOM);
+            snackPosition: SnackPosition.TOP);
         return false;
+      } else {
+        isPhoneNumberError.value = false;
       }
     }
     return false;

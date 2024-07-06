@@ -5,8 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:parknwash/src/utils/constants/colors.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
@@ -170,7 +168,7 @@ class AuthService {
             "email": userData['email'],
             "phoneNumber": userData['phoneNumber'],
             "uid": userData['uid'],
-            'createdAt': "${monthName}, ${year}",
+            'createdAt': "$monthName, $year",
           };
           AuthService().saveUserData(userDataBox);
           return result.user;
@@ -195,19 +193,19 @@ class AuthService {
 
 // -----------------------------------Helpers-------------------------------------------------
   void showSnackBar(BuildContext context, String message) {
-    final theme = Theme.of(context!);
+    final theme = Theme.of(context);
     final isLightMode = theme.brightness == Brightness.light;
     final snackBar = SnackBar(
       backgroundColor:
           Colors.transparent, // Make the SnackBar's background transparent
       behavior: SnackBarBehavior.floating,
       elevation: 0, // Remove default elevation
-      margin: EdgeInsets.all(16), // Margin for floating SnackBar
+      margin: const EdgeInsets.all(16), // Margin for floating SnackBar
       content: Container(
         decoration: BoxDecoration(
           color: isLightMode ? Colors.white : Colors.grey[800],
           borderRadius: BorderRadius.circular(8),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               offset: Offset(0, 2),
@@ -215,14 +213,14 @@ class AuthService {
             ),
           ],
         ),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Text(
           textAlign: TextAlign.center,
           message,
           style: Theme.of(context)
               .textTheme
               .bodySmall
-              ?.copyWith(color: Color(0xFFDC143c)),
+              ?.copyWith(color: const Color(0xFFDC143c)),
         ),
       ),
     );

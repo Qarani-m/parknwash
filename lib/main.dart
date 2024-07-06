@@ -36,7 +36,7 @@ Future<void> main() async {
 class AuthWrapper extends StatelessWidget {
   final Widget Function(BuildContext, AsyncSnapshot<User?>) builder;
 
-  const AuthWrapper({Key? key, required this.builder}) : super(key: key);
+  const AuthWrapper({super.key, required this.builder});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
                 }
               }
               // While waiting for the authentication state, show a loading indicator
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
+              return const Scaffold(body: Center(child: CircularProgressIndicator()));
             },
           ),
           getPages: [

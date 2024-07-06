@@ -78,7 +78,7 @@ class MainPageOnBoarding extends StatelessWidget {
                     icons[index],
                     height: 36.h,
                     width: 36.h,
-                    color: Color(0xFF33ad5f),
+                    color: const Color(0xFF33ad5f),
                   ),
                   SizedBox(
                     width: 20.w,
@@ -123,7 +123,7 @@ class MainPageOnBoarding extends StatelessWidget {
                             )),
                           ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   GestureDetector(
                     onTap: () => controller.next(index),
                     child: Container(

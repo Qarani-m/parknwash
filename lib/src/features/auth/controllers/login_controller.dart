@@ -16,7 +16,7 @@ class LoginController extends GetxController {
         Get.snackbar(
           "Success",
           "Successfully signed in",
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
         Get.offNamed("/home");
       } else {
@@ -24,10 +24,10 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       Get.snackbar(
-        "Error",
-        "Sign-in failed: $e",
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
+        "Login with google error",
+        "Sign-in failed: You probably dont have an internet connection",
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.black,
       );
     }
   }

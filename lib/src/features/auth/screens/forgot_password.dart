@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/auth/controllers/forgot_password_controller.dart';
@@ -27,7 +25,7 @@ class ForgotPassword extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: ()=>Get.offNamed("/login"),
-                    child: Icon(Icons.arrow_back_ios),
+                    child: const Icon(Icons.arrow_back_ios),
                   ),
                 ),
                 SizedBox(height: 110.h,),
@@ -49,7 +47,7 @@ class ForgotPassword extends StatelessWidget {
                   child: Column(
                     children: [
                       CustomEmailTextField(
-                        controller: controller.emailController,
+                        textEditingController: controller.emailController,
                         hintText: "example@example.com",
                         title: "Email",
                       ),

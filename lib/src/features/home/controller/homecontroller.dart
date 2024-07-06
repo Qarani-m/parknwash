@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -60,7 +59,7 @@ class Homecontroller extends GetxController {
               topRight: Radius.circular(20.sp))),
       child: Column(
         children: [
-          Text("Are you sure you want to log out?"),
+          const Text("Are you sure you want to log out?"),
           SizedBox(
             height: 30.h,
           ),
