@@ -31,8 +31,6 @@ Future<void> main() async {
   });
 }
 
-
-
 class AuthWrapper extends StatelessWidget {
   final Widget Function(BuildContext, AsyncSnapshot<User?>) builder;
 
@@ -46,9 +44,6 @@ class AuthWrapper extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
@@ -81,8 +76,9 @@ class MyApp extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
                 User? user = snapshot.data;
-                bool isOnboardingComplete = box.read('isOnboardingComplete') ?? false;
-                
+                bool isOnboardingComplete =
+                    box.read('isOnboardingComplete') ?? false;
+
                 if (isOnboardingComplete) {
                   if (user != null) {
                     return HomePage();
@@ -94,7 +90,8 @@ class MyApp extends StatelessWidget {
                 }
               }
               // While waiting for the authentication state, show a loading indicator
-              return const Scaffold(body: Center(child: CircularProgressIndicator()));
+              return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()));
             },
           ),
           getPages: [
@@ -109,4 +106,6 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
+
 }

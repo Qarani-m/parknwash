@@ -15,20 +15,27 @@ class Homecontroller extends GetxController {
 
   final box = GetStorage();
 
-  @override
+ @override
   void onInit() {
     super.onInit();
+    updateUserName();
+  }
 
+  void updateUserName() {
     String? userJson = box.read('userData');
-
     if (userJson != null) {
       Map<String, dynamic> userData = jsonDecode(userJson);
-      String displayName = userData['displayName'];
+      String displayName = userData['displayName'] ?? '';
       userName.value = "Hello, 👋 ${displayName.split(' ')[0]}";
     } else {
       print('No user data found in storage.');
+      userName.value = "Hello, 👋";
     }
   }
+
+
+
+
 
   RxInt selectedCategoryIndex = 0.obs;
   void changeSelectedCategory(int index) {
@@ -66,6 +73,7 @@ class Homecontroller extends GetxController {
           GestureDetector(
             onTap: () {
               AuthService().signOut();
+              box.remove("userData");
               Get.offNamed("/login");
             },
             child: Container(
@@ -91,5 +99,4 @@ class Homecontroller extends GetxController {
 
     print("logout");
   }
-
 }

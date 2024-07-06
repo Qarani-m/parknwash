@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
+import 'package:parknwash/src/features/home/controller/homecontroller.dart';
+import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
 
 class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -246,5 +248,7 @@ class AuthService {
     final box = GetStorage();
     String userJson = jsonEncode(userData);
     box.write('userData', userJson);
+    Get.find<Homecontroller>().updateUserName();
+    Get.find<ProfileController>().updateDetails();
   }
 }

@@ -42,12 +42,18 @@ class ForgotPasswordController extends GetxController {
           backgroundColor: Colors.red,
           colorText: Colors.white);
     } catch (e) {
-      Get.snackbar('Error', 'An unexpected error occurred. Please try again later.',
+      Get.snackbar(
+          'Error', 'An unexpected error occurred. Please try again later.',
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void resetPassword(String email) {
+    emailController.text = email;
+    sendCode();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:parknwash/src/features/auth/controllers/forgot_password_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
 import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
@@ -13,6 +14,7 @@ class ProfilePage extends StatelessWidget {
       Get.put<LoginController>(LoginController());
   final Homecontroller homecontroller = Get.find<Homecontroller>();
   final ProfileController controller = Get.find<ProfileController>();
+  final ForgotPasswordController forgotPasswordController = Get.find<ForgotPasswordController>();
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +97,6 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Container(
                         padding: EdgeInsets.only(top: 10.h),
-
                         height: 70.h,
                         width: 164.w,
                         decoration: BoxDecoration(
@@ -171,28 +172,28 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    GestureDetector(
-                      onTap: () => controller.goToPayments(),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.payment,
-                            size: 35.h,
-                            color: AppColors.accentColor,
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Text(
-                            "Payments",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.w300),
-                          )
-                        ],
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () => controller.goToPayments(),
+                    //   child: Row(
+                    //     children: [
+                    //       Icon(
+                    //         Icons.payment,
+                    //         size: 35.h,
+                    //         color: AppColors.accentColor,
+                    //       ),
+                    //       SizedBox(
+                    //         width: 20.w,
+                    //       ),
+                    //       Text(
+                    //         "Payments",
+                    //         style: Theme.of(context)
+                    //             .textTheme
+                    //             .bodyMedium
+                    //             ?.copyWith(fontWeight: FontWeight.w300),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 30.h,
                     ),
@@ -202,7 +203,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.share,
-                            size: 35.h,
+                            size: 30.h,
                             color: AppColors.accentColor,
                           ),
                           SizedBox(
@@ -212,8 +213,38 @@ class ProfilePage extends StatelessWidget {
                             "Tell Your Friends",
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.w300),
+                                .bodySmall
+                                ?.copyWith(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w300),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    GestureDetector(
+                      onTap: () => forgotPasswordController.resetPassword(controller.email.value),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.password,
+                            size: 30.h,
+                            weight: 0.1,
+                            color: AppColors.accentColor,
+                          ),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Text(
+                            "Change Password",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w300),
                           )
                         ],
                       ),
@@ -227,7 +258,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.logout,
-                            size: 35.h,
+                            size: 30.h,
                             weight: 0.1,
                             color: AppColors.accentColor,
                           ),
@@ -238,8 +269,10 @@ class ProfilePage extends StatelessWidget {
                             "Log Out",
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.w300),
+                                .bodySmall
+                                ?.copyWith(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w300),
                           )
                         ],
                       ),
