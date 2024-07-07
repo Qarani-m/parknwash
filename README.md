@@ -20,3 +20,11 @@ I dont feel like writing what this project is about, so here are some screenshot
 ---
 ### Profile Page
 ![alt text](images/profile.png)
+
+
+--- 
+
+### Notifications 
+![alt text](images/notifications.png)
+![alt text](images/payment_already_used.png)
+![alt text](images/payment_still_valid.png)

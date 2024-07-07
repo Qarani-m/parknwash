@@ -10,6 +10,7 @@ import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/auth/screens/register.dart';
 import 'package:parknwash/src/features/home/home_page.dart';
+import 'package:parknwash/src/features/profile/notification.dart';
 import 'package:parknwash/src/features/profile/profile_main.dart';
 import 'package:parknwash/src/utils/app_bindings.dart';
 import 'package:parknwash/src/utils/themes/theme.dart';
@@ -101,6 +102,8 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/login', page: () => Login()),
             GetPage(name: '/register', page: () => Register()),
             GetPage(name: '/forgot_password', page: () => ForgotPassword()),
+            GetPage(name: '/notifications', page: () =>  Notifications()),
+            GetPage(name: '/payments-notification', page: () =>  Notifications()),
           ],
         );
       },

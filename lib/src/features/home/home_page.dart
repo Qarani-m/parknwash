@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/common_widgets/centric_circes.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
+import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class HomePage extends StatelessWidget {
@@ -18,25 +18,27 @@ class HomePage extends StatelessWidget {
   ];
 
   final Homecontroller controller = Get.find<Homecontroller>();
+  final NotificationsController notificationsController =
+      Get.find<NotificationsController>();
 
   @override
   Widget build(BuildContext context) {
-    return Obx(()=>Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: 50.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(context),
-            SizedBox(height: 35.h),
-            _buildGreeting(context),
-            SizedBox(height: 35.h),
-            _buildCategoryButtons(controller, context),
-            _buildBottomSection(context),
-          ],
-        ),
-      ),
-    )) ;
+    return Obx(() => Scaffold(
+          body: Padding(
+            padding: EdgeInsets.only(top: 50.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context),
+                SizedBox(height: 35.h),
+                _buildGreeting(context),
+                SizedBox(height: 35.h),
+                _buildCategoryButtons(controller, context),
+                _buildBottomSection(context),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _buildHeader(BuildContext context) {
@@ -63,7 +65,10 @@ class HomePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => controller.locationButton(),
+            onTap: () {
+              notificationsController.getNotifications();
+              Get.toNamed('/notifications');
+            },
             child: SvgPicture.asset(
               "assets/svg/bell-fill.svg",
               width: 30.h,
@@ -77,20 +82,17 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildGreeting(BuildContext context) {
-    return
-    Padding(
+    return Padding(
       padding: EdgeInsets.only(left: 23.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Text(
             controller.userName.value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 25.sp,
-                  fontFamily: "Kalam"
-                ),
+                fontWeight: FontWeight.w400,
+                fontSize: 25.sp,
+                fontFamily: "Kalam"),
           ),
           SizedBox(height: 20.h),
           Text(
@@ -114,65 +116,64 @@ class HomePage extends StatelessWidget {
       Homecontroller controller, BuildContext context) {
     bool isLightMode = Theme.of(context).brightness == Brightness.light;
     return SizedBox(
-          width: double.maxFinite,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(
-              categories.length,
-              (index) => GestureDetector(
-                  onTap: () => controller.changeSelectedCategory(index),
-                  child: Container(
-                    height: 120.h,
-                    width: 115.h,
-                    decoration: BoxDecoration(
-                      color: controller.selectedCategoryIndex.value == index
-                          ? AppColors.accentColor
-                          : isLightMode
-                              ? Colors.white
-                              : const Color(0xFF252525),
-                      borderRadius: BorderRadius.circular(15.sp),
-                      boxShadow: isLightMode
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset:
-                                    const Offset(0, 3), // changes position of shadow
-                              ),
-                            ]
-                          : [],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/svg/${icons[index]}",
-                          color: controller.selectedCategoryIndex.value == index
-                              ? controller.changeColor.value
-                              : isLightMode
-                                  ? Colors.black
-                                  : const Color(0xFFcbcbcb),
-                          width: 60.h,
-                          height: 60.h,
-                        ),
-                        Text(
-                          categories[index],
-                          style: Get.textTheme.bodyMedium?.copyWith(
-                            color:
-                                controller.selectedCategoryIndex.value == index
-                                    ? controller.changeColor.value
-                                    : isLightMode
-                                        ? Colors.black
-                                        : const Color(0xFFcbcbcb),
+      width: double.maxFinite,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: List.generate(
+          categories.length,
+          (index) => GestureDetector(
+              onTap: () => controller.changeSelectedCategory(index),
+              child: Container(
+                height: 120.h,
+                width: 115.h,
+                decoration: BoxDecoration(
+                  color: controller.selectedCategoryIndex.value == index
+                      ? AppColors.accentColor
+                      : isLightMode
+                          ? Colors.white
+                          : const Color(0xFF252525),
+                  borderRadius: BorderRadius.circular(15.sp),
+                  boxShadow: isLightMode
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
                           ),
-                        )
-                      ],
+                        ]
+                      : [],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/svg/${icons[index]}",
+                      color: controller.selectedCategoryIndex.value == index
+                          ? controller.changeColor.value
+                          : isLightMode
+                              ? Colors.black
+                              : const Color(0xFFcbcbcb),
+                      width: 60.h,
+                      height: 60.h,
                     ),
-                  )),
-            ),
-          ),
-        );
+                    Text(
+                      categories[index],
+                      style: Get.textTheme.bodyMedium?.copyWith(
+                        color: controller.selectedCategoryIndex.value == index
+                            ? controller.changeColor.value
+                            : isLightMode
+                                ? Colors.black
+                                : const Color(0xFFcbcbcb),
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        ),
+      ),
+    );
   }
 
   Widget _buildBottomSection(BuildContext context) {
@@ -195,7 +196,7 @@ class HomePage extends StatelessWidget {
               height: 153.h,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color:  AppColors.accentColor,
+                color: AppColors.accentColor,
               ),
               child: Center(
                 child: Text(

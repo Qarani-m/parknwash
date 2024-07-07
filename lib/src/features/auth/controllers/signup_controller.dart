@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/auth_service.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/input_validation.dart';
 
@@ -14,8 +11,8 @@ class SignupController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  Rx<Color> normalColor = Color(0xFFE0E0E0).obs;
-  Rx<Color> errorlColor = Color(0xFFDC143c).obs;
+  Rx<Color> normalColor = const Color(0xFFE0E0E0).obs;
+  Rx<Color> errorlColor = const Color(0xFFDC143c).obs;
 
   RxBool isFirstNameError = false.obs;
   RxBool isLastNameError = false.obs;

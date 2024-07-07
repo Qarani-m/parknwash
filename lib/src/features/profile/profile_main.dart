@@ -25,14 +25,20 @@ class ProfilePage extends StatelessWidget {
             padding: EdgeInsets.only(left: 23.w, right: 23.w, top: 50.h),
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
                       onTap: () {
                         Get.back();
                       },
                       child: const Icon(Icons.arrow_back)),
-                ),
+                  Text("Your Profile "),
+                  SizedBox(
+                    width: 23.w,
+                  )
+                ],
+              ),
                 SizedBox(
                   height: 30.h,
                 ),
@@ -172,28 +178,53 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    // GestureDetector(
-                    //   onTap: () => controller.goToPayments(),
-                    //   child: Row(
-                    //     children: [
-                    //       Icon(
-                    //         Icons.payment,
-                    //         size: 35.h,
-                    //         color: AppColors.accentColor,
-                    //       ),
-                    //       SizedBox(
-                    //         width: 20.w,
-                    //       ),
-                    //       Text(
-                    //         "Payments",
-                    //         style: Theme.of(context)
-                    //             .textTheme
-                    //             .bodyMedium
-                    //             ?.copyWith(fontWeight: FontWeight.w300),
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
+                     GestureDetector(
+                      onTap: () => controller.goToPayments(),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.favorite,
+                            size: 35.h,
+                            color: AppColors.accentColor,
+                          ),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Text(
+                            "Favourite Lots",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.w300),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    GestureDetector(
+                      onTap: () => controller.goToPayments(),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.payment,
+                            size: 35.h,
+                            color: AppColors.accentColor,
+                          ),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Text(
+                            "Payment History",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.w300),
+                          )
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: 30.h,
                     ),

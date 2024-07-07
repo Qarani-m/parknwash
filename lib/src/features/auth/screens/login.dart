@@ -171,14 +171,14 @@ class CustomEmailTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
                     color:
-                        error == true ? Color(0xFFDC143c) : Color(0xFFE0E0E0)!,
+                        error == true ? const Color(0xFFDC143c) : const Color(0xFFE0E0E0),
                     width: 1),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
                     color:
-                        error == true ? Color(0xFFDC143c) : Color(0xFFE0E0E0)!,
+                        error == true ? const Color(0xFFDC143c) : const Color(0xFFE0E0E0),
                     width: 1),
 
                 // borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
@@ -188,19 +188,19 @@ class CustomEmailTextField extends StatelessWidget {
                 // borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
                 borderSide: BorderSide(
                     color:
-                        error == true ? Color(0xFFDC143c) : Color(0xFFE0E0E0)!,
+                        error == true ? const Color(0xFFDC143c) : const Color(0xFFE0E0E0),
                     width: 1),
               ),
               suffixIcon:obscureText? controller.obscureText.value
                   ? GestureDetector(
                       onTap: () => controller.obscureToggle(),
-                      child: Icon(Icons. visibility))
+                      child: const Icon(Icons. visibility))
                   : GestureDetector(
                       onTap: () => controller.obscureToggle(),
-                      child: Icon(Icons.visibility_off )): SizedBox()),
+                      child: const Icon(Icons.visibility_off )): const SizedBox()),
           style: TextStyle(
               fontSize: 16.sp,
-              color: error == true ? Color(0xFFDC143c) : Colors.grey[400]),
+              color: error == true ? const Color(0xFFDC143c) : Colors.grey[400]),
         ),
       ],
     ));
