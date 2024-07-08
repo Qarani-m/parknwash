@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:parknwash/src/features/auth/controllers/forgot_password_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
+import 'package:parknwash/src/features/profile/controller/payment_history_controller.dart';
 import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
@@ -13,8 +14,10 @@ class ProfilePage extends StatelessWidget {
   final LoginController loginController =
       Get.put<LoginController>(LoginController());
   final Homecontroller homecontroller = Get.find<Homecontroller>();
+  final PaymentHistoryController paymentHistoryController = Get.find<PaymentHistoryController>();
   final ProfileController controller = Get.find<ProfileController>();
-  final ForgotPasswordController forgotPasswordController = Get.find<ForgotPasswordController>();
+  final ForgotPasswordController forgotPasswordController =
+      Get.find<ForgotPasswordController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +29,19 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               children: [
                 Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: const Icon(Icons.arrow_back)),
-                  Text("Your Profile "),
-                  SizedBox(
-                    width: 23.w,
-                  )
-                ],
-              ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: const Icon(Icons.arrow_back)),
+                    const Text("Your Profile "),
+                    SizedBox(
+                      width: 23.w,
+                    )
+                  ],
+                ),
                 SizedBox(
                   height: 30.h,
                 ),
@@ -178,8 +181,8 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                     GestureDetector(
-                      onTap: () => controller.goToPayments(),
+                    GestureDetector(
+                      onTap: () =>Get.toNamed("/favourite-lots"),
                       child: Row(
                         children: [
                           Icon(
@@ -204,7 +207,10 @@ class ProfilePage extends StatelessWidget {
                       height: 30.h,
                     ),
                     GestureDetector(
-                      onTap: () => controller.goToPayments(),
+                      onTap: () {
+                        // paymentHistoryController.getPaymentHistoryFromFirestore();
+                        Get.toNamed("/payments-history");
+                      },
                       child: Row(
                         children: [
                           Icon(
@@ -256,7 +262,8 @@ class ProfilePage extends StatelessWidget {
                       height: 30.h,
                     ),
                     GestureDetector(
-                      onTap: () => forgotPasswordController.resetPassword(controller.email.value),
+                      onTap: () => forgotPasswordController
+                          .resetPassword(controller.email.value),
                       child: Row(
                         children: [
                           Icon(

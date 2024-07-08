@@ -4,7 +4,9 @@ import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/onboarding_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
+import 'package:parknwash/src/features/profile/controller/favourites_controller.dart';
 import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
+import 'package:parknwash/src/features/profile/controller/payment_history_controller.dart';
 import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
 
 class AppBindings extends Bindings {
@@ -17,5 +19,11 @@ class AppBindings extends Bindings {
     Get.put<ProfileController>(ProfileController());
     Get.put<ForgotPasswordController>(ForgotPasswordController());
     Get.put<NotificationsController>(NotificationsController());
-  }
+    Get.put<PaymentHistoryController>(PaymentHistoryController());
+    Get.put<FavouritesController>(FavouritesController());
+
+
+
+    
+  } 
 }
