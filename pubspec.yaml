@@ -26,6 +26,7 @@ dependencies:
   pretty_qr_code: ^3.3.0
   loading_animation_widget: ^1.2.1
   awesome_notifications: ^0.9.3+1
+  flutter_app_badger: ^1.5.0
 
 dev_dependencies:
   flutter_lints: ^3.0.0

@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'dart:math';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 class LocalNotificationController {
   /// Use this method to detect when a new notification or a schedule is created
@@ -20,6 +21,7 @@ class LocalNotificationController {
   @pragma("vm:entry-point")
   static Future<void> onDismissActionReceivedMethod(
       ReceivedAction receivedAction) async {
+    await FlutterAppBadger.removeBadge();
     // Your code goes here
   }
 
@@ -52,15 +54,16 @@ class LocalNotificationController {
     ]);
   }
 
-  static void sendNotification(String title, String body) {
-    AwesomeNotifications().createNotification(
+  static void sendNotification(String title, String body) async {
+    await AwesomeNotifications().createNotification(
         content: NotificationContent(
             // id: generateUnique12DigitNumber(),
-            id:generateId(),
+            id: generateId(),
             channelKey: "basic_chanel",
             title: title,
             body: body,
             notificationLayout: NotificationLayout.Default));
+    await setAppBadges();
   }
 
   static Future<void> scheduleNotifications(
@@ -70,20 +73,28 @@ class LocalNotificationController {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
           id: generateId(),
-          channelKey: 'scheduled_notifications_chanellKey',
+          channelKey: 'basic_chanel',
           title: title,
           body: body,
           notificationLayout: NotificationLayout.Default,
         ),
         schedule: NotificationInterval(
             interval: interval, timeZone: localTimeZone, repeats: true));
+    await setAppBadges();
+  }
+
+  static Future setAppBadges() async {
+    bool itsPossible = await FlutterAppBadger.isAppBadgeSupported();
+
+    if (itsPossible) {
+      FlutterAppBadger.updateBadgeCount(1);
+    }
   }
 
   static int generateId() {
-  final random = Random();
-  // Generate a random number between 100 and 999 to ensure it's always 3 digits
-  final uniqueNumber = 100 + random.nextInt(900);
-  return uniqueNumber;
-}
-
+    final random = Random();
+    // Generate a random number between 100 and 999 to ensure it's always 3 digits
+    final uniqueNumber = 100 + random.nextInt(900);
+    return uniqueNumber;
+  }
 }
