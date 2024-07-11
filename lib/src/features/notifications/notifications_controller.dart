@@ -69,8 +69,7 @@ class NotificationController {
   ) async {
     String localTimeZone =
         await AwesomeNotifications().getLocalTimeZoneIdentifier();
-    String utcTimeZone =
-        await AwesomeNotifications().getLocalTimeZoneIdentifier();
+  
 
     await AwesomeNotifications().createNotification(
         content: NotificationContent(

@@ -5,12 +5,9 @@ import 'package:parknwash/src/features/profile/controller/favourites_controller.
 import 'package:parknwash/src/features/profile/models/lot_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FavouriteLots extends StatelessWidget {
-  FavouriteLots({Key? key}) : super(key: key);
+  FavouriteLots({super.key});
 
   final FavouritesController controller = Get.find<FavouritesController>();
 
@@ -53,7 +50,7 @@ class FavouriteLots extends StatelessWidget {
 }
 
 class Favourite extends StatelessWidget {
-    Favourite({
+    const Favourite({
     super.key, required this.lot,
   });
 
@@ -64,7 +61,7 @@ class Favourite extends StatelessWidget {
     return Container(
       height: 120.h,
       width: double.maxFinite,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
 
           // color: Colors.red
 
@@ -76,7 +73,7 @@ class Favourite extends StatelessWidget {
             width: 120.w,
             decoration: BoxDecoration(
                 color: Colors.green,
-                image: DecorationImage(
+                image: const DecorationImage(
                     fit: BoxFit.cover,
                     image: AssetImage(
                       "assets/images/download.jpeg",
@@ -100,8 +97,8 @@ class Favourite extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(Icons.location_history),
-                  SizedBox(
+                  const Icon(Icons.location_history),
+                  const SizedBox(
                     width: 5.2,
                   ),
                   Text(
@@ -118,7 +115,7 @@ class Favourite extends StatelessWidget {
                     color: AppColors.accentColor,
                     size: 20.h,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5.2,
                   ),
                   Text(

@@ -43,7 +43,7 @@ Future<void> main() async {
       .then((_) async {
     await GetStorage.init();
 
-    runApp(MyApp());
+    runApp(const MyApp());
   });
 }
 
@@ -60,7 +60,7 @@ class AuthWrapper extends StatelessWidget {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();

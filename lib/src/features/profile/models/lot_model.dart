@@ -51,7 +51,7 @@ class Lot {
         return GeoPoint(lat, lng);
       }
     }
-    return GeoPoint(0, 0);
+    return const GeoPoint(0, 0);
   }
 
   @override
