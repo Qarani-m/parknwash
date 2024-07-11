@@ -16,14 +16,14 @@ class Homecontroller extends GetxController {
 
   final box = GetStorage();
 
- @override
+  @override
   Future<void> onInit() async {
     super.onInit();
-      bool isNotificationsAllowed =
-      await AwesomeNotifications().isNotificationAllowed();
-  if (!isNotificationsAllowed) {
-    AwesomeNotifications().requestPermissionToSendNotifications();
-  }
+    bool isNotificationsAllowed =
+        await AwesomeNotifications().isNotificationAllowed();
+    if (!isNotificationsAllowed) {
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
     updateUserName();
   }
 
@@ -39,10 +39,6 @@ class Homecontroller extends GetxController {
     }
   }
 
-
-
-
-
   RxInt selectedCategoryIndex = 0.obs;
   void changeSelectedCategory(int index) {
     selectedCategoryIndex.value = index;
@@ -50,6 +46,9 @@ class Homecontroller extends GetxController {
 
   void startParking() {
     print(selectedCategoryIndex.value);
+
+    box.write("category", selectedCategoryIndex.toString());
+    Get.toNamed("/locations");
   }
 
   void goToProfile() {

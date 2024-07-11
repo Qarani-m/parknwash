@@ -131,6 +131,7 @@ class CustomEmailTextField extends StatelessWidget {
       {super.key,
       this.error = false,
       this.obscureText = false,
+      this.centerText =false,
       required this.textEditingController,
       required this.hintText,
       required this.title});
@@ -140,70 +141,79 @@ class CustomEmailTextField extends StatelessWidget {
   final String title;
   final bool error;
   final bool obscureText;
+  final bool centerText;
 
   SignupController controller = Get.find<SignupController>();
 
   @override
   Widget build(BuildContext context) {
-    return Obx (()=>Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(fontWeight: FontWeight.w400)),
-        SizedBox(
-          height: 10.h,
-        ),
-        TextField(
-          obscureText: controller.obscureText.value,
-          obscuringCharacter: "●",
-          controller: textEditingController,
-          decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: TextStyle(color: Colors.grey[400]),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding:
-                  const EdgeInsets.only(left: 16, top: 14, bottom: 14),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                    color:
-                        error == true ? const Color(0xFFDC143c) : const Color(0xFFE0E0E0),
-                    width: 1),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                    color:
-                        error == true ? const Color(0xFFDC143c) : const Color(0xFFE0E0E0),
-                    width: 1),
+    return Obx(() => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(fontWeight: FontWeight.w400)),
+            SizedBox(
+              height: 10.h,
+            ),
+            TextField(
+              obscureText: controller.obscureText.value,
+              textAlign: centerText ? TextAlign.center: TextAlign.left,
+              obscuringCharacter: "●",
+              controller: textEditingController,
+              decoration: InputDecoration(
+                  hintText: hintText,
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                      const EdgeInsets.only(left: 16, top: 14, bottom: 14),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                        color: error == true
+                            ? const Color(0xFFDC143c)
+                            : const Color(0xFFE0E0E0),
+                        width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                        color: error == true
+                            ? const Color(0xFFDC143c)
+                            : const Color(0xFFE0E0E0),
+                        width: 1),
 
-                // borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                // borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
-                borderSide: BorderSide(
-                    color:
-                        error == true ? const Color(0xFFDC143c) : const Color(0xFFE0E0E0),
-                    width: 1),
-              ),
-              suffixIcon:obscureText? controller.obscureText.value
-                  ? GestureDetector(
-                      onTap: () => controller.obscureToggle(),
-                      child: const Icon(Icons. visibility))
-                  : GestureDetector(
-                      onTap: () => controller.obscureToggle(),
-                      child: const Icon(Icons.visibility_off )): const SizedBox()),
-          style: TextStyle(
-              fontSize: 16.sp,
-              color: error == true ? const Color(0xFFDC143c) : Colors.grey[400]),
-        ),
-      ],
-    ));
+                    // borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    // borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
+                    borderSide: BorderSide(
+                        color: error == true
+                            ? const Color(0xFFDC143c)
+                            : const Color(0xFFE0E0E0),
+                        width: 1),
+                  ),
+                  suffixIcon: obscureText
+                      ? controller.obscureText.value
+                          ? GestureDetector(
+                              onTap: () => controller.obscureToggle(),
+                              child: const Icon(Icons.visibility))
+                          : GestureDetector(
+                              onTap: () => controller.obscureToggle(),
+                              child: const Icon(Icons.visibility_off))
+                      : const SizedBox()),
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  color: error == true
+                      ? const Color(0xFFDC143c)
+                      : Colors.grey[400]),
+            ),
+          ],
+        ));
   }
 }
 
@@ -262,9 +272,8 @@ class GoogleLoginButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              "assets/images/google.png"
-              
-              ,  height: 24,
+              "assets/images/google.png",
+              height: 24,
               width: 24,
             ),
             const SizedBox(width: 12),

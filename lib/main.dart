@@ -12,6 +12,9 @@ import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/auth/screens/register.dart';
 import 'package:parknwash/src/features/home/home_page.dart';
 import 'package:parknwash/src/features/notifications/notifications_controller.dart';
+import 'package:parknwash/src/features/parking/screens/booking_finished.dart';
+import 'package:parknwash/src/features/parking/screens/locations.dart';
+import 'package:parknwash/src/features/parking/screens/parking_details.dart';
 import 'package:parknwash/src/features/profile/screens/favourite_lots.dart';
 import 'package:parknwash/src/features/profile/screens/notification.dart';
 import 'package:parknwash/src/features/profile/screens/payment_history.dart';
@@ -138,6 +141,10 @@ class _MyAppState extends State<MyApp> {
                 name: '/payments-notification', page: () => Notifications()),
             GetPage(name: '/payments-history', page: () => PaymentHistory()),
             GetPage(name: '/favourite-lots', page: () => FavouriteLots()),
+            GetPage(name: '/locations', page: () => LocationsPage()),
+            GetPage(name: "/details_page", page: () => ParkingDetails()),
+            GetPage(name: "/details_page", page: () => ParkingDetails()),
+            GetPage(name: "/booking_finished", page: () => BookingFinished()),
           ],
         );
       },

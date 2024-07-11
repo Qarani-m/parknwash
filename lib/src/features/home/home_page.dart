@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/common_widgets/centric_circes.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
-import 'package:parknwash/src/features/notifications/notifications_controller.dart';
 import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
