@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,7 @@ import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/auth/screens/register.dart';
 import 'package:parknwash/src/features/home/home_page.dart';
+import 'package:parknwash/src/features/notifications/notifications_controller.dart';
 import 'package:parknwash/src/features/profile/screens/favourite_lots.dart';
 import 'package:parknwash/src/features/profile/screens/notification.dart';
 import 'package:parknwash/src/features/profile/screens/payment_history.dart';
@@ -23,6 +25,17 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+        channelGroupKey: "basic_chanell_group",
+        channelKey: "basic_chanel",
+        channelName: "park_n_wash",
+        channelDescription: "parn_n_wash")
+  ], channelGroups: [
+    NotificationChannelGroup(
+        channelGroupKey: "basic_chanell_group", channelGroupName: "park_n_wash")
+  ]);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -48,8 +61,24 @@ class AuthWrapper extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod
+        );
+    super.initState();
+  }
 
   final box = GetStorage();
 
@@ -104,15 +133,14 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/login', page: () => Login()),
             GetPage(name: '/register', page: () => Register()),
             GetPage(name: '/forgot_password', page: () => ForgotPassword()),
-            GetPage(name: '/notifications', page: () =>  Notifications()),
-            GetPage(name: '/payments-notification', page: () =>  Notifications()),
-            GetPage(name: '/payments-history', page: () =>  PaymentHistory()),
-            GetPage(name: '/favourite-lots', page: () =>  FavouriteLots()),
+            GetPage(name: '/notifications', page: () => Notifications()),
+            GetPage(
+                name: '/payments-notification', page: () => Notifications()),
+            GetPage(name: '/payments-history', page: () => PaymentHistory()),
+            GetPage(name: '/favourite-lots', page: () => FavouriteLots()),
           ],
         );
       },
     );
   }
-
-
 }

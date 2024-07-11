@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,8 +17,13 @@ class Homecontroller extends GetxController {
   final box = GetStorage();
 
  @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+      bool isNotificationsAllowed =
+      await AwesomeNotifications().isNotificationAllowed();
+  if (!isNotificationsAllowed) {
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
     updateUserName();
   }
 
