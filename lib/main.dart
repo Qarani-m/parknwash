@@ -49,9 +49,7 @@ Future<void> main() async {
 
 class AuthWrapper extends StatelessWidget {
   final Widget Function(BuildContext, AsyncSnapshot<User?>) builder;
-
   const AuthWrapper({super.key, required this.builder});
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -73,10 +71,12 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     AwesomeNotifications().setListeners(
         onActionReceivedMethod: NotificationController.onActionReceivedMethod,
-        onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
-        onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
-        onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod
-        );
+        onNotificationCreatedMethod:
+            NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:
+            NotificationController.onDismissActionReceivedMethod);
     super.initState();
   }
 

@@ -67,17 +67,7 @@ class HomePage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              AwesomeNotifications().createNotification(
-                  content: NotificationContent(
-                      id: 12,
-                      channelKey: "basic_chanel",
-                      title: "Hello, World",
-                      body: "Yay!!! i ahve local notifications ",
-                      notificationLayout: NotificationLayout.Default
-                      
-                      ));
-
-              notificationsController.getNotifications();
+                        notificationsController.getNotifications();
               Get.toNamed('/notifications');
             },
             child: SvgPicture.asset(

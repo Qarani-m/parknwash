@@ -28,4 +28,59 @@ class NotificationController {
       ReceivedAction receivedAction) async {
     // Your code goes here
   }
+
+  static Future init() async {
+    await AwesomeNotifications().initialize(null, [
+      NotificationChannel(
+          channelGroupKey: "basic_chanell_group",
+          channelKey: "basic_chanel",
+          channelName: "park_n_wash",
+          channelDescription: "parn_n_wash"),
+      NotificationChannel(
+          channelGroupKey: "scheduled_notifications_groupchanell_key",
+          channelKey: "scheduled_notifications_chanellKey",
+          channelName: "park_n_wash_scheduled_notifications",
+          channelDescription: "scheduled_notifications_parn_n_wash"),
+    ], channelGroups: [
+      NotificationChannelGroup(
+          channelGroupKey: "basic_chanell_group",
+          channelGroupName: "park_n_wash"),
+      NotificationChannelGroup(
+          channelGroupKey: "scheduled_notifications_groupchanell_key",
+          channelGroupName: "scheduled_notifications_parn_n_wash"),
+    ]);
+  }
+
+  static void sendNotification(String title, String body, int id) {
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: id,
+            channelKey: "basic_chanel",
+            title: title,
+            body: body,
+            notificationLayout: NotificationLayout.Default));
+  }
+
+  static Future<void> scheduleNotifications(
+    int id,
+    String body,
+    String title,
+    int interval
+  ) async {
+    String localTimeZone =
+        await AwesomeNotifications().getLocalTimeZoneIdentifier();
+    String utcTimeZone =
+        await AwesomeNotifications().getLocalTimeZoneIdentifier();
+
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: id,
+          channelKey: 'scheduled_notifications_chanellKey',
+          title: title,
+          body: body,
+          notificationLayout: NotificationLayout.Default,
+        ),
+        schedule: NotificationInterval(
+            interval: interval, timeZone: localTimeZone, repeats: true));
+  }
 }
