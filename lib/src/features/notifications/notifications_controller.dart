@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'dart:math';
 
-class NotificationController {
+class LocalNotificationController {
   /// Use this method to detect when a new notification or a schedule is created
   @pragma("vm:entry-point")
   static Future<void> onNotificationCreatedMethod(
@@ -51,10 +52,11 @@ class NotificationController {
     ]);
   }
 
-  static void sendNotification(String title, String body, int id) {
+  static void sendNotification(String title, String body) {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: id,
+            // id: generateUnique12DigitNumber(),
+            id:generateId(),
             channelKey: "basic_chanel",
             title: title,
             body: body,
@@ -62,18 +64,12 @@ class NotificationController {
   }
 
   static Future<void> scheduleNotifications(
-    int id,
-    String body,
-    String title,
-    int interval
-  ) async {
+      String title, String body, int interval) async {
     String localTimeZone =
         await AwesomeNotifications().getLocalTimeZoneIdentifier();
-  
-
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
-          id: id,
+          id: generateId(),
           channelKey: 'scheduled_notifications_chanellKey',
           title: title,
           body: body,
@@ -82,4 +78,12 @@ class NotificationController {
         schedule: NotificationInterval(
             interval: interval, timeZone: localTimeZone, repeats: true));
   }
+
+  static int generateId() {
+  final random = Random();
+  // Generate a random number between 100 and 999 to ensure it's always 3 digits
+  final uniqueNumber = 100 + random.nextInt(900);
+  return uniqueNumber;
+}
+
 }

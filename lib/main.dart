@@ -70,13 +70,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     AwesomeNotifications().setListeners(
-        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onActionReceivedMethod: LocalNotificationController.onActionReceivedMethod,
         onNotificationCreatedMethod:
-            NotificationController.onNotificationCreatedMethod,
+            LocalNotificationController.onNotificationCreatedMethod,
         onNotificationDisplayedMethod:
-            NotificationController.onNotificationDisplayedMethod,
+            LocalNotificationController.onNotificationDisplayedMethod,
         onDismissActionReceivedMethod:
-            NotificationController.onDismissActionReceivedMethod);
+            LocalNotificationController.onDismissActionReceivedMethod);
     super.initState();
   }
 
