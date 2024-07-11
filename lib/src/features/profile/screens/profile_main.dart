@@ -14,7 +14,8 @@ class ProfilePage extends StatelessWidget {
   final LoginController loginController =
       Get.put<LoginController>(LoginController());
   final Homecontroller homecontroller = Get.find<Homecontroller>();
-  final PaymentHistoryController paymentHistoryController = Get.find<PaymentHistoryController>();
+  final PaymentHistoryController paymentHistoryController =
+      Get.find<PaymentHistoryController>();
   final ProfileController controller = Get.find<ProfileController>();
   final ForgotPasswordController forgotPasswordController =
       Get.find<ForgotPasswordController>();
@@ -63,6 +64,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           Text(
                             controller.displayName.value,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
@@ -76,6 +78,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                           Text(
                             controller.email.value,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -86,6 +89,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                           Text(
                             'Since ${controller.createdAt.value}',
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
@@ -182,7 +186,7 @@ class ProfilePage extends StatelessWidget {
                 Column(
                   children: [
                     GestureDetector(
-                      onTap: () =>Get.toNamed("/favourite-lots"),
+                      onTap: () => Get.toNamed("/favourite-lots"),
                       child: Row(
                         children: [
                           Icon(

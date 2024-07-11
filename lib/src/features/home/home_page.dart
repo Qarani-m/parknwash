@@ -67,8 +67,8 @@ class HomePage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              LocalNotificationController.scheduleNotifications("test", "test body", 60);
-              // Get.toNamed('/notifications');
+              // LocalNotificationController.scheduleNotifications("test", "test body", 60);
+              Get.toNamed('/notifications');
             },
             child: SvgPicture.asset(
               "assets/svg/bell-fill.svg",
