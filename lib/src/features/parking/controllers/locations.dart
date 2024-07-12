@@ -47,6 +47,7 @@ class LocationsController extends GetxController {
 
 
 
+
   Future<void> handleLocation() async {
     locationEnabled.value = await Geolocator.isLocationServiceEnabled();
 
