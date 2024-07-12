@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
 import 'package:parknwash/src/features/profile/models/mini_notification.dart';
-import 'package:parknwash/src/features/profile/models/payment_model.dart';
-import 'package:pretty_qr_code/pretty_qr_code.dart';
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({
     super.key,

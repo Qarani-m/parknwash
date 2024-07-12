@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:parknwash/src/features/profile/controller/favourites_controller.dart';
 import 'package:parknwash/src/features/profile/models/lot_model.dart';
-import 'package:parknwash/src/features/profile/widgets/favourites_widget.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 

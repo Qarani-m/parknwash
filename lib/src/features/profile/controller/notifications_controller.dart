@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:parknwash/src/features/profile/models/mini_notification.dart';
 import 'package:parknwash/src/features/profile/models/payment_model.dart';
-import 'package:parknwash/src/features/profile/screens/notification.dart';
 import 'package:parknwash/src/features/profile/widgets/payment_bottomsheet.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';

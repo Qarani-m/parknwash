@@ -1,15 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:parknwash/src/features/auth/controllers/forgot_password_controller.dart';
-import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
-import 'package:parknwash/src/features/home/controller/homecontroller.dart';
-import 'package:parknwash/src/features/profile/controller/payment_history_controller.dart';
-import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 class TimeSpent extends StatelessWidget {
-    TimeSpent({
+    const TimeSpent({
     super.key,
     required this.isLightMode, required this.title, required this.value,
   });
