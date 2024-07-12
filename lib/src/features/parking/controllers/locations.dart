@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart' as location;
 import 'package:parknwash/src/features/parking/screens/locations.dart';
-
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class LocationsController extends GetxController {
   final box = GetStorage();
@@ -13,90 +12,82 @@ class LocationsController extends GetxController {
   RxDouble latitude = 37.43296265331129.obs;
   RxDouble longitude = 122.08832357078792.obs;
 
+   LatLng nearbyLocation1 = LatLng(-0.3155473, 37.6528756);
+   LatLng nearbyLocation2 = LatLng(-0.3265473, 37.6438756);
+
+  Rx<LatLng?> currentPosition = Rx<LatLng?>(null);
+
+  location.Location locationController = new location.Location();
+
   @override
   void onInit() async {
     super.onInit();
     category.value = int.parse(box.read("category") ?? "0");
-    await handleLocation();
+    await getLocation();
   }
 
+  Future<void> getLocation() async {
+    bool serviceEnabled;
+    location.PermissionStatus permissionGranted;
+    location.LocationData locationData;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  Future<void> handleLocation() async {
-    locationEnabled.value = await Geolocator.isLocationServiceEnabled();
-
-    if (!locationEnabled.value) {
-      showSnackbar("Error", "Location services are not enabled");
-      Get.back();
-      return;
-    }
-
-    var permission = await Permission.location.status;
-    if (permission == PermissionStatus.denied) {
-      permission = await Permission.location.request();
-      if (permission == PermissionStatus.denied) {
-        showSnackbar("Error", "Location permission denied");
-        Get.back();
-        return;
-      }
-    }
-
-    if (permission == PermissionStatus.granted) {
-      await getCurrentPosition();
-    } else {
-      showSnackbar("Error", "Location permission not granted");
-      
-      Get.back();
-    }
-  }
-
-  Future<void> getCurrentPosition() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      latitude.value = position.latitude;
-      longitude.value = position.longitude;
-      showSnackbar("Success",
-          "Current coordinates: ${position.latitude}, ${position.longitude}");
+      // Check if location service is enabled
+      serviceEnabled = await locationController.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await locationController.requestService();
+        if (!serviceEnabled) {
+          print('Location services are disabled.');
+          return;
+        }
+      }
+      // Check location permission
+      permissionGranted = await locationController.hasPermission();
+      if (permissionGranted == location.PermissionStatus.denied) {
+        permissionGranted = await locationController.requestPermission();
+        if (permissionGranted != location.PermissionStatus.granted) {
+          print('Location permissions are denied.');
+          return;
+        }
+      }
+
+      // Get location data
+      locationData = await locationController.getLocation();
+      latitude.value = locationData.latitude!;
+      longitude.value = locationData.longitude!;
+
+      locationController.onLocationChanged
+          .listen((location.LocationData currentLocation) {
+        if (currentLocation.latitude != null &&
+            currentLocation.longitude != null) {
+          currentPosition.value =
+              LatLng(currentLocation.latitude!, currentLocation.longitude!);
+
+          print(currentLocation);
+        }
+        ;
+      });
     } catch (e) {
-      showSnackbar("Error", "Error getting location: $e");
+      print('Error getting location: $e');
     }
   }
 
-  void showSnackbar(String title, String message) {
-    Get.snackbar(
-      title,
-      message,
-      snackPosition: SnackPosition.TOP,
-      duration: Duration(seconds: 3),
-    );
-  }
+
+getLocationsNearMe()async{
+  
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
   void getBottomSheet(String zone) {
     Get.bottomSheet(StartBookingBottomSheet(

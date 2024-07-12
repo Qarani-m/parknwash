@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/parking/controllers/locations.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
@@ -15,31 +17,70 @@ class LocationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String zone = "A-013";
-    String rates = "40";
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: GoogleMap(
-              initialCameraPosition: const CameraPosition(
-                target: googlePlex,
-                zoom: 11
+          SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: controller.currentPosition.value == null
+                  ? Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                          color: AppColors.accentColor, size: 40.sp),
+                    )
+                  : GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: googlePlex,
+                        zoom: 11,
+                      ),
+                      onMapCreated: (GoogleMapController googleMapsController)async {
+                        await controller.getLocationsNearMe();
+                      },
+                      markers: {
+                          Marker(
+                            markerId: MarkerId("destination"),
+                            position: googlePlex,
+                            onTap: () => {
+                              controller.getBottomSheet('T-23'),
+                            },
+                          ),
+                          Marker(
+                            markerId: MarkerId("A-34"),
+                            position: applePlex,
+                            onTap: () => {
+                              controller.getBottomSheet('A-34'),
+                            },
+                          ),
+                        })
+
+              //       GoogleMap(
+              //           initialCameraPosition: CameraPosition(
+              //               target: controller.currentPosition.value!, zoom: 11),
+              //           markers: {
+              //             Marker(
+              //               markerId: MarkerId("_currentLocation"),
+              //               icon: BitmapDescriptor.defaultMarker,
+              //               position: controller.currentPosition.value!,
+              //               onTap: () {
+              //                 print("Current location marker tapped");
+              //                 Get.snackbar(
+              //                     "Marker Tapped", "This is your current location");
+              //               },
+              //             ),
+
+              //              Marker(
+              //               markerId: MarkerId("position1"),
+              //               icon: BitmapDescriptor.defaultMarker,
+              //               position: controller.nearbyLocation2,
+              //               onTap: () {
+              //                 print("Current location marker tapped");
+              //                 Get.snackbar(
+              //                     "Marker Tapped", "This is your current location");
+              //               },
+              //             ),
+              //           },
+              //         ),
               ),
-              markers: {
-                const Marker(
-                    markerId: MarkerId("_currentLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: googlePlex),
-                const Marker(
-                    markerId: MarkerId("_sourceLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: applePlex)
-              },
-            ),
-          ),
           PageHeader(controller: controller),
         ],
       ),
@@ -68,7 +109,7 @@ class PageHeader extends StatelessWidget {
         child: Row(
           children: [
             GestureDetector(
-              onTap: () => controller.getBottomSheet('A-34'),
+              onTap: () => Get.back(),
               child: Container(
                 alignment: Alignment.center,
                 height: 50.w,
@@ -87,7 +128,7 @@ class PageHeader extends StatelessWidget {
             ),
             Center(
               child: Text(
-                "Parking near you",
+                "",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
