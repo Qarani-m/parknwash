@@ -11,7 +11,6 @@ import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/auth/screens/register.dart';
 import 'package:parknwash/src/features/home/home_page.dart';
-import 'package:parknwash/src/features/notifications/notifications_controller.dart';
 import 'package:parknwash/src/features/parking/screens/booking_finished.dart';
 import 'package:parknwash/src/features/parking/screens/locations.dart';
 import 'package:parknwash/src/features/parking/screens/parking_details.dart';
