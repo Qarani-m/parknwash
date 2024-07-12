@@ -6,12 +6,15 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
 import 'package:parknwash/src/features/parking/widgets/page_header.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
+import 'package:parknwash/src/utils/constants/map_styles.dart';
 
 class LocationsPage extends StatelessWidget {
   LocationsPage({super.key});
   final LocationsController controller = Get.find<LocationsController>();
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: Stack(
         children: [
@@ -30,6 +33,7 @@ class LocationsPage extends StatelessWidget {
                       ),
                       onMapCreated:
                           (GoogleMapController googleMapsController) async {
+                            googleMapsController.setMapStyle(AppMapStyles.darkMapStyle);
                         await controller.getLocationsNearMe();
                       },
                       markers: {
@@ -53,7 +57,10 @@ class LocationsPage extends StatelessWidget {
                                   },
                                 ))
                       },
-                    )),
+                    )
+                    
+                    
+                    ),
           PageHeader(controller: controller),
         ],
       ),

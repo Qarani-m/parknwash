@@ -13,6 +13,7 @@ class PageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Get.theme;
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
@@ -31,10 +32,10 @@ class PageHeader extends StatelessWidget {
                 width: 50.w,
                 padding: EdgeInsets.only(left: 7.w),
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(10.sp)),
                 child: const Center(
-                  child: Icon(Icons.arrow_back_ios),
+                  child: Icon(Icons.arrow_back_ios,),
                 ),
               ),
             ),
