@@ -32,3 +32,9 @@ I dont feel like writing what this project is about, so here are some screenshot
 ![alt text](images/payment_already_used.png)
 ![alt text](images/payment_still_valid.png)
 
+--- 
+
+### Maps
+![alt text](<images/Screenshot from 2024-07-13 00-45-46.png>)
+![alt text](<images/Screenshot from 2024-07-13 00-46-48.png>)
+![alt text](<Screenshot from 2024-07-13 00-47-10.png>)
