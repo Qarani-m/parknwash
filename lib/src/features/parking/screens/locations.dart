@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:parknwash/src/features/parking/controllers/locations.dart';
+import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class LocationsPage extends StatelessWidget {

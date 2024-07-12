@@ -5,7 +5,7 @@ import 'package:parknwash/src/features/auth/controllers/onboarding_controller.da
 import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
 import 'package:parknwash/src/features/parking/controllers/booking_finished.dart';
-import 'package:parknwash/src/features/parking/controllers/locations.dart';
+import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
 import 'package:parknwash/src/features/profile/controller/favourites_controller.dart';
 import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
 import 'package:parknwash/src/features/profile/controller/payment_history_controller.dart';

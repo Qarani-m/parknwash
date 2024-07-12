@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
+import 'package:parknwash/src/features/parking/controllers/calculator.dart';
 import 'package:parknwash/src/features/parking/screens/locations.dart';
 
 class LocationsController extends GetxController {
@@ -12,8 +13,8 @@ class LocationsController extends GetxController {
   RxDouble latitude = 37.43296265331129.obs;
   RxDouble longitude = 122.08832357078792.obs;
 
-   LatLng nearbyLocation1 = LatLng(-0.3155473, 37.6528756);
-   LatLng nearbyLocation2 = LatLng(-0.3265473, 37.6438756);
+  LatLng nearbyLocation1 = LatLng(-0.3155473, 37.6528756);
+  LatLng nearbyLocation2 = LatLng(-0.3265473, 37.6438756);
 
   Rx<LatLng?> currentPosition = Rx<LatLng?>(null);
 
@@ -24,6 +25,8 @@ class LocationsController extends GetxController {
     super.onInit();
     category.value = int.parse(box.read("category") ?? "0");
     await getLocation();
+      ManualCalculations manualCalculations = ManualCalculations();
+        await manualCalculations.testes();
   }
 
   Future<void> getLocation() async {
@@ -72,22 +75,10 @@ class LocationsController extends GetxController {
     }
   }
 
-
-getLocationsNearMe()async{
-  
-
-}
-
-
-
-
-
-
-
-
-
-
-
+  getLocationsNearMe() async {
+    ManualCalculations manualCalculations = new ManualCalculations();
+    await manualCalculations.testes();
+  }
 
   void getBottomSheet(String zone) {
     Get.bottomSheet(StartBookingBottomSheet(
