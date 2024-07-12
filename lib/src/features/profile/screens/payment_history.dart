@@ -39,6 +39,7 @@ class PaymentHistory extends StatelessWidget {
                       children: [
                         Column(
                           children: [
+                            SizedBox(height: 20.h,),
                            ...controller.payments_list.value.map((miniNotification) {
                           return NotificationsPage(
                             controller: notificationsController,

@@ -70,7 +70,8 @@ class LocationsController extends GetxController {
           // actualNearbyPlaces.value =   await manualCalculations.testes(
           //       currentLocation.latitude!, currentLocation.longitude!);
 
-          currentPosition.value = const LatLng(37.42796133580664, -122.085749655962);
+          currentPosition.value =
+              const LatLng(37.42796133580664, -122.085749655962);
 
           actualNearbyPlaces.value = await manualCalculations.testes(
               37.42796133580664, -122.085749655962);
@@ -88,7 +89,6 @@ class LocationsController extends GetxController {
 
   void getBottomSheet(String zone, String rates) {
     List<String> rate = rates.split(",");
-
 
     String cat = box.read("category") ?? "0";
 

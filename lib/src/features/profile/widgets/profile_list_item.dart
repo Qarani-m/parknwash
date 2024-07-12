@@ -21,8 +21,10 @@ class TimeSpent extends StatelessWidget {
       width: 164.w,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.sp),
-              bottomLeft: Radius.circular(20.sp)),
+              topLeft: title=="Time"? Radius.circular(0.sp): Radius.circular(20.sp),
+              bottomLeft:title== "Time"? Radius.circular(0.sp): Radius.circular(20.sp),
+                 topRight: title=="Time"? Radius.circular(20.sp): Radius.circular(0.sp),
+              bottomRight:title== "Time"? Radius.circular(20.sp): Radius.circular(0.sp),),
           border: Border.all(
               color: !isLightMode
                   ? AppColors.whiteTextColor.withOpacity(0.1)

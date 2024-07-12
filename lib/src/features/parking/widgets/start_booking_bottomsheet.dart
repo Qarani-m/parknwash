@@ -17,6 +17,8 @@ class StartBookingBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Get.theme;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -25,7 +27,7 @@ class StartBookingBottomSheet extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.h, left: 30.w, right: 30.w),
           width: double.maxFinite,
           decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.scaffoldBackgroundColor,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15.r),
                   topRight: Radius.circular(15.r))),
@@ -52,7 +54,7 @@ class StartBookingBottomSheet extends StatelessWidget {
                   height: 230.h,
                   width: 320.w,
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black12),
+                      border: Border.all(color: Colors.black38),
                       borderRadius: BorderRadius.circular(20.sp)),
                   child: Column(
                     children: [

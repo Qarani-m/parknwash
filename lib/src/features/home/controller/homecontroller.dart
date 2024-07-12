@@ -60,12 +60,13 @@ class Homecontroller extends GetxController {
   }
 
   void logout(BuildContext context) {
+    final theme = Get.theme;
     Get.bottomSheet(Container(
       padding: EdgeInsets.only(top: 15.h),
       height: 150.h,
       width: double.maxFinite,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.scaffoldBackgroundColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20.sp),
               topRight: Radius.circular(20.sp))),

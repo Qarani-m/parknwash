@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+import 'dart:async';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,6 @@ import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/auth/screens/register.dart';
 import 'package:parknwash/src/features/home/home_page.dart';
-import 'package:parknwash/src/features/notifications/notifications_controller.dart';
 import 'package:parknwash/src/features/parking/screens/booking_finished.dart';
 import 'package:parknwash/src/features/parking/screens/locations.dart';
 import 'package:parknwash/src/features/parking/screens/parking_details.dart';
@@ -69,31 +68,45 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  Brightness? _brightness;
+
   @override
   void initState() {
-    AwesomeNotifications().setListeners(
-        onActionReceivedMethod: LocalNotificationController.onActionReceivedMethod,
-        onNotificationCreatedMethod:
-            LocalNotificationController.onNotificationCreatedMethod,
-        onNotificationDisplayedMethod:
-            LocalNotificationController.onNotificationDisplayedMethod,
-        onDismissActionReceivedMethod:
-            LocalNotificationController.onDismissActionReceivedMethod);
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    _updateSystemUIOverlayStyle();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    setState(() {
+      _brightness =
+          WidgetsBinding.instance.platformDispatcher.platformBrightness;
+      _updateSystemUIOverlayStyle();
+    });
+  }
+
+  void _updateSystemUIOverlayStyle() {
+    print(_brightness);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness:
+          _brightness == Brightness.light ? Brightness.dark : Brightness.light,
+    ));
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness:
-          brightness == Brightness.light ? Brightness.dark : Brightness.light,
-    ));
-
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
@@ -103,10 +116,12 @@ class _MyAppState extends State<MyApp> {
           initialBinding: AppBindings(),
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.system,
-          theme: brightness == Brightness.light
-              ? AppTheme.lightTheme()
-              : AppTheme.darkTheme(),
+          // themeMode: ThemeMode.system,
+          theme: AppTheme.lightTheme(),
+          darkTheme: AppTheme.darkTheme(),
+          themeMode: _brightness == Brightness.light
+              ? ThemeMode.light
+              : ThemeMode.dark,
           home: AuthWrapper(
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
