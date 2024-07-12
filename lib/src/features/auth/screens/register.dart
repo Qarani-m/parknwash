@@ -30,7 +30,7 @@ class Register extends StatelessWidget {
                                           color: AppColors.accentColor,
                                           size: 40.sp),
                                 )
-                              : SizedBox()),),
+                              : const SizedBox()),),
 
                               
                 Text("Register",

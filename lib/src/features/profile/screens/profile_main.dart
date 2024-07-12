@@ -6,6 +6,7 @@ import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
 import 'package:parknwash/src/features/profile/controller/payment_history_controller.dart';
 import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
+import 'package:parknwash/src/features/profile/widgets/profile_list_item.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -108,75 +109,8 @@ class ProfilePage extends StatelessWidget {
                   width: double.maxFinite,
                   child: Row(
                     children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 10.h),
-                        height: 70.h,
-                        width: 164.w,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20.sp),
-                                bottomLeft: Radius.circular(20.sp)),
-                            border: Border.all(
-                                color: !isLightMode
-                                    ? AppColors.whiteTextColor.withOpacity(0.1)
-                                    : AppColors.whiteTextColor)),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Spent',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              'Ksh. 7892',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                      color: AppColors.accentColor,
-                                      fontWeight: FontWeight.w300),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(top: 10.h),
-                        alignment: Alignment.center,
-                        height: 70.h,
-                        width: 164.w,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: !isLightMode
-                                    ? AppColors.whiteTextColor.withOpacity(0.1)
-                                    : AppColors.whiteTextColor),
-
-                            // border: Border.all(color: AppColors.whiteTextColor),
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20.sp),
-                                bottomRight: Radius.circular(20.sp))),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Time',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              '243 hrs',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                      color: AppColors.accentColor,
-                                      fontWeight: FontWeight.w300),
-                            ),
-                          ],
-                        ),
-                      )
+                      TimeSpent(isLightMode: isLightMode, title: 'Spent', value: "Ksh 7892",),
+                      TimeSpent(isLightMode: isLightMode, title: 'Time', value: "243 hrs",),
                     ],
                   ),
                 ),
@@ -185,142 +119,30 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    GestureDetector(
-                      onTap: () => Get.toNamed("/favourite-lots"),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.favorite,
-                            size: 35.h,
-                            color: AppColors.accentColor,
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Text(
-                            "Favourite Lots",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.w300),
-                          )
-                        ],
-                      ),
+                    ProfileListItem(
+                      text: "Favourite Lots",
+                      icon: Icons.favorite,
+                      function: () => Get.toNamed("/favourite-lots"),
                     ),
-                    SizedBox(
-                      height: 30.h,
+                    ProfileListItem(
+                        text: "Payment History",
+                        icon: Icons.payment,
+                        function: () => Get.toNamed("/payments-history")),
+                    ProfileListItem(
+                      text: "Tell Your Friends",
+                      icon: Icons.share,
+                      function: () => controller.tellYourFriends(),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        // paymentHistoryController.getPaymentHistoryFromFirestore();
-                        Get.toNamed("/payments-history");
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.payment,
-                            size: 35.h,
-                            color: AppColors.accentColor,
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Text(
-                            "Payment History",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.w300),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    GestureDetector(
-                      onTap: () => controller.tellYourFriends(),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.share,
-                            size: 30.h,
-                            color: AppColors.accentColor,
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Text(
-                            "Tell Your Friends",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w300),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    GestureDetector(
-                      onTap: () => forgotPasswordController
+                    ProfileListItem(
+                      text: "Change Password",
+                      icon: Icons.password,
+                      function: () => forgotPasswordController
                           .resetPassword(controller.email.value),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.password,
-                            size: 30.h,
-                            weight: 0.1,
-                            color: AppColors.accentColor,
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Text(
-                            "Change Password",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w300),
-                          )
-                        ],
-                      ),
                     ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    GestureDetector(
-                      onTap: () => homecontroller.logout(context),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.logout,
-                            size: 30.h,
-                            weight: 0.1,
-                            color: AppColors.accentColor,
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Text(
-                            "Log Out",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w300),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
+                    ProfileListItem(
+                      text: "Log Out",
+                      icon: Icons.logout,
+                      function: () => homecontroller.logout(context),
                     ),
                   ],
                 )

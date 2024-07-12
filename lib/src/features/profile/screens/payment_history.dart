@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
 import 'package:parknwash/src/features/profile/controller/payment_history_controller.dart';
 import 'package:parknwash/src/features/profile/screens/notification.dart';
+import 'package:parknwash/src/features/profile/widgets/notifications_body.dart';
 
 class PaymentHistory extends StatelessWidget {
   PaymentHistory({super.key});
