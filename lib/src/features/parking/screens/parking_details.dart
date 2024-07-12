@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/auth/screens/login.dart';
-import 'package:parknwash/src/features/parking/controllers/locations.dart';
+import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class ParkingDetails extends StatelessWidget {

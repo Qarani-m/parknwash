@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:parknwash/src/features/parking/controllers/locations.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class LocationsPage extends StatelessWidget {
@@ -15,31 +17,52 @@ class LocationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String zone = "A-013";
-    String rates = "40";
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: GoogleMap(
-              initialCameraPosition: const CameraPosition(
-                target: googlePlex,
-                zoom: 11
-              ),
-              markers: {
-                const Marker(
-                    markerId: MarkerId("_currentLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: googlePlex),
-                const Marker(
-                    markerId: MarkerId("_sourceLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: applePlex)
-              },
-            ),
-          ),
+          SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: controller.currentPosition.value == null
+                  ? Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                          color: AppColors.accentColor, size: 40.sp),
+                    )
+                  : GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: controller.currentPosition.value!,
+                        zoom: 11,
+                      ),
+                      onMapCreated:
+                          (GoogleMapController googleMapsController) async {
+                        await controller.getLocationsNearMe();
+                      },
+                      markers: {
+                        Marker(
+                          icon: BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueBlue),
+                          markerId: MarkerId("currentPosition"),
+                          position: controller.currentPosition.value!,
+                          // onTap: () => {
+                          //   controller.getBottomSheet('YOU'),
+                          // },
+                        ),
+                        ...controller.actualNearbyPlaces
+                            .map((place) => Marker(
+                                  markerId: MarkerId(place['id']
+                                      .substring(0, 5)
+                                      .toUpperCase()),
+                                  position: LatLng(
+                                      place['position']['latitude'],
+                                      place['position']['longitude']),
+                                  onTap: () => {
+                                    controller.getBottomSheet(
+                                        place['id'], place["rates"]),
+                                  },
+                                ))
+                            .toList(),
+                      },
+                    )),
           PageHeader(controller: controller),
         ],
       ),
@@ -68,7 +91,7 @@ class PageHeader extends StatelessWidget {
         child: Row(
           children: [
             GestureDetector(
-              onTap: () => controller.getBottomSheet('A-34'),
+              onTap: () => Get.back(),
               child: Container(
                 alignment: Alignment.center,
                 height: 50.w,
@@ -87,7 +110,7 @@ class PageHeader extends StatelessWidget {
             ),
             Center(
               child: Text(
-                "Parking near you",
+                "",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
@@ -102,14 +125,15 @@ class PageHeader extends StatelessWidget {
 }
 
 class StartBookingBottomSheet extends StatelessWidget {
-  const StartBookingBottomSheet({
-    super.key,
-    required this.zone,
-    required this.rates,
-  });
+  const StartBookingBottomSheet(
+      {super.key,
+      required this.zone,
+      required this.rates,
+      required this.distance});
 
   final String zone;
   final String rates;
+  final String distance;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +178,7 @@ class StartBookingBottomSheet extends StatelessWidget {
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 13.w, vertical: 10.h),
+                            horizontal: 13.w, vertical: 5.h),
                         height: 114.h,
                         width: 320.w,
                         // color: Colors.white,
@@ -169,6 +193,12 @@ class StartBookingBottomSheet extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Container(
+                                    height: 30.h,
+                                    width: 120.w,
+                                    // color: Colors.red,
+                                    child: Text(distance),
+                                  ),
                                   Text(
                                     "Zone",
                                     style: Theme.of(context)
@@ -221,20 +251,6 @@ class StartBookingBottomSheet extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Rates",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                        color: AppColors.blackTextColor
-                                            .withOpacity(0.3),
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                height: 4.h,
-                              ),
-                              Text(
                                 "KSH $rates/HR",
                                 style: Theme.of(context)
                                     .textTheme
@@ -242,6 +258,16 @@ class StartBookingBottomSheet extends StatelessWidget {
                                     ?.copyWith(
                                         fontSize: 30.sp,
                                         fontWeight: FontWeight.w600),
+                              ),
+                              Container(
+                                height: 35.h,
+                                // width: 120.w,
+                                // color: Colors.red,
+                                child: Text(
+                                  "Moi Avenue, opposite Veteran House Nairobi KE, Nairobi",
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
                               ),
                               SizedBox(
                                 height: 5.h,

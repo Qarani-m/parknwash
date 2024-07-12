@@ -29,8 +29,10 @@ dependencies:
   flutter_app_badger: ^1.5.0
   google_maps_flutter: ^2.7.0
   permission_handler: ^11.3.1
-  geolocator: ^12.0.0
+  # geolocator: ^12.0.0
   location: ^7.0.0
+  latlong2: ^0.9.1
+
 
 dev_dependencies:
   flutter_lints: ^3.0.0
