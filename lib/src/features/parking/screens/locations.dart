@@ -13,6 +13,9 @@ class LocationsPage extends StatelessWidget {
   final LocationsController controller = Get.find<LocationsController>();
   @override
   Widget build(BuildContext context) {
+   
+    final theme = Get.theme;
+    final isDarkMode = theme.brightness == Brightness.dark;
 
 
     return Scaffold(
@@ -33,7 +36,8 @@ class LocationsPage extends StatelessWidget {
                       ),
                       onMapCreated:
                           (GoogleMapController googleMapsController) async {
-                            googleMapsController.setMapStyle(AppMapStyles.darkMapStyle);
+                        googleMapsController
+                            .setMapStyle(isDarkMode ? AppMapStyles.darkMapStyle : AppMapStyles.lightMapStyle,);
                         await controller.getLocationsNearMe();
                       },
                       markers: {
@@ -43,24 +47,18 @@ class LocationsPage extends StatelessWidget {
                           markerId: const MarkerId("currentPosition"),
                           position: controller.currentPosition.value!,
                         ),
-                        ...controller.actualNearbyPlaces
-                            .map((place) => Marker(
-                                  markerId: MarkerId(place['id']
-                                      .substring(0, 5)
-                                      .toUpperCase()),
-                                  position: LatLng(
-                                      place['position']['latitude'],
-                                      place['position']['longitude']),
-                                  onTap: () => {
-                                    controller.getBottomSheet(
-                                        place['id'], place["rates"]),
-                                  },
-                                ))
+                        ...controller.actualNearbyPlaces.map((place) => Marker(
+                              markerId: MarkerId(
+                                  place['id'].substring(0, 5).toUpperCase()),
+                              position: LatLng(place['position']['latitude'],
+                                  place['position']['longitude']),
+                              onTap: () => {
+                                controller.getBottomSheet(
+                                    place['id'], place["rates"]),
+                              },
+                            ))
                       },
-                    )
-                    
-                    
-                    ),
+                    )),
           PageHeader(controller: controller),
         ],
       ),

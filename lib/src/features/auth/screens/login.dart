@@ -120,15 +120,17 @@ class Login extends StatelessWidget {
                       SizedBox(
                         height: 40.h,
                       ),
-                      Obx (()=>SizedBox(
-                          child: loginController.isLogingIn.value
-                              ? Center(
-                                  child:
-                                      LoadingAnimationWidget.staggeredDotsWave(
-                                          color: AppColors.accentColor,
-                                          size: 40.sp),
-                                )
-                              : const SizedBox()),)
+                      Obx(
+                        () => SizedBox(
+                            child: loginController.isLogingIn.value
+                                ? Center(
+                                    child: LoadingAnimationWidget
+                                        .staggeredDotsWave(
+                                            color: AppColors.accentColor,
+                                            size: 40.sp),
+                                  )
+                                : const SizedBox()),
+                      )
                     ],
                   ),
                 )
@@ -166,6 +168,8 @@ class CustomEmailTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Get.theme;
+        final isDarkMode = theme.brightness == Brightness.dark;
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -178,7 +182,9 @@ class CustomEmailTextField extends StatelessWidget {
               height: 10.h,
             ),
             TextField(
-              keyboardType: hintText == "0712345678"? TextInputType.number:TextInputType.name,
+              keyboardType: hintText == "0712345678"
+                  ? TextInputType.number
+                  : TextInputType.name,
               obscureText: controller.obscureText.value && justToMakeSure,
               textAlign: centerText ? TextAlign.center : TextAlign.left,
               obscuringCharacter: "●",
@@ -187,7 +193,7 @@ class CustomEmailTextField extends StatelessWidget {
                   hintText: hintText,
                   hintStyle: TextStyle(color: Colors.grey[400]),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: isDarkMode? theme.scaffoldBackgroundColor.withOpacity(0.3): Colors.white,
                   contentPadding:
                       const EdgeInsets.only(left: 16, top: 14, bottom: 14),
                   border: OutlineInputBorder(

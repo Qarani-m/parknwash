@@ -14,6 +14,7 @@ class PageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
         final theme = Get.theme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
@@ -34,8 +35,8 @@ class PageHeader extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: theme.scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(10.sp)),
-                child: const Center(
-                  child: Icon(Icons.arrow_back_ios,),
+                child:   Center(
+                  child: Icon(Icons.arrow_back_ios,color: isDarkMode?Colors.white:theme.scaffoldBackgroundColor,),
                 ),
               ),
             ),

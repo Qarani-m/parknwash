@@ -14,6 +14,9 @@ class ParkingDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = Get.arguments;
 
+        final theme = Get.theme;
+        final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -27,7 +30,7 @@ class ParkingDetails extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                       onTap: () => Get.back(),
-                      child: const Icon(Icons.arrow_back_ios)),
+                      child:   Icon(Icons.arrow_back, color: isDarkMode? Colors.white:theme.scaffoldBackgroundColor,)),
                 ),
                 SizedBox(
                   height: 50.h,
