@@ -16,19 +16,20 @@ class LocationsController extends GetxController {
   LatLng nearbyLocation1 = LatLng(-0.3155473, 37.6528756);
   LatLng nearbyLocation2 = LatLng(-0.3265473, 37.6438756);
 
+  RxList actualNearbyPlaces = [].obs;
+
   Rx<LatLng?> currentPosition = Rx<LatLng?>(null);
 
   location.Location locationController = new location.Location();
 
   RxList positions = [].obs;
+  final ManualCalculations manualCalculations = ManualCalculations();
 
   @override
   void onInit() async {
     super.onInit();
     category.value = int.parse(box.read("category") ?? "0");
     await getLocation();
-    ManualCalculations manualCalculations = ManualCalculations();
-    await manualCalculations.testes();
   }
 
   Future<void> getLocation() async {
@@ -37,7 +38,6 @@ class LocationsController extends GetxController {
     location.LocationData locationData;
 
     try {
-      // Check if location service is enabled
       serviceEnabled = await locationController.serviceEnabled();
       if (!serviceEnabled) {
         serviceEnabled = await locationController.requestService();
@@ -62,13 +62,19 @@ class LocationsController extends GetxController {
       longitude.value = locationData.longitude!;
 
       locationController.onLocationChanged
-          .listen((location.LocationData currentLocation) {
+          .listen((location.LocationData currentLocation) async {
         if (currentLocation.latitude != null &&
             currentLocation.longitude != null) {
-          currentPosition.value =
-              LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          // currentPosition.value =
+          //     LatLng(currentLocation.latitude!, currentLocation.longitude!);
 
-          print(currentLocation);
+          // actualNearbyPlaces.value =   await manualCalculations.testes(
+          //       currentLocation.latitude!, currentLocation.longitude!);
+
+          currentPosition.value = LatLng(37.42796133580664, -122.085749655962);
+
+          actualNearbyPlaces.value = await manualCalculations.testes(
+              37.42796133580664, -122.085749655962);
         }
         ;
       });
@@ -79,14 +85,31 @@ class LocationsController extends GetxController {
 
   getLocationsNearMe() async {
     ManualCalculations manualCalculations = new ManualCalculations();
-    await manualCalculations.testes();
+    await manualCalculations.testes(37.42796133580664, -122.085749655962);
   }
 
-  void getBottomSheet(String zone) {
+  void getBottomSheet(String zone, String rates) {
+    List<String> rate = rates.split(",");
+
+
+    String cat = box.read("category") ?? "0";
+
+    calculateDistanceBetweenPoints();
     Get.bottomSheet(StartBookingBottomSheet(
       zone: zone,
-      rates: '40',
+      distance: "${calculateDistanceBetweenPoints()} KMs away",
+      rates: rate[int.parse(cat)],
     ));
+  }
+
+  int calculateDistanceBetweenPoints() {
+    LatLng point1 = LatLng(37.7749, -122.4194); // San Francisco
+    LatLng point2 = LatLng(34.0522, -118.2437); // Los Angeles
+
+    double distance = MapUtils.calculateDistance(point1, point2);
+    print('Distance between points: ${distance / 1000} km');
+
+    return (distance / 1000).round();
   }
 
   TextEditingController vehicleRegController = TextEditingController();

@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
+import 'dart:math' show cos, sqrt, sin, pi, atan2;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+
 
 class GeoPoint {
   final double latitude;
@@ -52,9 +56,10 @@ class ManualCalculations {
     return 12742 * asin(sqrt(a));
   }
 
-  Future<List<QueryDocumentSnapshot>> getLocationsNearMe() async {
+  Future<List<QueryDocumentSnapshot>> getLocationsNearMe(
+      GeoPoint geoPoint) async {
     // Your current location
-    GeoPoint center = GeoPoint(37.42796133580664, -122.085749655962);
+    GeoPoint center = geoPoint;
     double radiusInKm = 100;
 
     // Calculate bounding box
@@ -71,51 +76,67 @@ class ManualCalculations {
           coords.longitude >= boundingBox.southwest.longitude &&
           coords.longitude <= boundingBox.northeast.longitude;
     }).toList();
-
-    // for (QueryDocumentSnapshot doc in filteredDocs) {
-    //   print("----------------------------------");
-    //   print("Document ID: ${doc.id}");
-    //   print("Data: ${doc.data()}");
-    //   print("----------------------------------");
-    // }
-
     return filteredDocs;
   }
 
-// ONly thing remainig in the class is to export the fetched data, i could have done this part but i need to get this first
-  // Usage
-Future<List<Map<String, dynamic>>> testes() async {
-  List<QueryDocumentSnapshot> nearbyLocations = await getLocationsNearMe();
-  
-  List<Map<String, dynamic>> lotDetails = [];
+  Future<List<Map<String, dynamic>>> testes(double lat, double long) async {
+    List<QueryDocumentSnapshot> nearbyLocations =
+        await getLocationsNearMe(GeoPoint(lat, long));
 
-  for (var doc in nearbyLocations) {
-    // Ensure doc.data() is not null
-    var data = doc.data() as Map<String, dynamic>?;
+    List<Map<String, dynamic>> lotDetails = [];
 
-    if (data != null) {
-      var coords = data['coords'];
-      if (coords != null) {
-        double latitude = coords.latitude;
-        double longitude = coords.longitude;
-        lotDetails.add({
-          'id': doc.id,
-          'position': {
-            'latitude': latitude,
-            'longitude': longitude,
-          },
-        });
-      } else {
-      }
-    } else {
+    for (var doc in nearbyLocations) {
+      // Ensure doc.data() is not null
+      var data = doc.data() as Map<String, dynamic>?;
+
+      if (data != null) {
+        var coords = data['coords'];
+        if (coords != null) {
+          double latitude = coords.latitude;
+          double longitude = coords.longitude;
+          String rates = data["rates"].toString();
+          lotDetails.add({
+            'id': doc.id.substring(0, 5).toUpperCase(),
+            'position': {
+              'latitude': latitude,
+              'longitude': longitude,
+            },
+            "rates":rates
+          });
+        } else {}
+      } else {}
     }
+    // print('Locations found: ${lotDetails}');
+    return lotDetails;
   }
-  print('Locations found: ${lotDetails}');
-  return lotDetails;
 }
 
 
 
+class MapUtils {
+  static double calculateDistance(LatLng start, LatLng end) {
+    const double earthRadius = 6371000; // in meters
 
+    // Convert degrees to radians
+    double lat1 = _degreesToRadians(start.latitude);
+    double lon1 = _degreesToRadians(start.longitude);
+    double lat2 = _degreesToRadians(end.latitude);
+    double lon2 = _degreesToRadians(end.longitude);
 
+    // Haversine formula
+    double dLat = lat2 - lat1;
+    double dLon = lon2 - lon1;
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(lat1) * cos(lat2) * sin(dLon / 2) * sin(dLon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    // Calculate the distance
+    double distance = earthRadius * c;
+
+    return distance; // Returns distance in meters
+  }
+
+  static double _degreesToRadians(double degrees) {
+    return degrees * (pi / 180);
+  }
 }

@@ -30,57 +30,39 @@ class LocationsPage extends StatelessWidget {
                     )
                   : GoogleMap(
                       initialCameraPosition: CameraPosition(
-                        target: googlePlex,
+                        target: controller.currentPosition.value!,
                         zoom: 11,
                       ),
-                      onMapCreated: (GoogleMapController googleMapsController)async {
+                      onMapCreated:
+                          (GoogleMapController googleMapsController) async {
                         await controller.getLocationsNearMe();
                       },
                       markers: {
-                          Marker(
-                            markerId: MarkerId("destination"),
-                            position: googlePlex,
-                            onTap: () => {
-                              controller.getBottomSheet('T-23'),
-                            },
-                          ),
-                          Marker(
-                            markerId: MarkerId("A-34"),
-                            position: applePlex,
-                            onTap: () => {
-                              controller.getBottomSheet('A-34'),
-                            },
-                          ),
-                        })
-
-              //       GoogleMap(
-              //           initialCameraPosition: CameraPosition(
-              //               target: controller.currentPosition.value!, zoom: 11),
-              //           markers: {
-              //             Marker(
-              //               markerId: MarkerId("_currentLocation"),
-              //               icon: BitmapDescriptor.defaultMarker,
-              //               position: controller.currentPosition.value!,
-              //               onTap: () {
-              //                 print("Current location marker tapped");
-              //                 Get.snackbar(
-              //                     "Marker Tapped", "This is your current location");
-              //               },
-              //             ),
-
-              //              Marker(
-              //               markerId: MarkerId("position1"),
-              //               icon: BitmapDescriptor.defaultMarker,
-              //               position: controller.nearbyLocation2,
-              //               onTap: () {
-              //                 print("Current location marker tapped");
-              //                 Get.snackbar(
-              //                     "Marker Tapped", "This is your current location");
-              //               },
-              //             ),
-              //           },
-              //         ),
-              ),
+                        Marker(
+                          icon: BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueBlue),
+                          markerId: MarkerId("currentPosition"),
+                          position: controller.currentPosition.value!,
+                          // onTap: () => {
+                          //   controller.getBottomSheet('YOU'),
+                          // },
+                        ),
+                        ...controller.actualNearbyPlaces
+                            .map((place) => Marker(
+                                  markerId: MarkerId(place['id']
+                                      .substring(0, 5)
+                                      .toUpperCase()),
+                                  position: LatLng(
+                                      place['position']['latitude'],
+                                      place['position']['longitude']),
+                                  onTap: () => {
+                                    controller.getBottomSheet(
+                                        place['id'], place["rates"]),
+                                  },
+                                ))
+                            .toList(),
+                      },
+                    )),
           PageHeader(controller: controller),
         ],
       ),
@@ -143,14 +125,15 @@ class PageHeader extends StatelessWidget {
 }
 
 class StartBookingBottomSheet extends StatelessWidget {
-  const StartBookingBottomSheet({
-    super.key,
-    required this.zone,
-    required this.rates,
-  });
+  const StartBookingBottomSheet(
+      {super.key,
+      required this.zone,
+      required this.rates,
+      required this.distance});
 
   final String zone;
   final String rates;
+  final String distance;
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +178,7 @@ class StartBookingBottomSheet extends StatelessWidget {
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 13.w, vertical: 10.h),
+                            horizontal: 13.w, vertical: 5.h),
                         height: 114.h,
                         width: 320.w,
                         // color: Colors.white,
@@ -210,6 +193,12 @@ class StartBookingBottomSheet extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Container(
+                                    height: 30.h,
+                                    width: 120.w,
+                                    // color: Colors.red,
+                                    child: Text(distance),
+                                  ),
                                   Text(
                                     "Zone",
                                     style: Theme.of(context)
@@ -262,20 +251,6 @@ class StartBookingBottomSheet extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Rates",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                        color: AppColors.blackTextColor
-                                            .withOpacity(0.3),
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                height: 4.h,
-                              ),
-                              Text(
                                 "KSH $rates/HR",
                                 style: Theme.of(context)
                                     .textTheme
@@ -283,6 +258,16 @@ class StartBookingBottomSheet extends StatelessWidget {
                                     ?.copyWith(
                                         fontSize: 30.sp,
                                         fontWeight: FontWeight.w600),
+                              ),
+                              Container(
+                                height: 35.h,
+                                // width: 120.w,
+                                // color: Colors.red,
+                                child: Text(
+                                  "Moi Avenue, opposite Veteran House Nairobi KE, Nairobi",
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
                               ),
                               SizedBox(
                                 height: 5.h,
