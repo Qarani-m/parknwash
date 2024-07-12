@@ -5,6 +5,7 @@ import 'package:parknwash/src/utils/constants/colors.dart';
 class AppTheme {
   static ThemeData darkTheme() {
     return ThemeData(
+   
       scaffoldBackgroundColor: AppColors.scaffoldColorDark,
       useMaterial3: true,
       brightness: Brightness.dark,

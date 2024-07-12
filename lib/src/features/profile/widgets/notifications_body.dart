@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
 import 'package:parknwash/src/features/profile/models/mini_notification.dart';
+import 'package:parknwash/src/utils/constants/colors.dart';
+
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({
     super.key,
@@ -12,6 +16,8 @@ class NotificationsPage extends StatelessWidget {
   final NotificationsController controller;
   @override
   Widget build(BuildContext context) {
+    final theme = Get.theme;
+    print(theme);
     return GestureDetector(
       onTap: () => controller.showBottomSheet(
           miniNotification.type, miniNotification.id),
@@ -20,11 +26,11 @@ class NotificationsPage extends StatelessWidget {
         height: 100.h,
         width: double.maxFinite,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(20.sp),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.black.withOpacity(0.2),
               spreadRadius: 1,
               blurRadius: 3,
               offset: const Offset(0, 2),
@@ -37,11 +43,12 @@ class NotificationsPage extends StatelessWidget {
               padding: EdgeInsets.only(top: 5.h, left: 5.w, bottom: 5.h),
               height: 65.h,
               width: 100.w,
-              decoration: const BoxDecoration(
-                  // color: Colors.red,
-
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/money.png"))),
+              decoration: const BoxDecoration(),
+              child: SvgPicture.asset(
+                "assets/svg/money.svg",
+                height: 50.h,
+                color: AppColors.accentColor,
+              ),
             ),
             SizedBox(
               width: 10.w,
