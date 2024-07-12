@@ -12,6 +12,8 @@ class OnboardingController extends GetxController {
 
   void next(int index) {
     if (index == 1) {
+
+  box.write('isOnboardingComplete', true);
           Get.offNamed("/login");
     }
     if (currentIndex.value < 1) {

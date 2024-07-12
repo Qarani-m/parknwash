@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
 import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
@@ -21,6 +22,17 @@ class Register extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                   Obx (()=>SizedBox(
+                          child: signupController.isLogingIn.value
+                              ? Center(
+                                  child:
+                                      LoadingAnimationWidget.staggeredDotsWave(
+                                          color: AppColors.accentColor,
+                                          size: 40.sp),
+                                )
+                              : SizedBox()),),
+
+                              
                 Text("Register",
                     style: Theme.of(context)
                         .textTheme
@@ -157,7 +169,9 @@ class Register extends StatelessWidget {
                                         color: AppColors.accentColor)),
                           ],
                         ),
-                      )
+                      ),
+
+                      SizedBox(height: 20.h,)
                     ],
                   ),
                 )

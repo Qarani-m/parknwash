@@ -97,7 +97,7 @@ class MainPageOnBoarding extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               SizedBox(
-                height:index==0?90.h: 125.h,
+                height:index==0?90.h: 90.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

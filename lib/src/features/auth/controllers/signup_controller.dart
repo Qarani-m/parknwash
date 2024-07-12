@@ -14,6 +14,8 @@ class SignupController extends GetxController {
   Rx<Color> normalColor = const Color(0xFFE0E0E0).obs;
   Rx<Color> errorlColor = const Color(0xFFDC143c).obs;
 
+  RxBool isLogingIn = false.obs;
+
   RxBool isFirstNameError = false.obs;
   RxBool isLastNameError = false.obs;
   RxBool isEmailError = false.obs;
@@ -42,6 +44,7 @@ class SignupController extends GetxController {
   }
 
   Future<void> registerGoogle() async {
+    isLogingIn.value = true;
     try {
       Map<String, dynamic> result =
           await AuthService().signInOrRegisterWithGoogle();
@@ -53,25 +56,38 @@ class SignupController extends GetxController {
         Get.snackbar(
           "Success",
           "Successfully signed in",
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
 
         Get.offNamed("/home");
+        isLogingIn.value = false;
       } else {
+        isLogingIn.value = false;
+        Get.snackbar(
+          "Error",
+          "Sign-in failed:",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
         throw Exception(result["message"]);
       }
     } catch (e) {
+      isLogingIn.value = false;
+
       Get.snackbar(
         "Error",
         "Sign-in failed: $e",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     }
+    isLogingIn.value = false;
   }
 
   Future<void> registerEmailAndPassword() async {
+    isLogingIn.value = true;
     if (confirmPasswordController.text.trim() ==
             passwordController.text.trim() &&
         validateInput()) {
@@ -87,6 +103,7 @@ class SignupController extends GetxController {
       if (response == "Success") {
         Get.snackbar('Success', 'Logged in successfully');
         Get.offNamed("/home");
+        isLogingIn.value = false;
       } else {}
     } else {
       if (confirmPasswordController.text.trim() !=
@@ -94,14 +111,20 @@ class SignupController extends GetxController {
         isConfirmedPasswordError.value = true;
         Get.snackbar('Validation Error', "Password mismatch!",
             snackPosition: SnackPosition.TOP);
+
+        isLogingIn.value = false;
       }
     }
+    isLogingIn.value = false;
   }
 
   bool validateInput() {
+    isLogingIn.value = true;
+
     if (_inputValidator.validateAll()) {
       return true;
     } else {
+      isLogingIn.value = false;
       if (!_inputValidator.isFirstNameValid()) {
         isFirstNameError.value = true;
         Get.snackbar('Validation Error', _inputValidator.validateName()!,

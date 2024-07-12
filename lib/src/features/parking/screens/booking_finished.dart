@@ -13,7 +13,7 @@ class BookingFinished extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(left: 23.w, right: 23.w, top: 50.h),
-        child: Center(
+        child: const Center(
           child: Text("this page"),
         ),
       ),

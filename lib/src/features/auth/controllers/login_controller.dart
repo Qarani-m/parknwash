@@ -9,19 +9,19 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   final AuthService _authService = AuthService();
 
+  RxBool isLogingIn = false.obs;
+
   // Add a variable to store user data
   Rx<Map<String, dynamic>> userData = Rx<Map<String, dynamic>>({});
 
   Future<void> loginGoogle() async {
+    isLogingIn.value = true;
     try {
       Map<String, dynamic> result =
           await _authService.signInOrRegisterWithGoogle();
 
       if (result["status"] == "success") {
         String uid = result["userData"]['uid'];
-        print("User UID: $uid");
-
-        // Fetch user data from Firestore
         await fetchUserData(uid);
 
         Get.snackbar(
@@ -30,13 +30,20 @@ class LoginController extends GetxController {
           snackPosition: SnackPosition.TOP,
         );
 
-
         // Navigate to home screen
         Get.offNamed("/home");
+        isLogingIn.value = false;
       } else {
-        throw Exception(result["message"]);
+        isLogingIn.value = false;
+           Get.snackbar(
+        "Login with Google error",
+        "Sign-in failed: You probably don't have an internet connection",
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.black,
+      );
       }
     } catch (e) {
+      isLogingIn.value = false;
       Get.snackbar(
         "Login with Google error",
         "Sign-in failed: You probably don't have an internet connection",
@@ -54,23 +61,19 @@ class LoginController extends GetxController {
       if (userDoc.exists) {
         userData.value = userDoc.data() as Map<String, dynamic>;
 
-
-            DateTime createdAtDate = userData.value['createdAt'].toDate();
-          int year = createdAtDate.year;
-          String monthName = DateFormat('MMMM')
-              .format(createdAtDate); // Gets full month name (e.g., June)
+        DateTime createdAtDate = userData.value['createdAt'].toDate();
+        int year = createdAtDate.year;
+        String monthName = DateFormat('MMMM')
+            .format(createdAtDate); // Gets full month name (e.g., June)
 
         Map<String, dynamic> localData = {
           "displayName": userData.value['displayName'],
           "email": userData.value["email"],
           "phoneNumber": userData.value['phoneNumber'],
           "uid": uid,
-          'createdAt': "$monthName, $year", // Use regular DateTime for local storage
+          'createdAt':
+              "$monthName, $year", // Use regular DateTime for local storage
         };
-
-
-
-
 
         AuthService().saveUserData(localData);
 
@@ -97,7 +100,9 @@ class LoginController extends GetxController {
   }
 
   Future<void> loginEmailAndPassword() async {
+          isLogingIn.value = true;
     FocusScope.of(Get.context!).unfocus();
+    
 
     try {
       final user = await _authService.signInWithEmailAndPassword(
@@ -105,8 +110,11 @@ class LoginController extends GetxController {
       if (user != null) {
         Get.snackbar('Success', 'Logged in successfully');
         Get.offAllNamed('/home');
+          isLogingIn.value = false;
+
       }
     } catch (e) {
+        isLogingIn.value = false;
       Get.snackbar('Error', "Invalid email or Password");
     }
   }

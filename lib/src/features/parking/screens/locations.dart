@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:parknwash/src/features/parking/controllers/locations.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
@@ -9,6 +10,9 @@ class LocationsPage extends StatelessWidget {
 
   final LocationsController controller = Get.find<LocationsController>();
 
+  static const LatLng googlePlex = LatLng(37.42796133580664, -122.085749655962);
+  static const LatLng applePlex = LatLng(37.3346, -122.0090);
+
   @override
   Widget build(BuildContext context) {
     String zone = "A-013";
@@ -16,59 +20,82 @@ class LocationsPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Larger blue container covering the entire scaffold
           Container(
-            color: Colors.blue,
             width: double.infinity,
             height: double.infinity,
-          ),
-          // Smaller red container on top of the larger container
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              margin: EdgeInsets.only(top: 50.h),
-              padding: EdgeInsets.only(left: 13.w, right: 23.w),
-              // color: Colors.red,
-              width: double.maxFinite, // Set your desired width
-              height: 50,
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => controller.getBottomSheet('A-34'),
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50.w,
-                      width: 50.w,
-                      padding: EdgeInsets.only(left: 7.w)
-,
-
-
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.sp)),
-                      child: const Center(
-                        child: Icon(Icons.arrow_back_ios),
-                      ),
-                    ),
-                  ),
-                 
-                  SizedBox(
-                    width: 50.w,
-                  ),
-                  Center(
-                    child: Text(
-                      "Parking near you",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ],
+            child: GoogleMap(
+              initialCameraPosition: const CameraPosition(
+                target: googlePlex,
+                zoom: 11
               ),
+              markers: {
+                const Marker(
+                    markerId: MarkerId("_currentLocation"),
+                    icon: BitmapDescriptor.defaultMarker,
+                    position: googlePlex),
+                const Marker(
+                    markerId: MarkerId("_sourceLocation"),
+                    icon: BitmapDescriptor.defaultMarker,
+                    position: applePlex)
+              },
             ),
           ),
+          PageHeader(controller: controller),
         ],
+      ),
+    );
+  }
+}
+
+class PageHeader extends StatelessWidget {
+  const PageHeader({
+    super.key,
+    required this.controller,
+  });
+
+  final LocationsController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        margin: EdgeInsets.only(top: 40.h),
+        padding: EdgeInsets.only(left: 13.w, right: 23.w),
+        // color: Colors.red,
+        width: double.maxFinite, // Set your desired width
+        height: 40,
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () => controller.getBottomSheet('A-34'),
+              child: Container(
+                alignment: Alignment.center,
+                height: 50.w,
+                width: 50.w,
+                padding: EdgeInsets.only(left: 7.w),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.sp)),
+                child: const Center(
+                  child: Icon(Icons.arrow_back_ios),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 60.w,
+            ),
+            Center(
+              child: Text(
+                "Parking near you",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.w400),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -94,7 +121,7 @@ class StartBookingBottomSheet extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.h, left: 30.w, right: 30.w),
           width: double.maxFinite,
           decoration: BoxDecoration(
-            color: Colors.white,
+              color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15.r),
                   topRight: Radius.circular(15.r))),

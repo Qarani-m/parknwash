@@ -31,6 +31,10 @@ class AppTheme {
               color: AppColors.whiteTextColor,
               fontSize: 33.sp,
               fontWeight: FontWeight.w400)),
+
+              iconTheme: IconThemeData(
+                color: AppColors.scaffoldColorLight
+              )
     );
   }
 
@@ -58,6 +62,9 @@ class AppTheme {
             fontSize: 24.sp,
             fontWeight: FontWeight.w700),
       ),
+       iconTheme: IconThemeData(
+                color: AppColors.scaffoldColorDark
+              )
     );
   }
 }

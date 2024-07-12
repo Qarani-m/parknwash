@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
@@ -36,6 +39,8 @@ class Login extends StatelessWidget {
                         textEditingController: loginController.emailController,
                         hintText: "example@example.com",
                         title: "Email",
+                        obscureText: false,
+                        justToMakeSure: false,
                       ),
                       SizedBox(
                         height: 20.h,
@@ -113,7 +118,19 @@ class Login extends StatelessWidget {
                                         color: AppColors.accentColor)),
                           ],
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                      Obx (()=>SizedBox(
+                          child: loginController.isLogingIn.value
+                              ? Center(
+                                  child:
+                                      LoadingAnimationWidget.staggeredDotsWave(
+                                          color: AppColors.accentColor,
+                                          size: 40.sp),
+                                )
+                              : SizedBox()),)
                     ],
                   ),
                 )
@@ -131,7 +148,9 @@ class CustomEmailTextField extends StatelessWidget {
       {super.key,
       this.error = false,
       this.obscureText = false,
-      this.centerText =false,
+      this.centerText = false,
+      this.justToMakeSure = true,
+      this.isNumberKeyBoard = false,
       required this.textEditingController,
       required this.hintText,
       required this.title});
@@ -142,6 +161,8 @@ class CustomEmailTextField extends StatelessWidget {
   final bool error;
   final bool obscureText;
   final bool centerText;
+  final bool justToMakeSure;
+  final bool isNumberKeyBoard;
 
   SignupController controller = Get.find<SignupController>();
 
@@ -159,8 +180,9 @@ class CustomEmailTextField extends StatelessWidget {
               height: 10.h,
             ),
             TextField(
-              obscureText: controller.obscureText.value,
-              textAlign: centerText ? TextAlign.center: TextAlign.left,
+              keyboardType: hintText == "0712345678"? TextInputType.number:TextInputType.name,
+              obscureText: controller.obscureText.value && justToMakeSure,
+              textAlign: centerText ? TextAlign.center : TextAlign.left,
               obscuringCharacter: "●",
               controller: textEditingController,
               decoration: InputDecoration(
@@ -210,7 +232,7 @@ class CustomEmailTextField extends StatelessWidget {
                   fontSize: 16.sp,
                   color: error == true
                       ? const Color(0xFFDC143c)
-                      : Colors.grey[400]),
+                      : AppColors.scaffoldColorDark),
             ),
           ],
         ));
