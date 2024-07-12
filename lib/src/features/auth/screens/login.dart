@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
@@ -130,7 +128,7 @@ class Login extends StatelessWidget {
                                           color: AppColors.accentColor,
                                           size: 40.sp),
                                 )
-                              : SizedBox()),)
+                              : const SizedBox()),)
                     ],
                   ),
                 )

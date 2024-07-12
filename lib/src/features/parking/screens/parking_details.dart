@@ -45,7 +45,6 @@ class ParkingDetails extends StatelessWidget {
                 SizedBox(
                   height: 80.h,
                   width: double.maxFinite,
-                  // color: Colors.red,
                   child: CustomEmailTextField(
                     textEditingController: controller.vehicleRegController,
                     hintText: 'KCD 899C',

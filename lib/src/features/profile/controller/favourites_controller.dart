@@ -25,7 +25,6 @@ class FavouritesController extends GetxController {
         if (data != null && data.containsKey('favourites')) {
           final userFavourites = List<dynamic>.from(data['favourites']);
           favourites.value = userFavourites;
-          print(favourites.value);
           await getLots();
           await    updateLotsWithAverageRatings();
         }

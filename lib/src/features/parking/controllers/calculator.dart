@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
-import 'dart:math' show cos, sqrt, sin, pi, atan2;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
