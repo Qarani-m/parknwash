@@ -20,13 +20,15 @@ class LocationsController extends GetxController {
 
   location.Location locationController = new location.Location();
 
+  RxList positions = [].obs;
+
   @override
   void onInit() async {
     super.onInit();
     category.value = int.parse(box.read("category") ?? "0");
     await getLocation();
-      ManualCalculations manualCalculations = ManualCalculations();
-        await manualCalculations.testes();
+    ManualCalculations manualCalculations = ManualCalculations();
+    await manualCalculations.testes();
   }
 
   Future<void> getLocation() async {

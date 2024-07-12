@@ -54,41 +54,68 @@ class ManualCalculations {
 
   Future<List<QueryDocumentSnapshot>> getLocationsNearMe() async {
     // Your current location
-    GeoPoint center = GeoPoint(-0.3199485, 37.6492764);
+    GeoPoint center = GeoPoint(37.42796133580664, -122.085749655962);
     double radiusInKm = 100;
 
     // Calculate bounding box
     GeoBoundingBox boundingBox = getBoundingBox(center, radiusInKm);
 
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('lots')
-        .get();
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('lots').get();
 
     List<QueryDocumentSnapshot> filteredDocs = querySnapshot.docs.where((doc) {
-      GeoPoint coords = GeoPoint(doc['coords'].latitude, doc['coords'].longitude);
+      GeoPoint coords =
+          GeoPoint(doc['coords'].latitude, doc['coords'].longitude);
       return coords.latitude >= boundingBox.southwest.latitude &&
           coords.latitude <= boundingBox.northeast.latitude &&
           coords.longitude >= boundingBox.southwest.longitude &&
           coords.longitude <= boundingBox.northeast.longitude;
     }).toList();
 
-    for (QueryDocumentSnapshot doc in filteredDocs) {
-      print("----------------------------------");
-      print("Document ID: ${doc.id}");
-      print("Data: ${doc.data()}");
-      print("----------------------------------");
-    }
+    // for (QueryDocumentSnapshot doc in filteredDocs) {
+    //   print("----------------------------------");
+    //   print("Document ID: ${doc.id}");
+    //   print("Data: ${doc.data()}");
+    //   print("----------------------------------");
+    // }
 
     return filteredDocs;
   }
 
+// ONly thing remainig in the class is to export the fetched data, i could have done this part but i need to get this first
   // Usage
-  Future testes() async {
-    List<QueryDocumentSnapshot> nearbyLocations = await getLocationsNearMe();
-    for (var doc in nearbyLocations) {
-      print('Location found: ${doc.id}');
-    }
+Future<List<Map<String, dynamic>>> testes() async {
+  List<QueryDocumentSnapshot> nearbyLocations = await getLocationsNearMe();
+  
+  List<Map<String, dynamic>> lotDetails = [];
 
-    print('Locations found: ${nearbyLocations.length}');
+  for (var doc in nearbyLocations) {
+    // Ensure doc.data() is not null
+    var data = doc.data() as Map<String, dynamic>?;
+
+    if (data != null) {
+      var coords = data['coords'];
+      if (coords != null) {
+        double latitude = coords.latitude;
+        double longitude = coords.longitude;
+        lotDetails.add({
+          'id': doc.id,
+          'position': {
+            'latitude': latitude,
+            'longitude': longitude,
+          },
+        });
+      } else {
+      }
+    } else {
+    }
   }
+  print('Locations found: ${lotDetails}');
+  return lotDetails;
+}
+
+
+
+
+
 }
