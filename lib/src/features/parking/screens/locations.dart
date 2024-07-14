@@ -21,7 +21,7 @@ class LocationsPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          SizedBox(
+          Obx (()=>SizedBox(
               width: double.infinity,
               height: double.infinity,
               child: controller.currentPosition.value == null
@@ -58,7 +58,7 @@ class LocationsPage extends StatelessWidget {
                               },
                             ))
                       },
-                    )),
+                    )),),
           PageHeader(controller: controller),
         ],
       ),
