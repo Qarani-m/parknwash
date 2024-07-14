@@ -88,8 +88,12 @@ class LocationsController extends GetxController {
     await manualCalculations.testes(37.42796133580664, -122.085749655962);
   }
 
-  void getBottomSheet(String zone, String rates) {
+  void getBottomSheet(String zone, String rates, double lat, double long) {
     List<String> rate = rates.split(",");
+
+    box.write("selectedPlace", zone);
+    box.write("selectedLat", lat);
+    box.write("selectedLong", long);
 
     String cat = box.read("category") ?? "0";
 
@@ -111,17 +115,14 @@ class LocationsController extends GetxController {
     return (distance / 1000).round();
   }
 
-
   RxBool greenColor = true.obs;
   RxBool redColor = true.obs;
 
-void sortPoints(String color) {
-  if (color.toLowerCase() == 'red') {
-    redColor.value = !redColor.value;
-  } else if (color.toLowerCase() == 'green') {
-    greenColor.value = !greenColor.value;
+  void sortPoints(String color) {
+    if (color.toLowerCase() == 'red') {
+      redColor.value = !redColor.value;
+    } else if (color.toLowerCase() == 'green') {
+      greenColor.value = !greenColor.value;
+    }
   }
-}
-
-
 }

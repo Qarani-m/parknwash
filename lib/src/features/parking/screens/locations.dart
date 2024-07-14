@@ -18,6 +18,7 @@ class LocationsPage extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
 
 
+
     return Scaffold(
       body: Stack(
         children: [
@@ -59,7 +60,12 @@ class LocationsPage extends StatelessWidget {
                                   place['position']['longitude']),
                               onTap: () => {
                                 controller.getBottomSheet(
-                                    place['id'], place["rates"]),
+                                    place['id'], 
+                                    place["rates"],
+                                    place['position']['latitude'],
+                                  place['position']['longitude']
+                                    
+                                    ),
                               },
                             ))
                       },
