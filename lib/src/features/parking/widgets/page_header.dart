@@ -58,7 +58,10 @@ class PageHeader extends StatelessWidget {
               // color: Colors.blue,
               decoration: BoxDecoration(
                 color: Get.theme.scaffoldBackgroundColor.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(10.sp)
+                borderRadius:BorderRadius.only(
+                  topLeft: Radius.circular(10.sp),
+                  bottomLeft: Radius.circular(10.sp),
+                )
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
