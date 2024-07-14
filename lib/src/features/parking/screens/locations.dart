@@ -18,6 +18,7 @@ class LocationsPage extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
 
 
+
     return Scaffold(
       body: Stack(
         children: [
@@ -50,11 +51,21 @@ class LocationsPage extends StatelessWidget {
                         ...controller.actualNearbyPlaces.map((place) => Marker(
                               markerId: MarkerId(
                                   place['id'].substring(0, 5).toUpperCase()),
+
+
+                                  icon: place['type']=="private"? BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueGreen): BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueRed),
                               position: LatLng(place['position']['latitude'],
                                   place['position']['longitude']),
                               onTap: () => {
                                 controller.getBottomSheet(
-                                    place['id'], place["rates"]),
+                                    place['id'], 
+                                    place["rates"],
+                                    place['position']['latitude'],
+                                  place['position']['longitude']
+                                    
+                                    ),
                               },
                             ))
                       },

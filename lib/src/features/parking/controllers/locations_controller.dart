@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
@@ -87,8 +88,12 @@ class LocationsController extends GetxController {
     await manualCalculations.testes(37.42796133580664, -122.085749655962);
   }
 
-  void getBottomSheet(String zone, String rates) {
+  void getBottomSheet(String zone, String rates, double lat, double long) {
     List<String> rate = rates.split(",");
+
+    box.write("selectedPlace", zone);
+    box.write("selectedLat", lat);
+    box.write("selectedLong", long);
 
     String cat = box.read("category") ?? "0";
 
@@ -110,9 +115,14 @@ class LocationsController extends GetxController {
     return (distance / 1000).round();
   }
 
-  TextEditingController vehicleRegController = TextEditingController();
-  TextEditingController hrsController = TextEditingController();
-  TextEditingController minutesController = TextEditingController();
-  TextEditingController secsController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  RxBool greenColor = true.obs;
+  RxBool redColor = true.obs;
+
+  void sortPoints(String color) {
+    if (color.toLowerCase() == 'red') {
+      redColor.value = !redColor.value;
+    } else if (color.toLowerCase() == 'green') {
+      greenColor.value = !greenColor.value;
+    }
+  }
 }

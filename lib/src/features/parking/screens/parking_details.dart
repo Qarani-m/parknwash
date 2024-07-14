@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
+import 'package:parknwash/src/features/parking/controllers/parking_details_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class ParkingDetails extends StatelessWidget {
   ParkingDetails({super.key});
 
-  final LocationsController controller = Get.find<LocationsController>();
+  final ParkingDetailsController controller = Get.find<ParkingDetailsController>();
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args = Get.arguments;
 
-        final theme = Get.theme;
-        final isDarkMode = theme.brightness == Brightness.dark;
+
+    final theme = Get.theme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final box = GetStorage();
+
+    String cat = box.read("category") ?? "0";
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -30,7 +35,12 @@ class ParkingDetails extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                       onTap: () => Get.back(),
-                      child:   Icon(Icons.arrow_back, color: isDarkMode? Colors.white:theme.scaffoldBackgroundColor,)),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: isDarkMode
+                            ? Colors.white
+                            : theme.scaffoldBackgroundColor,
+                      )),
                 ),
                 SizedBox(
                   height: 50.h,
@@ -50,15 +60,17 @@ class ParkingDetails extends StatelessWidget {
                   width: double.maxFinite,
                   child: CustomEmailTextField(
                     textEditingController: controller.vehicleRegController,
-                    hintText: 'KCD 899C',
-                    title: 'Vehicle\'s Plate Number',
+                    obscureText: false,
+                    justToMakeSure: false,
+                    hintText: cat=="1"?"KMTX 783K": 'KCD 899C',
+                    title: cat=="1"?"Bike\'s Plate Number": 'Vehicle\'s Plate Number',
                   ),
                 ),
                 SizedBox(
                   height: 35.h,
                 ),
                 Text(
-                  "Your estimated time with us",
+                  "Your estimated time of arrival",
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
@@ -78,6 +90,8 @@ class ParkingDetails extends StatelessWidget {
                         textEditingController: controller.hrsController,
                         hintText: '00',
                         title: 'Hours',
+                                           obscureText: false,
+                    justToMakeSure: false,
                       ),
                     ),
                     SizedBox(
@@ -88,6 +102,8 @@ class ParkingDetails extends StatelessWidget {
                         textEditingController: controller.minutesController,
                         hintText: '00',
                         title: 'Minutes',
+                                           obscureText: false,
+                    justToMakeSure: false,
                       ),
                     ),
                     SizedBox(
@@ -97,6 +113,8 @@ class ParkingDetails extends StatelessWidget {
                         textEditingController: controller.secsController,
                         centerText: true,
                         hintText: '00',
+                                           obscureText: false,
+                    justToMakeSure: false,
                         title: 'Seconds',
                       ),
                     )
@@ -112,13 +130,17 @@ class ParkingDetails extends StatelessWidget {
                     textEditingController: controller.phoneController,
                     hintText: '0704847676',
                     title: 'Mpesa Phone Number',
+                                       obscureText: false,
+                    justToMakeSure: false,
                   ),
                 ),
                 SizedBox(
                   height: 50.h,
                 ),
                 GestureDetector(
-                  onTap: () => Get.offNamed("/booking_finished"),
+                  onTap: () =>controller.showPaymentDialog(context),
+
+
                   child: Container(
                     height: 70.h,
                     width: 320.w,
