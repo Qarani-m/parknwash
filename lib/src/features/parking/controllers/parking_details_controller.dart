@@ -79,18 +79,61 @@ class ParkingDetailsController extends GetxController {
     }
   }
 
-  Future<void> saveBooking() async {
-    String? lotId = await getThePositionDetails();
-    String userId = box.read('useId');
-    int eta =
-        int.parse(hrsController.text) * 60 + int.parse(minutesController.text);
-    String status = "Pending";
-    String vehicleRegNo = vehicleRegController.text;
-    String phone = phoneController.text;
+Future<void> saveBooking() async {
+    try {
+      String? lotId = await getThePositionDetails();
+      String? userId = box.read('useId');
+      int eta = int.parse(hrsController.text) * 60 + int.parse(minutesController.text);
+      String status = "Pending";
+      String vehicleRegNo = vehicleRegController.text;
+      String phone = phoneController.text;
 
-    if (lotId != null && userId != null) {}
+      if (lotId != null && userId != null) {
+        // Create a new document in the 'bookings' collection
+        await FirebaseFirestore.instance.collection('bookings').add({
+          'lotId': lotId,
+          'userId': userId,
+          'eta': eta,
+          'status': status,
+          'vehicleRegNo': vehicleRegNo,
+          'phone': phone,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
 
-    Get.offNamed("/booking_finished");
+        // Show success snackbar
+        Get.snackbar(
+          'Success',
+          'Booking saved successfully',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+
+        // Navigate to booking_finished page
+        Get.offNamed("/booking_finished");
+      } else {
+        // Show error snackbar if lotId or userId is null
+        Get.snackbar(
+          'Error',
+          'Unable to save booking. Please try again.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
+    } catch (e) {
+      // Show error snackbar if an exception occurs
+      Get.snackbar(
+        'Error',
+        'An error occurred: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
+    }
   }
 
   void initatePayment(String cat) {
