@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
@@ -109,6 +110,18 @@ class LocationsController extends GetxController {
 
     return (distance / 1000).round();
   }
+
+
+  RxBool greenColor = true.obs;
+  RxBool redColor = true.obs;
+
+void sortPoints(String color) {
+  if (color.toLowerCase() == 'red') {
+    redColor.value = !redColor.value;
+  } else if (color.toLowerCase() == 'green') {
+    greenColor.value = !greenColor.value;
+  }
+}
 
   TextEditingController vehicleRegController = TextEditingController();
   TextEditingController hrsController = TextEditingController();

@@ -111,7 +111,7 @@ class StartBookingBottomSheet extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              height: 113.h,
+                              height: 90.h,
                               width: 130.w,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.sp),

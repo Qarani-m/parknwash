@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
-
 class GeoPoint {
   final double latitude;
   final double longitude;
@@ -94,13 +92,15 @@ class ManualCalculations {
           double latitude = coords.latitude;
           double longitude = coords.longitude;
           String rates = data["rates"].toString();
+          String type = data['type'];
           lotDetails.add({
             'id': doc.id.substring(0, 5).toUpperCase(),
             'position': {
               'latitude': latitude,
               'longitude': longitude,
             },
-            "rates":rates
+            "rates": rates,
+            "type":type
           });
         } else {}
       } else {}
@@ -109,8 +109,6 @@ class ManualCalculations {
     return lotDetails;
   }
 }
-
-
 
 class MapUtils {
   static double calculateDistance(LatLng start, LatLng end) {

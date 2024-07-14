@@ -50,6 +50,11 @@ class LocationsPage extends StatelessWidget {
                         ...controller.actualNearbyPlaces.map((place) => Marker(
                               markerId: MarkerId(
                                   place['id'].substring(0, 5).toUpperCase()),
+
+
+                                  icon: place['type']=="private"? BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueGreen): BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueRed),
                               position: LatLng(place['position']['latitude'],
                                   place['position']['longitude']),
                               onTap: () => {

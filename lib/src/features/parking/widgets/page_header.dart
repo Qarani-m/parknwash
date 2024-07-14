@@ -8,8 +8,8 @@ class PageHeader extends StatelessWidget {
     super.key,
     required this.controller,
   });
-
   final LocationsController controller;
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,30 +50,35 @@ class PageHeader extends StatelessWidget {
             SizedBox(
               width: 60.w,
             ),
-            Container(
-              alignment: Alignment.center,
-              // height: 200.w,
-              width: 80.w,
-              padding: EdgeInsets.only(left: 7.w, top: 15.h, bottom: 15.h),
-              // color: Colors.blue,
-              decoration: BoxDecoration(
-                color: Get.theme.scaffoldBackgroundColor.withOpacity(0.6),
-                borderRadius:BorderRadius.only(
-                  topLeft: Radius.circular(10.sp),
-                  bottomLeft: Radius.circular(10.sp),
-                )
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Pointers(color: "blue", category: "You",),
-                  Pointers(color: "red", category: "Paid",),
-                  Pointers(color: "green", category: "Free",),
-                  // Pointers(color: "yellow", category: "Car Wash",),
-                ],
-              ),
-            ),
+
+
+            // Container(
+            //   alignment: Alignment.center,
+            //   // height: 200.w,
+            //   width: 80.w,
+            //   padding: EdgeInsets.only(left: 7.w, top: 15.h, bottom: 15.h),
+            //   // color: Colors.blue,
+            //   decoration: BoxDecoration(
+            //     color: Get.theme.scaffoldBackgroundColor.withOpacity(0.6),
+            //     borderRadius:BorderRadius.only(
+            //       topLeft: Radius.circular(10.sp),
+            //       bottomLeft: Radius.circular(10.sp),
+            //     )
+            //   ),
+            //   child:   Column(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Pointers(color: "blue", category: "You",),
+            //       Pointers(color: "red", category: "Paid",),
+            //       Pointers(color: "green", category: "Free",),
+            //       // Pointers(color: "yellow", category: "Car Wash",),
+            //     ],
+            //   ),
+            // ),
+
+
+
           ],
         ),
       ),
@@ -82,32 +87,37 @@ class PageHeader extends StatelessWidget {
 }
 
 class Pointers extends StatelessWidget {
-  const Pointers({
+    Pointers({
     super.key, required this.color, required this.category,
   });
 
   final String color;
   final String category;
+  
+      LocationsController controller =Get.find<LocationsController>();
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: 30.h,
-          width: 30.h,
-          decoration: BoxDecoration(
-              image:
-                  DecorationImage(image: AssetImage("assets/images/$color.png"))),
-        ),
-        Text(
-          category,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
-              ?.copyWith(fontWeight: FontWeight.w300),
-        )
-      ],
+    return GestureDetector(
+      onTap: () => controller.sortPoints(color),
+      child: Row(
+        children: [
+          Container(
+            height: 30.h,
+            width: 30.h,
+            decoration: BoxDecoration(
+                image:
+                    DecorationImage(image: AssetImage("assets/images/$color.png"))),
+          ),
+          Text(
+            category,
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(fontWeight: FontWeight.w300),
+          )
+        ],
+      ),
     );
   }
 }
