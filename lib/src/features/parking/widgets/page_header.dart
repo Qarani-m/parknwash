@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:parknwash/src/features/parking/controllers/booking_finished_controller.dart';
 import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PageHeader extends StatelessWidget {
-  const PageHeader(
-      {super.key, required this.controller, this.showQrCode = false});
+  PageHeader({
+    super.key,
+    required this.controller,
+    this.showQrCode = false,
+  });
   final LocationsController controller;
+  BookingFinishedController bookingFinishedController =
+      Get.find<BookingFinishedController>();
   final bool showQrCode;
 
   @override
@@ -50,31 +56,35 @@ class PageHeader extends StatelessWidget {
             SizedBox(
               width: 60.w,
             ),
-           showQrCode? GestureDetector(
-              onTap: () => Get.back(),
-              child: Container(
-                alignment: Alignment.center,
-                height: 50.w,
-                width: 50.w,
-                padding: EdgeInsets.only(left: 1.w),
-                decoration: BoxDecoration(
-                    color: theme.scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(10.sp)),
-                child: Center(
-                  child: Shimmer.fromColors(
-                    baseColor:
-                        isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
-                    highlightColor: Colors.yellow,
-                    child: Icon(
-                      Icons.qr_code,
-                      color: isDarkMode
-                          ? Colors.white
-                          : theme.scaffoldBackgroundColor,
+            showQrCode
+                ? GestureDetector(
+                    onTap: () => bookingFinishedController.showBottomSheet(
+                        "bookings", "cieeBOi2vPEgBLyQFOHX"),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50.w,
+                      width: 50.w,
+                      padding: EdgeInsets.only(left: 1.w),
+                      decoration: BoxDecoration(
+                          color: theme.scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.circular(10.sp)),
+                      child: Center(
+                        child: Shimmer.fromColors(
+                          baseColor: isDarkMode
+                              ? Colors.white
+                              : AppColors.scaffoldColorDark,
+                          highlightColor: Colors.yellow,
+                          child: Icon(
+                            Icons.qr_code,
+                            color: isDarkMode
+                                ? Colors.white
+                                : theme.scaffoldBackgroundColor,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ):SizedBox(),
+                  )
+                : SizedBox(),
           ],
         ),
       ),

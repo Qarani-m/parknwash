@@ -171,9 +171,13 @@ class StartBookingBottomSheet extends StatelessWidget {
                   height: 25.h,
                 ),
                 GestureDetector(
-                  onTap: () => Get.toNamed("/details_page", arguments: {
+                  onTap: (){
+                   Navigator.pop(context);
+                  
+                  Get.toNamed("/details_page", arguments: {
                     'lotId': zone, // Example parameter
-                  }),
+                  });
+                  },
                   child: Container(
                     height: 70.h,
                     width: 320.w,
