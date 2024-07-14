@@ -1,3 +1,4 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,21 +24,76 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Get.theme;
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Obx(() => Scaffold(
-          body: Padding(
-            padding: EdgeInsets.only(top: 50.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(context),
-                SizedBox(height: 35.h),
-                _buildGreeting(context),
-                SizedBox(height: 35.h),
-                _buildCategoryButtons(controller, context),
-                _buildBottomSection(context),
-              ],
+        body: Padding(
+          padding: EdgeInsets.only(top: 50.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(context),
+              SizedBox(height: 25.h),
+              _buildGreeting(context),
+              SizedBox(height: 25.h),
+              _buildCategoryButtons(controller, context),
+              _buildBottomSection(context),
+            ],
+          ),
+        ),
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(bottom: 40.h), // Adjust the value as needed
+          child: Container(
+            width: 143.h,
+            height: 143.h,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.accentColor,
+            ),
+            child: FloatingActionButton(
+              backgroundColor: AppColors.accentColor,
+              shape: CircleBorder(),
+              onPressed: () {},
+              child: Center(
+                child: Text(
+                  "Start\n to find parking",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.blackTextColor,
+                      ),
+                ),
+              ),
+              //params
             ),
           ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    
+
+        bottomNavigationBar: AnimatedBottomNavigationBar(
+          
+          // backgroundColor: Get.theme.scaffoldBackgroundColor,
+            icons: [Icons.local_car_wash, Icons.local_parking],
+            activeIndex: 1,
+            elevation: 50,
+            backgroundColor:  isDarkMode? AppColors.scaffoldColorDark:Colors.white,
+            splashColor: Colors.red,
+            gapLocation: GapLocation.center,
+            notchSmoothness: NotchSmoothness.defaultEdge,
+            leftCornerRadius: 2,
+            rightCornerRadius: 2,
+            activeColor: AppColors.accentColor,
+            inactiveColor: isDarkMode? Colors.white:AppColors.scaffoldColorDark,
+            gapWidth: 130,
+            shadow: Shadow(
+              color:  isDarkMode? Colors.white54: Colors.black54,
+              blurRadius: 10,
+              offset: Offset(-2,0)
+              
+            ),
+            onTap: (value) {}
+            //other params
+            ),
         ));
   }
 
@@ -52,7 +108,7 @@ class HomePage extends StatelessWidget {
           GestureDetector(
             onTap: () => controller.goToProfile(),
             child: Container(
-              height: 50.h,
+              height: 40.h,
               width: 50.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.sp),
@@ -71,8 +127,8 @@ class HomePage extends StatelessWidget {
             },
             child: SvgPicture.asset(
               "assets/svg/bell-fill.svg",
-              width: 30.h,
-              height: 30.h,
+              width: 27.h,
+              height: 27.h,
               color: isLightMode ? const Color(0xFF252525) : Colors.white,
             ),
           )
@@ -94,7 +150,7 @@ class HomePage extends StatelessWidget {
                 fontSize: 25.sp,
                 fontFamily: "Kalam"),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 15.h),
           Text(
             "We make parking",
             style: Theme.of(context).textTheme.headlineLarge,
@@ -124,7 +180,7 @@ class HomePage extends StatelessWidget {
           (index) => GestureDetector(
               onTap: () => controller.changeSelectedCategory(index),
               child: Container(
-                height: 120.h,
+                height: 110.h,
                 width: 115.h,
                 decoration: BoxDecoration(
                   color: controller.selectedCategoryIndex.value == index
@@ -182,34 +238,34 @@ class HomePage extends StatelessWidget {
       children: [
         Container(
           width: double.maxFinite,
-          height: 370.h,
+          height: 360.h,
           padding: EdgeInsets.only(top: 10.h),
           child: const Lanes(),
         ),
-        Positioned(
-          top: 205.h,
-          left: (MediaQuery.of(context).size.width / 2) - (153.h / 2) - 5,
-          child: GestureDetector(
-            onTap: () => controller.startParking(),
-            child: Container(
-              width: 153.h,
-              height: 153.h,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.accentColor,
-              ),
-              child: Center(
-                child: Text(
-                  "Start\n to find parking",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.blackTextColor,
-                      ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        // Positioned(
+        //   top: 205.h,
+        //   left: (MediaQuery.of(context).size.width / 2) - (153.h / 2) - 5,
+        //   child: GestureDetector(
+        //     onTap: () => controller.startParking(),
+        //     child: Container(
+        //       width: 153.h,
+        //       height: 143.h,
+        //       decoration: const BoxDecoration(
+        //         shape: BoxShape.circle,
+        //         color: AppColors.accentColor,
+        //       ),
+        //       child: Center(
+        //         child: Text(
+        //           "Start\n to find parking",
+        //           textAlign: TextAlign.center,
+        //           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        //                 color: AppColors.blackTextColor,
+        //               ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
