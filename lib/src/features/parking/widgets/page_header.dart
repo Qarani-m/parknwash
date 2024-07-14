@@ -19,10 +19,10 @@ class PageHeader extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Container(
         margin: EdgeInsets.only(top: 40.h),
-        padding: EdgeInsets.only(left: 13.w, right: 23.w),
+        padding: EdgeInsets.only(left: 13.w, right: 0.w),
         // color: Colors.red,
         width: double.maxFinite, // Set your desired width
-        height: 200,
+        height: 150,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,11 +53,11 @@ class PageHeader extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               // height: 200.w,
-              width: 110.w,
-              padding: EdgeInsets.only(left: 25.w, top: 15.h, bottom: 15.h),
+              width: 80.w,
+              padding: EdgeInsets.only(left: 7.w, top: 15.h, bottom: 15.h),
               // color: Colors.blue,
               decoration: BoxDecoration(
-                color: Get.theme.scaffoldBackgroundColor,
+                color: Get.theme.scaffoldBackgroundColor.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(10.sp)
               ),
               child: Column(
