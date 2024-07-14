@@ -18,8 +18,7 @@ class BookingFinished extends StatelessWidget {
         
 
   @override
-  Widget build(BuildContext context) {
-    controller.getThePositionDetails();
+  Widget build(BuildContext context) { 
         final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
    
@@ -74,7 +73,7 @@ class BookingFinished extends StatelessWidget {
                             ))
                       },
                     )),),
-          PageHeader(controller: locationscontroller),
+          PageHeader(controller: locationscontroller, showQrCode: true,),
         ],
       ),
     );

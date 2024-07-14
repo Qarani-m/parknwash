@@ -17,7 +17,9 @@ class StartBookingBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final theme = Get.theme;
+        final isDarkMode = theme.brightness == Brightness.dark;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -87,7 +89,11 @@ class StartBookingBottomSheet extends StatelessWidget {
                                         .textTheme
                                         .bodySmall
                                         ?.copyWith(
-                                            color: AppColors.blackTextColor
+                                            color: isDarkMode? Colors.white.withOpacity(0.3)
+                                            
+                                            
+                                            
+                                            :AppColors.scaffoldColorDark
                                                 .withOpacity(0.3),
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500),
@@ -138,7 +144,7 @@ class StartBookingBottomSheet extends StatelessWidget {
                                     .textTheme
                                     .headlineMedium
                                     ?.copyWith(
-                                        fontSize: 30.sp,
+                                        fontSize: 26.sp,
                                         fontWeight: FontWeight.w600),
                               ),
                               SizedBox(

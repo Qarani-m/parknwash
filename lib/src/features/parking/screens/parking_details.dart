@@ -60,6 +60,8 @@ class ParkingDetails extends StatelessWidget {
                   width: double.maxFinite,
                   child: CustomEmailTextField(
                     textEditingController: controller.vehicleRegController,
+                    obscureText: false,
+                    justToMakeSure: false,
                     hintText: cat=="1"?"KMTX 783K": 'KCD 899C',
                     title: cat=="1"?"Bike\'s Plate Number": 'Vehicle\'s Plate Number',
                   ),
@@ -68,7 +70,7 @@ class ParkingDetails extends StatelessWidget {
                   height: 35.h,
                 ),
                 Text(
-                  "Your estimated time with us",
+                  "Your estimated time of arrival",
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
@@ -88,6 +90,8 @@ class ParkingDetails extends StatelessWidget {
                         textEditingController: controller.hrsController,
                         hintText: '00',
                         title: 'Hours',
+                                           obscureText: false,
+                    justToMakeSure: false,
                       ),
                     ),
                     SizedBox(
@@ -98,6 +102,8 @@ class ParkingDetails extends StatelessWidget {
                         textEditingController: controller.minutesController,
                         hintText: '00',
                         title: 'Minutes',
+                                           obscureText: false,
+                    justToMakeSure: false,
                       ),
                     ),
                     SizedBox(
@@ -107,6 +113,8 @@ class ParkingDetails extends StatelessWidget {
                         textEditingController: controller.secsController,
                         centerText: true,
                         hintText: '00',
+                                           obscureText: false,
+                    justToMakeSure: false,
                         title: 'Seconds',
                       ),
                     )
@@ -122,6 +130,8 @@ class ParkingDetails extends StatelessWidget {
                     textEditingController: controller.phoneController,
                     hintText: '0704847676',
                     title: 'Mpesa Phone Number',
+                                       obscureText: false,
+                    justToMakeSure: false,
                   ),
                 ),
                 SizedBox(

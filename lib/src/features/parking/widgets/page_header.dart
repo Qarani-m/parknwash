@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
+import 'package:parknwash/src/utils/constants/colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PageHeader extends StatelessWidget {
-  const PageHeader({
-    super.key,
-    required this.controller,
-  });
+  const PageHeader(
+      {super.key, required this.controller, this.showQrCode = false});
   final LocationsController controller;
-
+  final bool showQrCode;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PageHeader extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Container(
         margin: EdgeInsets.only(top: 40.h),
-        padding: EdgeInsets.only(left: 13.w, right: 0.w),
+        padding: EdgeInsets.only(left: 13.w, right: 13.w),
         // color: Colors.red,
         width: double.maxFinite, // Set your desired width
         height: 150,
@@ -50,35 +50,31 @@ class PageHeader extends StatelessWidget {
             SizedBox(
               width: 60.w,
             ),
-
-
-            // Container(
-            //   alignment: Alignment.center,
-            //   // height: 200.w,
-            //   width: 80.w,
-            //   padding: EdgeInsets.only(left: 7.w, top: 15.h, bottom: 15.h),
-            //   // color: Colors.blue,
-            //   decoration: BoxDecoration(
-            //     color: Get.theme.scaffoldBackgroundColor.withOpacity(0.6),
-            //     borderRadius:BorderRadius.only(
-            //       topLeft: Radius.circular(10.sp),
-            //       bottomLeft: Radius.circular(10.sp),
-            //     )
-            //   ),
-            //   child:   Column(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: [
-            //       Pointers(color: "blue", category: "You",),
-            //       Pointers(color: "red", category: "Paid",),
-            //       Pointers(color: "green", category: "Free",),
-            //       // Pointers(color: "yellow", category: "Car Wash",),
-            //     ],
-            //   ),
-            // ),
-
-
-
+           showQrCode? GestureDetector(
+              onTap: () => Get.back(),
+              child: Container(
+                alignment: Alignment.center,
+                height: 50.w,
+                width: 50.w,
+                padding: EdgeInsets.only(left: 1.w),
+                decoration: BoxDecoration(
+                    color: theme.scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(10.sp)),
+                child: Center(
+                  child: Shimmer.fromColors(
+                    baseColor:
+                        isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
+                    highlightColor: Colors.yellow,
+                    child: Icon(
+                      Icons.qr_code,
+                      color: isDarkMode
+                          ? Colors.white
+                          : theme.scaffoldBackgroundColor,
+                    ),
+                  ),
+                ),
+              ),
+            ):SizedBox(),
           ],
         ),
       ),
@@ -87,14 +83,16 @@ class PageHeader extends StatelessWidget {
 }
 
 class Pointers extends StatelessWidget {
-    Pointers({
-    super.key, required this.color, required this.category,
+  Pointers({
+    super.key,
+    required this.color,
+    required this.category,
   });
 
   final String color;
   final String category;
-  
-      LocationsController controller =Get.find<LocationsController>();
+
+  LocationsController controller = Get.find<LocationsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +104,8 @@ class Pointers extends StatelessWidget {
             height: 30.h,
             width: 30.h,
             decoration: BoxDecoration(
-                image:
-                    DecorationImage(image: AssetImage("assets/images/$color.png"))),
+                image: DecorationImage(
+                    image: AssetImage("assets/images/$color.png"))),
           ),
           Text(
             category,

@@ -104,7 +104,7 @@ Future<void> saveBooking() async {
         Get.snackbar(
           'Success',
           'Booking saved successfully',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green,
           colorText: Colors.white,
           duration: Duration(seconds: 3),

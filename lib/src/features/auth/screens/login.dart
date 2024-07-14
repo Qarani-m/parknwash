@@ -168,6 +168,7 @@ class CustomEmailTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final theme = Get.theme;
         final isDarkMode = theme.brightness == Brightness.dark;
     return Obx(() => Column(
@@ -236,7 +237,7 @@ class CustomEmailTextField extends StatelessWidget {
                   fontSize: 16.sp,
                   color: error == true
                       ? const Color(0xFFDC143c)
-                      : AppColors.scaffoldColorDark),
+                      : isDarkMode ?Colors.white:AppColors.scaffoldColorDark),
             ),
           ],
         ));
