@@ -32,6 +32,7 @@ dependencies:
   # geolocator: ^12.0.0
   location: ^7.0.0
   latlong2: ^0.9.1
+  flutter_mpesa_package: ^0.0.4
 
 
 dev_dependencies:

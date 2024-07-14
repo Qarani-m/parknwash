@@ -123,9 +123,5 @@ void sortPoints(String color) {
   }
 }
 
-  TextEditingController vehicleRegController = TextEditingController();
-  TextEditingController hrsController = TextEditingController();
-  TextEditingController minutesController = TextEditingController();
-  TextEditingController secsController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+
 }
