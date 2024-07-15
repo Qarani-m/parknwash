@@ -66,7 +66,7 @@ class Activity extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          onTap: () => Get.toNamed("/my_bookings"),
+          onTap: () => Get.toNamed("/my_bookings", arguments: lot),
           child: Container(
             height: 100.h,
             width: double.maxFinite,

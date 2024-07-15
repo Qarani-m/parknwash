@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/home/controller/my_booking_controller.dart';
+import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -12,9 +13,11 @@ class MyBookings extends StatelessWidget {
   MyBookings({super.key});
 
   MyBookingController controller = Get.find<MyBookingController>();
+  final BookingData booking = Get.arguments as BookingData;
 
   @override
   Widget build(BuildContext context) {
+    print(booking);
     controller.changeParkingStatus("Completed");
     final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
@@ -38,20 +41,19 @@ class MyBookings extends StatelessWidget {
                       ? Container(
                           height: 50.h,
                           width: 70.h,
-                          child:  Shimmer.fromColors(
-                          baseColor: isDarkMode
-                              ? Colors.white
-                              : AppColors.scaffoldColorDark,
-                          highlightColor: Colors.yellow,
-                          child: Icon(
-                            Icons.qr_code,
-                            size: 30.h,
-                            color: isDarkMode
+                          child: Shimmer.fromColors(
+                            baseColor: isDarkMode
                                 ? Colors.white
-                                : theme.scaffoldBackgroundColor,
+                                : AppColors.scaffoldColorDark,
+                            highlightColor: Colors.yellow,
+                            child: Icon(
+                              Icons.qr_code,
+                              size: 30.h,
+                              color: isDarkMode
+                                  ? Colors.white
+                                  : theme.scaffoldBackgroundColor,
+                            ),
                           ),
-                        ),
-                          
                         )
                       : SizedBox()
                 ],
