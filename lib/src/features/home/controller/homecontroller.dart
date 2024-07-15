@@ -105,4 +105,9 @@ class Homecontroller extends GetxController {
 
     print("logout");
   }
+
+  RxInt activeIndex = 0.obs;
+
+  
+
 }
