@@ -24,76 +24,81 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final theme = Get.theme;
+    final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
     return Obx(() => Scaffold(
-        body: Padding(
-          padding: EdgeInsets.only(top: 50.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context),
-              SizedBox(height: 25.h),
-              _buildGreeting(context),
-              SizedBox(height: 25.h),
-              _buildCategoryButtons(controller, context),
-              _buildBottomSection(context),
-            ],
-          ),
-        ),
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: 40.h), // Adjust the value as needed
-          child: Container(
-            width: 143.h,
-            height: 143.h,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.accentColor,
+          body: Padding(
+            padding: EdgeInsets.only(top: 50.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context),
+                SizedBox(height: 25.h),
+                _buildGreeting(context),
+                SizedBox(height: 25.h),
+                _buildCategoryButtons(controller, context),
+                _buildBottomSection(context),
+              ],
             ),
-            child: FloatingActionButton(
-              backgroundColor: AppColors.accentColor,
-              shape: CircleBorder(),
-              onPressed: () {},
-              child: Center(
-                child: Text(
-                  "Start\n to find parking",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.blackTextColor,
-                      ),
-                ),
+          ),
+          floatingActionButton: Padding(
+            padding:
+                EdgeInsets.only(bottom: 40.h), // Adjust the value as needed
+            child: Container(
+              width: 143.h,
+              height: 143.h,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.accentColor,
               ),
-              //params
+              child: FloatingActionButton(
+                backgroundColor: AppColors.accentColor,
+                shape: CircleBorder(),
+                onPressed: () {
+                  controller.startParking();
+                },
+                child: Center(
+                  child: Text(
+                    "Start\n to find parking",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.blackTextColor,
+                        ),
+                  ),
+                ),
+                //params
+              ),
             ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    
-
-        bottomNavigationBar: AnimatedBottomNavigationBar(
-          
-          // backgroundColor: Get.theme.scaffoldBackgroundColor,
-            icons: [Icons.local_car_wash, Icons.local_parking],
-            activeIndex: 1,
-            elevation: 50,
-            backgroundColor:  isDarkMode? AppColors.scaffoldColorDark:Colors.white,
-            splashColor: Colors.red,
-            gapLocation: GapLocation.center,
-            notchSmoothness: NotchSmoothness.defaultEdge,
-            leftCornerRadius: 2,
-            rightCornerRadius: 2,
-            activeColor: AppColors.accentColor,
-            inactiveColor: isDarkMode? Colors.white:AppColors.scaffoldColorDark,
-            gapWidth: 130,
-            shadow: Shadow(
-              color:  isDarkMode? Colors.white54: Colors.black54,
-              blurRadius: 10,
-              offset: Offset(-2,0)
-              
-            ),
-            onTap: (value) {}
-            //other params
-            ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: AnimatedBottomNavigationBar(
+              icons: [Icons.local_car_wash, Icons.local_parking],
+              activeIndex: controller.activeIndex.value,
+              elevation: 50,
+              backgroundColor:
+                  isDarkMode ? AppColors.scaffoldColorDark : Colors.white,
+              splashColor: Colors.red,
+              gapLocation: GapLocation.center,
+              notchSmoothness: NotchSmoothness.defaultEdge,
+              leftCornerRadius: 2,
+              rightCornerRadius: 2,
+              activeColor: AppColors.accentColor,
+              inactiveColor:
+                  isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
+              gapWidth: 130,
+              shadow: Shadow(
+                  color: isDarkMode ? Colors.white54 : Colors.black54,
+                  blurRadius: 10,
+                  offset: Offset(-2, 0)),
+              onTap: (value) {
+                controller.activeIndex.value = value;
+                if (value == 0) {
+                  print("First icon pressed");
+                } else {
+                  Get.toNamed("/booking_list");
+                }
+              }),
         ));
   }
 

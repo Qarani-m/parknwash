@@ -48,7 +48,7 @@ class PageHeader extends StatelessWidget {
                     Icons.arrow_back_ios,
                     color: isDarkMode
                         ? Colors.white
-                        : theme.scaffoldBackgroundColor,
+                        : AppColors.scaffoldColorDark,
                   ),
                 ),
               ),

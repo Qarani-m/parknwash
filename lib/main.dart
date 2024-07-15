@@ -10,7 +10,9 @@ import 'package:parknwash/src/features/auth/screens/forgot_password.dart';
 import 'package:parknwash/src/features/auth/screens/login.dart';
 import 'package:parknwash/src/features/auth/screens/onboarding.dart';
 import 'package:parknwash/src/features/auth/screens/register.dart';
-import 'package:parknwash/src/features/home/home_page.dart';
+import 'package:parknwash/src/features/home/screen/booking_list.dart';
+import 'package:parknwash/src/features/home/screen/home_page.dart';
+import 'package:parknwash/src/features/home/screen/my_bookings.dart';
 import 'package:parknwash/src/features/parking/screens/booking_finished.dart';
 import 'package:parknwash/src/features/parking/screens/locations.dart';
 import 'package:parknwash/src/features/parking/screens/parking_details.dart';
@@ -152,14 +154,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             GetPage(name: '/register', page: () => Register()),
             GetPage(name: '/forgot_password', page: () => ForgotPassword()),
             GetPage(name: '/notifications', page: () => Notifications()),
-            GetPage(
-                name: '/payments-notification', page: () => Notifications()),
+            GetPage(name: '/payments-notification', page: () => Notifications()),
             GetPage(name: '/payments-history', page: () => PaymentHistory()),
             GetPage(name: '/favourite-lots', page: () => FavouriteLots()),
             GetPage(name: '/locations', page: () => LocationsPage()),
             GetPage(name: "/details_page", page: () => ParkingDetails()),
             GetPage(name: "/details_page", page: () => ParkingDetails()),
             GetPage(name: "/booking_finished", page: () => BookingFinished()),
+            GetPage(name: "/my_bookings", page: () => MyBookings()),
+            GetPage(name: "/booking_list", page: () => BookingList()),
           ],
         );
       },
