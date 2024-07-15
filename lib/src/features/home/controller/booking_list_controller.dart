@@ -16,11 +16,11 @@ class BookingListController extends GetxController {
     super.onInit();
     // await getBookings();
 
-    // getBookings(await extractUid());
-    getBookings("pSgDcrX5XtaXujizeObCw3o5CWb2");
+    getBookings(extractUid());
+    // getBookings("pSgDcrX5XtaXujizeObCw3o5CWb2");
   }
 
-  Future<String> extractUid() async {
+  String extractUid() {
     String jsonString = box.read("userData");
     Map<String, dynamic> userData = jsonDecode(jsonString);
     String uid = userData['uid'];
@@ -42,27 +42,20 @@ class BookingListController extends GetxController {
         for (var doc in querySnapshot.docs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           theData.add(BookingData(
-              eta: data["eta"]?? 0,
-              lotId: data['lotId']?? "",
-              phone: data['phone']?? "",
-              status: data['status']?? "",
-              timestamp: data['timestamp']?? Timestamp(2,0),
-              userId: data["userId"]?? "",
+              eta: data["eta"] ?? 0,
+              lotId: data['lotId'] ?? "",
+              phone: data['phone'] ?? "",
+              status: data['status'] ?? "",
+              timestamp: data['timestamp'] ?? Timestamp(2, 0),
+              userId: data["userId"] ?? "",
               vehicleRegNo: data['vehicleRegNo'] ?? "",
-              name: data["name"]??""
-              
-              ));
-
+              name: data["name"] ?? ""));
         }
-        print(theData);
-
         bookings.value = theData;
       } else {
-        print('No bookings found for user: $targetUid');
+        Get.snackbar("No activity", "No bookings found");
       }
     } catch (e) {
-      print('Error fetching booking: $e');
-
       Get.snackbar("Error", "Some tyoe of error of error happened ${e}");
     }
   }

@@ -17,8 +17,8 @@ class MyBookings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(booking);
-    controller.changeParkingStatus("Completed");
+    print(booking.name);
+    controller.changeParkingStatus(booking.status);
     final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
     return Scaffold(
@@ -75,7 +75,7 @@ class MyBookings extends StatelessWidget {
                             height: 35.h,
                             width: double.maxFinite,
                             child: Text(
-                              "KCD 231 L",
+                              booking.vehicleRegNo,
                               style: Theme.of(context)
                                   .textTheme
                                   .displaySmall
@@ -87,10 +87,11 @@ class MyBookings extends StatelessWidget {
                           ),
                           Container(
                             alignment: Alignment.center,
-                            height: 20.h,
+                            height: 30.h,
                             width: double.maxFinite,
                             child: Text(
-                              "Martin's Car",
+                              booking.name,
+                              textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -230,7 +231,7 @@ class MyBookings extends StatelessWidget {
                                   width: 230.w,
                                   // color: Colors.amber,
                                   child: Text(
-                                    "30 : 20",
+                                    "00 : 00",
                                     style: Theme.of(context)
                                         .textTheme
                                         .displaySmall

@@ -14,7 +14,8 @@ class BookingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.getBookings("pSgDcrX5XtaXujizeObCw3o5CWb2");
+    // controller.getBookings(controller.extractUid());
+    controller. getBookings("pSgDcrX5XtaXujizeObCw3o5CWb2");
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -23,7 +24,7 @@ class BookingList extends StatelessWidget {
             right: 23.w,
             left: 23.w,
           ),
-          child: Column(
+          child: Obx(() =>  Column(
             children: [
               Container(
                 height: 40.h,
@@ -41,14 +42,18 @@ class BookingList extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15.h),
-              Column(
-                children: List.generate(controller.bookings.value.length,
-                    (index) => Activity(lot: controller.bookings.value[index])),
-              ),
+              controller.bookings.value.length < 1
+                  ? Text("You have no prior activity")
+                  : Column(
+                      children: List.generate(
+                          controller.bookings.value.length,
+                          (index) =>
+                              Activity(lot: controller.bookings.value[index])),
+                    ),
             ],
           ),
         ),
-      ),
+      ),)
     );
   }
 }
@@ -109,7 +114,11 @@ class Activity extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           vertical: 2.sp, horizontal: 7.sp),
                       decoration: BoxDecoration(
-                          color:lot.status=="Pending"? Colors.amber:lot.status =="Inprogress"?Colors.green:Color(0xFFDC143C),
+                          color: lot.status == "Pending"
+                              ? Colors.amber
+                              : lot.status == "Inprogress"
+                                  ? Colors.green
+                                  : Color(0xFFDC143C),
                           borderRadius: BorderRadius.circular(10.sp)),
                       child: Text(
                         lot.status,
