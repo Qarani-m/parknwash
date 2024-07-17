@@ -37,15 +37,15 @@ class MyBookings extends StatelessWidget {
                       child: const Icon(
                         Icons.arrow_back,
                       )),
-                  controller.parkingStatus.value == "Completed"
-                      ? Container(
+                  Container(
+                    alignment: Alignment.centerRight,
                           height: 50.h,
                           width: 70.h,
                           child: Shimmer.fromColors(
                             baseColor: isDarkMode
                                 ? Colors.white
                                 : AppColors.scaffoldColorDark,
-                            highlightColor: Colors.yellow,
+                            highlightColor: Color(0xFFDC143C),
                             child: Icon(
                               Icons.qr_code,
                               size: 30.h,
@@ -55,13 +55,10 @@ class MyBookings extends StatelessWidget {
                             ),
                           ),
                         )
-                      : SizedBox()
                 ],
               ),
             ),
-            SizedBox(
-              height: 10.h,
-            ),
+             
             Obx(() => SingleChildScrollView(
                 child: controller.isLoading.value
                     ? Center(
@@ -87,7 +84,7 @@ class MyBookings extends StatelessWidget {
                           ),
                           Container(
                             alignment: Alignment.center,
-                            height: 30.h,
+                            height: 45.h,
                             width: double.maxFinite,
                             child: Text(
                               booking.name,
@@ -99,7 +96,7 @@ class MyBookings extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 25.h,
+                            height: 20.h,
                           ),
                           Container(
                             height: 20.h,
@@ -216,10 +213,10 @@ class MyBookings extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 25.h,
+                            height: 5.h,
                           ),
                           Container(
-                            height: 58.h,
+                            height: 48.h,
                             width: double.maxFinite,
                             // color: Colors.red,
                             child: Row(
@@ -227,7 +224,7 @@ class MyBookings extends StatelessWidget {
                               children: [
                                 Container(
                                   alignment: Alignment.bottomRight,
-                                  height: 58.h,
+                                  height: 53.h,
                                   width: 230.w,
                                   // color: Colors.amber,
                                   child: Text(
@@ -242,7 +239,7 @@ class MyBookings extends StatelessWidget {
                                 ),
                                 Container(
                                   alignment: Alignment.bottomLeft,
-                                  height: 58.h,
+                                  height: 48.h,
                                   width: 90.w,
                                   child: Text(
                                     "min",
@@ -271,7 +268,7 @@ class MyBookings extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 25.h,
+                            height: 20.h,
                           ),
                           Container(
                             decoration: BoxDecoration(
