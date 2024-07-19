@@ -25,49 +25,19 @@ class MyBookings extends StatelessWidget {
     final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    // controller.hours.value = 
+    // controller.hours.value =
 
-     controller.timeCounter(booking.timeDifference["difference"]??"" );
+    controller.timeCounter(booking.timeDifference["difference"] ?? "");
 
-    controller.getWhenParkingStarted(booking.documentId, booking.cat, booking.status);
+    controller.getWhenParkingStarted(
+        booking.documentId, booking.cat, booking.status);
 
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: 40.h, left: 23.w, right: 23.w),
         child: Column(
           children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Get.offNamed("/booking_list");
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                      )),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.h,
-                    width: 70.h,
-                    child: Shimmer.fromColors(
-                      baseColor: isDarkMode
-                          ? Colors.white
-                          : AppColors.scaffoldColorDark,
-                      highlightColor: const Color(0xFFDC143C),
-                      child: Icon(
-                        Icons.qr_code,
-                        size: 30.h,
-                        color: isDarkMode
-                            ? Colors.white
-                            : theme.scaffoldBackgroundColor,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            QrCodeHeader(isDarkMode: isDarkMode, controller: controller, theme: theme),
             Obx(() => SingleChildScrollView(
                 child: controller.isLoading.value
                     ? Center(
@@ -165,113 +135,11 @@ class MyBookings extends StatelessWidget {
                           SizedBox(
                             height: 20.h,
                           ),
-                          Container(
-                            height: 212.h,
-                            width: 212.h,
-                            padding: EdgeInsets.all(20.h),
-                            decoration: BoxDecoration(
-                              color: controller.parkingStatus.value == "Pending"
-                                  ? Colors.amber
-                                  : controller.parkingStatus.value ==
-                                          "Inprogress"
-                                      ? const Color(0xFF39C16B)
-                                      : const Color(0xFFdc143c),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: isDarkMode
-                                      ? Colors.white38
-                                      : Colors.black.withOpacity(0.3),
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Container(
-                              height: 170.h,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 40.h, horizontal: 20.h),
-                              width: 170.h,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black26),
-                                color: Get.theme.scaffoldBackgroundColor,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: isDarkMode
-                                        ? Colors.white38
-                                        : Colors.black.withOpacity(0.3),
-                                    spreadRadius: -3,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Transform.rotate(
-                                angle: -90 * pi / 180, // 90 degrees in radians
-                                child: Container(
-                                  height: 170.h,
-                                  width: 170.h,
-                                  decoration: const BoxDecoration(
-                                    // color: Colors.blue,
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/vehicle.png"),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          RoundAbout(controller: controller, isDarkMode: isDarkMode),
                           SizedBox(
                             height: 5.h,
                           ),
-                          SizedBox(
-                            height: 48.h,
-                            width: double.maxFinite,
-                            // color: Colors.red,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  alignment: Alignment.bottomRight,
-                                  height: 53.h,
-                                  width: 230.w,
-                                  // color: Colors.amber,
-                                  child: Text(
-                                    booking.status == "Pending"
-                                        ? "00 : 00"
-                                        : booking.status == "Completed"
-                                            ? controller.timeCounter(
-                                                booking.timeDifference[
-                                                        "difference"] ??
-                                                    "")
-                                            : "${controller.hours.value.toString().padLeft(2, '0')}: ${controller.minutes.value.toString().padLeft(2, '0')}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(
-                                            fontSize: 45.sp,
-                                            fontWeight: FontWeight.w900),
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.bottomLeft,
-                                  height: 48.h,
-                                  width: 90.w,
-                                  child: Text(
-                                    "min",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            color: const Color(0xFF929292)),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                          TimeCounter(booking: booking, controller: controller),
                           SizedBox(
                             height: 5.h,
                           ),
@@ -280,7 +148,7 @@ class MyBookings extends StatelessWidget {
                             height: 25.h,
                             width: double.maxFinite,
                             child: Text(
-                              " ${booking.timestamp['time']?.capitalize ?? ""} ${booking.timestamp['date']?.capitalize ?? ""}",
+                              " ${booking.timestamp['time'] ?? ""} ${booking.timestamp['date'] ?? ""}",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -296,8 +164,9 @@ class MyBookings extends StatelessWidget {
                           ),
                           controller.parkingStatus.value == "Pending"
                               ? GestureDetector(
-                                  onTap: () => controller.theButton(
-                                      controller.parkingStatus.value),
+                                  onTap: () => controller.checkIn(
+                                    booking.documentId,
+                                  ),
                                   child: _buildButtonContainer(
                                       controller.parkingStatus.value),
                                 )
@@ -396,7 +265,10 @@ class MyBookings extends StatelessWidget {
                   color: AppColors.accentColor,
                   borderRadius: BorderRadius.circular(20.sp),
                 ),
-                child: Text(_getButtonText(status)),
+                child: Text(
+                  _getButtonText(status),
+                  style: TextStyle(color: AppColors.scaffoldColorDark),
+                ),
               ),
               GestureDetector(
                 onTap: () => controller.cancelBooking(),
@@ -416,17 +288,278 @@ class MyBookings extends StatelessWidget {
               ),
             ],
           )
-        : Container(
-            alignment: Alignment.center,
-            height: 70.h,
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-              color: AppColors.accentColor,
-              borderRadius: BorderRadius.circular(20.sp),
-            ),
-            child: Text(
-              _getButtonText(status),
+        : GestureDetector(
+            child: Container(
+              alignment: Alignment.center,
+              height: 70.h,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                color: AppColors.accentColor,
+                borderRadius: BorderRadius.circular(20.sp),
+              ),
+              child: Text(_getButtonText(status),
+                  style: TextStyle(color: AppColors.scaffoldColorDark)),
             ),
           );
+  }
+}
+
+class TimeCounter extends StatelessWidget {
+  const TimeCounter({
+    super.key,
+    required this.booking,
+    required this.controller,
+  });
+
+  final BookingData booking;
+  final MyBookingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 48.h,
+      width: double.maxFinite,
+      // color: Colors.red,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            alignment: Alignment.bottomRight,
+            height: 53.h,
+            width: 230.w,
+            // color: Colors.amber,
+            child: booking.status == "Pending"
+                ? Text(
+                    "00 : 00",
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(
+                            fontSize: 45.sp,
+                            fontWeight: FontWeight.w900),
+                  )
+                : booking.status == "Completed"
+                    ? Text(
+                        controller.timeCounter(
+                            booking.timeDifference[
+                                    "difference"] ??
+                                ""),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(
+                                fontSize: 45.sp,
+                                fontWeight:
+                                    FontWeight.w900),
+                      )
+                    : Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: controller.hours.value
+                                  .toString()
+                                  .padLeft(2, '0'),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall
+                                  ?.copyWith(
+                                      fontSize: 45.sp,
+                                      fontWeight:
+                                          FontWeight
+                                              .w900),
+                            ),
+                            TextSpan(
+                              text: " hrs",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall
+                                  ?.copyWith(
+                                      fontSize: 30
+                                          .sp, // Smaller font size
+                                      fontWeight: FontWeight
+                                          .w400), // Lighter font weight
+                            ),
+                            TextSpan(
+                              text: " : ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall
+                                  ?.copyWith(
+                                      fontSize: 45.sp,
+                                      fontWeight:
+                                          FontWeight
+                                              .w900),
+                            ),
+                            TextSpan(
+                              text: controller
+                                  .minutes.value
+                                  .toString()
+                                  .padLeft(2, '0'),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall
+                                  ?.copyWith(
+                                      fontSize: 45.sp,
+                                      fontWeight:
+                                          FontWeight
+                                              .w900),
+                            ),
+                          ],
+                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(
+                                fontSize: 45.sp,
+                                fontWeight:
+                                    FontWeight.w900),
+                      ),
+          ),
+          Container(
+            alignment: Alignment.bottomLeft,
+            height: 48.h,
+            width: 90.w,
+            child: Text(
+              "min",
+              style: Theme.of(context)
+                  .textTheme
+                  .displaySmall
+                  ?.copyWith(
+                      fontSize:
+                          30.sp, // Smaller font size
+                      fontWeight: FontWeight.w400),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class RoundAbout extends StatelessWidget {
+  const RoundAbout({
+    super.key,
+    required this.controller,
+    required this.isDarkMode,
+  });
+
+  final MyBookingController controller;
+  final bool isDarkMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 212.h,
+      width: 212.h,
+      padding: EdgeInsets.all(20.h),
+      decoration: BoxDecoration(
+        color: controller.parkingStatus.value == "Pending"
+            ? Colors.amber
+            : controller.parkingStatus.value ==
+                    "Inprogress"
+                ? const Color(0xFF39C16B)
+                : const Color(0xFFdc143c),
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: isDarkMode
+                ? Colors.white38
+                : Colors.black.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Container(
+        height: 170.h,
+        padding: EdgeInsets.symmetric(
+            vertical: 40.h, horizontal: 20.h),
+        width: 170.h,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black26),
+          color: Get.theme.scaffoldBackgroundColor,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: isDarkMode
+                  ? Colors.white38
+                  : Colors.black.withOpacity(0.3),
+              spreadRadius: -3,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Transform.rotate(
+          angle: -90 * pi / 180, // 90 degrees in radians
+          child: Container(
+            height: 170.h,
+            width: 170.h,
+            decoration: const BoxDecoration(
+              // color: Colors.blue,
+              image: DecorationImage(
+                image: AssetImage(
+                    "assets/images/vehicle.png"),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class QrCodeHeader extends StatelessWidget {
+  const QrCodeHeader({
+    super.key,
+    required this.isDarkMode,
+    required this.controller,
+    required this.theme,
+  });
+
+  final bool isDarkMode;
+  final MyBookingController controller;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+              onTap: () {
+                Get.offNamed("/booking_list");
+              },
+              child: const Icon(
+                Icons.arrow_back,
+              )),
+          Container(
+            alignment: Alignment.centerRight,
+            height: 50.h,
+            width: 70.h,
+            child: Shimmer.fromColors(
+              baseColor: isDarkMode
+                  ? Colors.white
+                  : AppColors.scaffoldColorDark,
+              highlightColor:
+                  controller.parkingStatus.value == "Pending"
+                      ? Colors.amber
+                      : controller.parkingStatus.value == "Inprogress"
+                          ? const Color(0xFF39C16B)
+                          : const Color(0xFFdc143c),
+              child: Icon(
+                Icons.qr_code,
+                size: 30.h,
+                color: isDarkMode
+                    ? Colors.white
+                    : theme.scaffoldBackgroundColor,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

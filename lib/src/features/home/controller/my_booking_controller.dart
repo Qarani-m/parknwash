@@ -21,8 +21,8 @@ class MyBookingController extends GetxController {
     final regex = RegExp(r'(\d+)');
     final matches = regex.allMatches(timeDifference);
     if (matches.length >= 2) {
-        hours.value =int.parse( matches.elementAt(0).group(0)!);
-        minutes.value=int.parse(matches.elementAt(1).group(0)!);
+      hours.value = int.parse(matches.elementAt(0).group(0)!);
+      minutes.value = int.parse(matches.elementAt(1).group(0)!);
       return '$hours : $minutes';
     }
     return timeDifference;
@@ -30,20 +30,19 @@ class MyBookingController extends GetxController {
 
   void startTimer(String status) {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      status =="Pending"?somefunction(): counter();
+      status == "Pending" ? somefunction() : counter();
     });
   }
 
-void somefunction(){}
+  void somefunction() {}
 
   void counter() {
     if (seconds.value < 59) {
-      price.value +=
-          (rates / 3600) * ((hours.value / 3600) + minutes.value / 60);
       seconds.value++;
     } else {
       seconds.value = 0;
       if (minutes.value < 59) {
+        price.value += (rates / 60) * ((hours.value / 60) + minutes.value);
         minutes.value++;
       } else {
         minutes.value = 0;
@@ -52,7 +51,8 @@ void somefunction(){}
     }
   }
 
-  Future<void> getWhenParkingStarted(String docId, int cat, String status) async {
+  Future<void> getWhenParkingStarted(
+      String docId, int cat, String status) async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
         .collection('bookings')
         .doc(docId)
@@ -72,8 +72,10 @@ void somefunction(){}
 
       String rates = await getRate(lotId) ?? "";
       print(rates.split(","));
-      price.value =status =="Pending"?0.0: formatHourDifference(timeWhenParkingStarted) *
-          int.parse(rates.split(",")[cat]);
+      price.value = status == "Pending"
+          ? 0.0
+          : formatHourDifference(timeWhenParkingStarted) *
+              int.parse(rates.split(",")[cat]);
     } else {
       return null;
     }
@@ -98,16 +100,26 @@ void somefunction(){}
   }
 
 // ----------------------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------------------
   void changeParkingStatus(String type) {
     parkingStatus.value = type;
   }
 
-  void theButton(String condition) {
-    if (condition == "Pending") {
-      Get.toNamed("/booking_finished");
-    } else {
-      print("End Parking");
-    }
+  void checkIn(String docId) async {
+    Map<String, dynamic> data = {
+      'entered': Timestamp.now(),
+      'status': 'Inprogress',
+    };
+    await FirebaseFirestore.instance
+        .collection("bookings")
+        .doc(docId)
+        .update(data)
+        .catchError((error) {
+      // Handle errors here
+      print("Failed to update document: $error");
+    });
+    parkingStatus.value = "Inprogress";
   }
 
   void cancelBooking() {
