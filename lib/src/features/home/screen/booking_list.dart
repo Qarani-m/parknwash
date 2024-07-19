@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
-import 'package:parknwash/src/features/profile/models/lot_model.dart';
-import 'package:parknwash/src/utils/constants/colors.dart';
 
 class BookingList extends StatelessWidget {
   BookingList({super.key});
@@ -26,15 +23,15 @@ class BookingList extends StatelessWidget {
           ),
           child: Obx(() =>  Column(
             children: [
-              Container(
+              SizedBox(
                 height: 40.h,
                 width: double.maxFinite,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                        onTap: () => Get.back(), child: Icon(Icons.arrow_back)),
-                    Text("Your activity"),
+                        onTap: () => Get.back(), child: const Icon(Icons.arrow_back)),
+                    const Text("Your activity"),
                     SizedBox(
                       width: 10.w,
                     ),
@@ -42,8 +39,8 @@ class BookingList extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15.h),
-              controller.bookings.value.length < 1
-                  ? Text("You have no prior activity")
+              controller.bookings.value.isEmpty
+                  ? const Text("You have no prior activity")
                   : Column(
                       children: List.generate(
                           controller.bookings.value.length,
@@ -100,7 +97,7 @@ class Activity extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${lot.lotId.substring(0, 5).toUpperCase()}"),
+                    Text(lot.lotId.substring(0, 5).toUpperCase()),
                     SizedBox(
                       width: 190.w,
                       child: Text(
@@ -118,7 +115,7 @@ class Activity extends StatelessWidget {
                               ? Colors.amber
                               : lot.status == "Inprogress"
                                   ? Colors.green
-                                  : Color(0xFFDC143C),
+                                  : const Color(0xFFDC143C),
                           borderRadius: BorderRadius.circular(10.sp)),
                       child: Text(
                         lot.status,

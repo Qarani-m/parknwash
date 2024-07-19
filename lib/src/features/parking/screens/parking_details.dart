@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:parknwash/src/features/auth/screens/login.dart';
-import 'package:parknwash/src/features/parking/controllers/locations_controller.dart';
 import 'package:parknwash/src/features/parking/controllers/parking_details_controller.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
@@ -63,7 +62,7 @@ class ParkingDetails extends StatelessWidget {
                     obscureText: false,
                     justToMakeSure: false,
                     hintText: cat=="1"?"KMTX 783K": 'KCD 899C',
-                    title: cat=="1"?"Bike\'s Plate Number": 'Vehicle\'s Plate Number',
+                    title: cat=="1"?"Bike's Plate Number": 'Vehicle\'s Plate Number',
                   ),
                 ),
                 SizedBox(

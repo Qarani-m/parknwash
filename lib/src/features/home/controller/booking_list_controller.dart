@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
-import 'package:parknwash/src/utils/constants/firebase_service.dart';
 
 class BookingListController extends GetxController {
   RxList<BookingData> bookings = <BookingData>[].obs;
@@ -56,7 +55,7 @@ class BookingListController extends GetxController {
         Get.snackbar("No activity", "No bookings found");
       }
     } catch (e) {
-      Get.snackbar("Error", "Some tyoe of error of error happened ${e}");
+      Get.snackbar("Error", "Some tyoe of error of error happened $e");
     }
   }
 }

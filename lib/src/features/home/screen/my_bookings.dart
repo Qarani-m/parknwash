@@ -45,7 +45,7 @@ class MyBookings extends StatelessWidget {
                             baseColor: isDarkMode
                                 ? Colors.white
                                 : AppColors.scaffoldColorDark,
-                            highlightColor: Color(0xFFDC143C),
+                            highlightColor: const Color(0xFFDC143C),
                             child: Icon(
                               Icons.qr_code,
                               size: 30.h,
@@ -92,13 +92,13 @@ class MyBookings extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
-                                  ?.copyWith(color: Color(0xFF929292)),
+                                  ?.copyWith(color: const Color(0xFF929292)),
                             ),
                           ),
                           SizedBox(
                             height: 20.h,
                           ),
-                          Container(
+                          SizedBox(
                             height: 20.h,
                             width: double.maxFinite,
                             child: Row(
@@ -109,7 +109,7 @@ class MyBookings extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
-                                      ?.copyWith(color: Color(0xFF929292)),
+                                      ?.copyWith(color: const Color(0xFF929292)),
                                 ),
                                 Text(
                                   "\$20",
@@ -124,7 +124,7 @@ class MyBookings extends StatelessWidget {
                           SizedBox(
                             height: 5.h,
                           ),
-                          Container(
+                          SizedBox(
                             height: 25.h,
                             width: double.maxFinite,
                             child: Row(
@@ -143,8 +143,8 @@ class MyBookings extends StatelessWidget {
                                                   : controller.parkingStatus
                                                               .value ==
                                                           "Inprogress"
-                                                      ? Color(0xFF39C16B)
-                                                      : Color(0xFFdc143c),
+                                                      ? const Color(0xFF39C16B)
+                                                      : const Color(0xFFdc143c),
                                           fontWeight: FontWeight.w500),
                                 ),
                               ],
@@ -162,8 +162,8 @@ class MyBookings extends StatelessWidget {
                                   ? Colors.amber
                                   : controller.parkingStatus.value ==
                                           "Inprogress"
-                                      ? Color(0xFF39C16B)
-                                      : Color(0xFFdc143c),
+                                      ? const Color(0xFF39C16B)
+                                      : const Color(0xFFdc143c),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
@@ -172,7 +172,7 @@ class MyBookings extends StatelessWidget {
                                       : Colors.black.withOpacity(0.3),
                                   spreadRadius: 2,
                                   blurRadius: 10,
-                                  offset: Offset(0, 4),
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
@@ -192,7 +192,7 @@ class MyBookings extends StatelessWidget {
                                         : Colors.black.withOpacity(0.3),
                                     spreadRadius: -3,
                                     blurRadius: 5,
-                                    offset: Offset(0, 2),
+                                    offset: const Offset(0, 2),
                                   ),
                                 ],
                               ),
@@ -201,7 +201,7 @@ class MyBookings extends StatelessWidget {
                                 child: Container(
                                   height: 170.h,
                                   width: 170.h,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     // color: Colors.blue,
                                     image: DecorationImage(
                                       image: AssetImage(
@@ -215,7 +215,7 @@ class MyBookings extends StatelessWidget {
                           SizedBox(
                             height: 5.h,
                           ),
-                          Container(
+                          SizedBox(
                             height: 48.h,
                             width: double.maxFinite,
                             // color: Colors.red,
@@ -246,7 +246,7 @@ class MyBookings extends StatelessWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
-                                        ?.copyWith(color: Color(0xFF929292)),
+                                        ?.copyWith(color: const Color(0xFF929292)),
                                   ),
                                 )
                               ],
@@ -264,7 +264,7 @@ class MyBookings extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
-                                  ?.copyWith(color: Color(0xFF929292)),
+                                  ?.copyWith(color: const Color(0xFF929292)),
                             ),
                           ),
                           SizedBox(
@@ -351,7 +351,7 @@ class MyBookings extends StatelessWidget {
                               : controller.parkingStatus.value == "Inprogress"
                                   ? _buildButtonContainer(
                                       controller.parkingStatus.value)
-                                  : SizedBox()
+                                  : const SizedBox()
                         ],
                       )))
           ],
@@ -393,10 +393,10 @@ class MyBookings extends StatelessWidget {
                   height: 70.h,
                   width: 130.w,
                   decoration: BoxDecoration(
-                    color: Color(0xFF39C16B),
+                    color: const Color(0xFF39C16B),
                     borderRadius: BorderRadius.circular(20.sp),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Cancel",
                     style: TextStyle(color: Colors.white),
                   ),
