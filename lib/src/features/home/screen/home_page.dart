@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
               ),
               child: FloatingActionButton(
                 backgroundColor: AppColors.accentColor,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 onPressed: () {
                   controller.startParking();
                 },
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: AnimatedBottomNavigationBar(
-              icons: [Icons.local_car_wash, Icons.local_parking],
+              icons: const [Icons.local_car_wash, Icons.local_parking],
               activeIndex: controller.activeIndex.value,
               elevation: 50,
               backgroundColor:
@@ -90,7 +90,7 @@ class HomePage extends StatelessWidget {
               shadow: Shadow(
                   color: isDarkMode ? Colors.white54 : Colors.black54,
                   blurRadius: 10,
-                  offset: Offset(-2, 0)),
+                  offset: const Offset(-2, 0)),
               onTap: (value) {
                 controller.activeIndex.value = value;
                 if (value == 0) {

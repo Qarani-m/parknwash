@@ -29,8 +29,9 @@ class AppBindings extends Bindings {
     Get.put<LocationsController>(LocationsController());
     Get.put<BookingFinishedController>(BookingFinishedController());
     Get.put<ParkingDetailsController>(ParkingDetailsController());
-    Get.put<MyBookingController>(MyBookingController());
     Get.put<BookingListController>(BookingListController());
+    Get.put<MyBookingController>(MyBookingController());
+
   }
 }
 

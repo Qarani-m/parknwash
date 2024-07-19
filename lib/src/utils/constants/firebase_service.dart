@@ -71,7 +71,7 @@ class FirestoreService<T> {
   // Stream of documents
   Stream<List<T>> streamDocuments() {
     return _firestore.collection(collection).snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => fromJson(doc.data() as Map<String, dynamic>)).toList();
+      return snapshot.docs.map((doc) => fromJson(doc.data())).toList();
     });
   }
 }

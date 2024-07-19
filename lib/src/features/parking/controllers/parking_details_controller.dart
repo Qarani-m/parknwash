@@ -19,7 +19,7 @@ class ParkingDetailsController extends GetxController {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Booking fee'),
+          title: const Text('Booking fee'),
           content: Text(
             textAlign: TextAlign.center,
             'A boking fee of KSH ${cat == "1" ? 100 : 200} is required, press OK to proceed',
@@ -30,13 +30,13 @@ class ParkingDetailsController extends GetxController {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
                 initatePayment(cat);
@@ -77,6 +77,7 @@ class ParkingDetailsController extends GetxController {
       print("Error fetching documents: $e");
       return null;
     }
+    return null;
   }
 
 Future<void> saveBooking() async {
@@ -107,7 +108,7 @@ Future<void> saveBooking() async {
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green,
           colorText: Colors.white,
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         );
 
         // Navigate to booking_finished page
@@ -120,7 +121,7 @@ Future<void> saveBooking() async {
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         );
       }
     } catch (e) {
@@ -131,7 +132,7 @@ Future<void> saveBooking() async {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       );
     }
   }
