@@ -12,12 +12,15 @@ class BookingData {
   final String vehicleRegNo;
   final String name;
   final String realName;
+  final int cat;
+  final String documentId;
   final Map<String, String> timeDifference;
 
-  BookingData( 
-      {
-        required this.timeDifference,
-        required this.eta,
+  BookingData(
+      {required this.timeDifference,
+      required this.documentId,
+      required this.cat,
+      required this.eta,
       required this.lotId,
       required this.phone,
       required this.status,
@@ -29,8 +32,9 @@ class BookingData {
 
   factory BookingData.fromJson(Map<String, dynamic> json) {
     return BookingData(
-      timeDifference:json['timeDifference'],
-      
+      documentId:json['documentId'],
+        cat: json['cat'],
+        timeDifference: json['timeDifference'],
         eta: json['eta'],
         lotId: json['lotId'],
         phone: json['phone'],
@@ -44,7 +48,9 @@ class BookingData {
 
   Map<String, dynamic> toJson() {
     return {
-      "timeDifference":timeDifference,
+      "documentId":documentId,
+      "cat": cat,
+      "timeDifference": timeDifference,
       'eta': eta,
       'lotId': lotId,
       'phone': phone,

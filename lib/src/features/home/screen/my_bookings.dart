@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/home/controller/my_booking_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
@@ -13,16 +14,21 @@ class MyBookings extends StatelessWidget {
   MyBookings({super.key});
 
   MyBookingController controller = Get.find<MyBookingController>();
- 
 
   @override
   Widget build(BuildContext context) {
-        final arguments = Get.arguments as Map;
+    final arguments = Get.arguments as Map;
     final BookingData booking = arguments['booking'] as BookingData;
-    print(booking.name);
+    final String completedPrice = arguments['price'];
+    controller.startTimer(booking.status);
     controller.changeParkingStatus(booking.status);
     final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
+
+    print(booking.documentId);
+
+    controller.getWhenParkingStarted(booking.documentId, booking.cat, booking.status);
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: 40.h, left: 23.w, right: 23.w),
@@ -34,33 +40,32 @@ class MyBookings extends StatelessWidget {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        Get.back();
+                        Get.offNamed("/booking_list");
                       },
                       child: const Icon(
                         Icons.arrow_back,
                       )),
                   Container(
                     alignment: Alignment.centerRight,
-                          height: 50.h,
-                          width: 70.h,
-                          child: Shimmer.fromColors(
-                            baseColor: isDarkMode
-                                ? Colors.white
-                                : AppColors.scaffoldColorDark,
-                            highlightColor: const Color(0xFFDC143C),
-                            child: Icon(
-                              Icons.qr_code,
-                              size: 30.h,
-                              color: isDarkMode
-                                  ? Colors.white
-                                  : theme.scaffoldBackgroundColor,
-                            ),
-                          ),
-                        )
+                    height: 50.h,
+                    width: 70.h,
+                    child: Shimmer.fromColors(
+                      baseColor: isDarkMode
+                          ? Colors.white
+                          : AppColors.scaffoldColorDark,
+                      highlightColor: const Color(0xFFDC143C),
+                      child: Icon(
+                        Icons.qr_code,
+                        size: 30.h,
+                        color: isDarkMode
+                            ? Colors.white
+                            : theme.scaffoldBackgroundColor,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
-             
             Obx(() => SingleChildScrollView(
                 child: controller.isLoading.value
                     ? Center(
@@ -111,10 +116,13 @@ class MyBookings extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
-                                      ?.copyWith(color: const Color(0xFF929292)),
+                                      ?.copyWith(
+                                          color: const Color(0xFF929292)),
                                 ),
                                 Text(
-                                  "\$20",
+                                  booking.status == "Completed"
+                                      ? completedPrice
+                                      : "\Ksh ${controller.price.value.toStringAsFixed(2)}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
@@ -230,7 +238,14 @@ class MyBookings extends StatelessWidget {
                                   width: 230.w,
                                   // color: Colors.amber,
                                   child: Text(
-                                    booking.status=="Pending"? "00 : 00":      booking.status=="Completed"? controller.formatTimeDifference( booking.timeDifference["difference"] ?? ""):"",
+                                    booking.status == "Pending"
+                                        ? "00 : 00"
+                                        : booking.status == "Completed"
+                                            ? controller.timeCounter(
+                                                booking.timeDifference[
+                                                        "difference"] ??
+                                                    "")
+                                            : "${controller.hours.value.toString().padLeft(2, '0')}: ${controller.minutes.value.toString().padLeft(2, '0')}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .displaySmall
@@ -248,7 +263,8 @@ class MyBookings extends StatelessWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
-                                        ?.copyWith(color: const Color(0xFF929292)),
+                                        ?.copyWith(
+                                            color: const Color(0xFF929292)),
                                   ),
                                 )
                               ],
@@ -262,8 +278,7 @@ class MyBookings extends StatelessWidget {
                             height: 25.h,
                             width: double.maxFinite,
                             child: Text(
-                             " ${booking.timestamp['time']?.capitalize ??""} ${booking.timestamp['date']?.capitalize ??""}",
-
+                              " ${booking.timestamp['time']?.capitalize ?? ""} ${booking.timestamp['date']?.capitalize ?? ""}",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -273,74 +288,7 @@ class MyBookings extends StatelessWidget {
                           SizedBox(
                             height: 20.h,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black38),
-                                borderRadius: BorderRadius.circular(20.sp)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 13.w, vertical: 5.h),
-                            height: 114.h,
-                            width: 320.w,
-                            // color: Colors.white,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  height: 100.h,
-                                  width: 150.w,
-                                  // color: Colors.pink,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Zone",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
-                                                color: isDarkMode
-                                                    ? Colors.white
-                                                        .withOpacity(0.3)
-                                                    : AppColors
-                                                        .scaffoldColorDark
-                                                        .withOpacity(0.3),
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        height: 4.h,
-                                      ),
-                                      Text(
-                                        "A-13",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium
-                                            ?.copyWith(
-                                                fontSize: 30.sp,
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 90.h,
-                                  width: 130.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(10.sp),
-                                      image: const DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: AssetImage(
-                                              "assets/images/location_pointer.png"))),
-                                )
-                              ],
-                            ),
-                          ),
+                          _zoneHolder(context, isDarkMode),
                           SizedBox(
                             height: 25.h,
                           ),
@@ -359,6 +307,65 @@ class MyBookings extends StatelessWidget {
                       )))
           ],
         ),
+      ),
+    );
+  }
+
+  Container _zoneHolder(BuildContext context, bool isDarkMode) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black38),
+          borderRadius: BorderRadius.circular(20.sp)),
+      padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 5.h),
+      height: 114.h,
+      width: 320.w,
+      // color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            height: 100.h,
+            width: 150.w,
+            // color: Colors.pink,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Zone",
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: isDarkMode
+                          ? Colors.white.withOpacity(0.3)
+                          : AppColors.scaffoldColorDark.withOpacity(0.3),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: 4.h,
+                ),
+                Text(
+                  "A-13",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(fontSize: 30.sp, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 90.h,
+            width: 130.w,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.sp),
+                image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/location_pointer.png"))),
+          )
+        ],
       ),
     );
   }

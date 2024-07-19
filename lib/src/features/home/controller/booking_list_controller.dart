@@ -8,16 +8,18 @@ import 'package:parknwash/src/features/home/models/booking_model.dart';
 
 class BookingListController extends GetxController {
   RxList<BookingData> bookings = <BookingData>[].obs;
+  RxBool isLoading = true.obs;
+  RxString documentId = "".obs;
+
+
+
   final box = GetStorage();
+
 
   @override
   Future<void> onInit() async {
-    // TODO: implement onInit
     super.onInit();
-    // await getBookings();
-
     getBookings(extractUid());
-    // getBookings("pSgDcrX5XtaXujizeObCw3o5CWb2");
   }
 
   String extractUid() {
@@ -26,6 +28,7 @@ class BookingListController extends GetxController {
     String uid = userData['uid'];
     return uid;
   }
+
 
   Future<void> getBookings(String targetUid) async {
     try {
@@ -40,16 +43,20 @@ class BookingListController extends GetxController {
       if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          
+
           theData.add(BookingData(
+            documentId:doc.id,
               realName: data['realName'],
               eta: data["eta"] ?? 0,
               lotId: data['lotId'] ?? "",
               phone: data['phone'] ?? "",
               status: data['status'] ?? "",
+              cat: data['cat'],
               timestamp: await parseFirestoreTimestamp(
                   data['entered'] ?? Timestamp(2, 0)),
               timeDifference: await formatHourDifference(
-                  data["entered"],
+                  data["entered"]?? Timestamp.now(),
                   data['left'] ?? Timestamp.now(),
                   data['status'],
                   data['cat'],
@@ -98,7 +105,8 @@ class BookingListController extends GetxController {
     double hours = difference.inMinutes / 60.0;
 
     String? rates = await getRate(lotId);
-    String price = (hours * int.parse(rates!.split(",")[cat])).toStringAsFixed(2);
+    String price =
+        (hours * int.parse(rates!.split(",")[cat])).toStringAsFixed(2);
 
     if (hours < 1) {
       int minutes = (hours * 60).round();

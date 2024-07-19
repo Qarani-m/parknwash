@@ -32,7 +32,7 @@ class BookingList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                        onTap: () => Get.back(),
+                        onTap: () => Get.offNamed("/home"),
                         child: const Icon(Icons.arrow_back)),
                     const Text("Your activity"),
                     SizedBox(
@@ -42,7 +42,7 @@ class BookingList extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15.h),
-              controller.bookings.value.isEmpty
+              controller.bookings.value.isEmpty 
                   ? const Text("You have no prior activity")
                   : Column(
                       children: List.generate(
@@ -74,6 +74,8 @@ class ParkingHistoryCard extends StatelessWidget {
     "/my_bookings",
     arguments: {
       'booking': bookingData,
+      "price":bookingData.timeDifference["price"] ?? ""
+ 
  
     },
   );
