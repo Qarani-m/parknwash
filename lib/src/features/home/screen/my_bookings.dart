@@ -13,10 +13,12 @@ class MyBookings extends StatelessWidget {
   MyBookings({super.key});
 
   MyBookingController controller = Get.find<MyBookingController>();
-  final BookingData booking = Get.arguments as BookingData;
+ 
 
   @override
   Widget build(BuildContext context) {
+        final arguments = Get.arguments as Map;
+    final BookingData booking = arguments['booking'] as BookingData;
     print(booking.name);
     controller.changeParkingStatus(booking.status);
     final theme = Get.theme;
@@ -228,7 +230,7 @@ class MyBookings extends StatelessWidget {
                                   width: 230.w,
                                   // color: Colors.amber,
                                   child: Text(
-                                    "00 : 00",
+                                    booking.status=="Pending"? "00 : 00":      booking.status=="Completed"? controller.formatTimeDifference( booking.timeDifference["difference"] ?? ""):"",
                                     style: Theme.of(context)
                                         .textTheme
                                         .displaySmall
@@ -260,7 +262,8 @@ class MyBookings extends StatelessWidget {
                             height: 25.h,
                             width: double.maxFinite,
                             child: Text(
-                              "12:10 pm  15 july 2024",
+                             " ${booking.timestamp['time']?.capitalize ??""} ${booking.timestamp['date']?.capitalize ??""}",
+
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium

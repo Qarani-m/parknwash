@@ -69,7 +69,16 @@ class ParkingHistoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return GestureDetector(
-      onTap: () => Get.toNamed("/my_bookings"),
+      onTap: () {
+  Get.toNamed(
+    "/my_bookings",
+    arguments: {
+      'booking': bookingData,
+ 
+    },
+  );
+},
+
       child: Card(
         color: Get.theme.scaffoldBackgroundColor,
         elevation: 4,

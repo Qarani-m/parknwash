@@ -22,4 +22,16 @@ class MyBookingController extends GetxController {
   void cancelBooking() {
     print("Cancel");
   }
+
+
+  String formatTimeDifference(String timeDifference) {
+  final regex = RegExp(r'(\d+)');
+  final matches = regex.allMatches(timeDifference);
+  if (matches.length >= 2) {
+    final hours = matches.elementAt(0).group(0);
+    final minutes = matches.elementAt(1).group(0);
+    return '$hours : $minutes';
+  }
+  return timeDifference;
+}
 }
