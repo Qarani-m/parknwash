@@ -21,8 +21,8 @@ class MyBookingController extends GetxController {
     final regex = RegExp(r'(\d+)');
     final matches = regex.allMatches(timeDifference);
     if (matches.length >= 2) {
-      final hours = matches.elementAt(0).group(0);
-      final minutes = matches.elementAt(1).group(0);
+        hours.value =int.parse( matches.elementAt(0).group(0)!);
+        minutes.value=int.parse(matches.elementAt(1).group(0)!);
       return '$hours : $minutes';
     }
     return timeDifference;

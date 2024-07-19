@@ -25,7 +25,9 @@ class MyBookings extends StatelessWidget {
     final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    print(booking.documentId);
+    // controller.hours.value = 
+
+     controller.timeCounter(booking.timeDifference["difference"]??"" );
 
     controller.getWhenParkingStarted(booking.documentId, booking.cat, booking.status);
 
