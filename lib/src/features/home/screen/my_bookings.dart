@@ -37,7 +37,8 @@ class MyBookings extends StatelessWidget {
         padding: EdgeInsets.only(top: 40.h, left: 23.w, right: 23.w),
         child: Column(
           children: [
-            QrCodeHeader(isDarkMode: isDarkMode, controller: controller, theme: theme),
+            QrCodeHeader(
+                isDarkMode: isDarkMode, controller: controller, theme: theme),
             Obx(() => SingleChildScrollView(
                 child: controller.isLoading.value
                     ? Center(
@@ -118,15 +119,12 @@ class MyBookings extends StatelessWidget {
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(
-                                          color:
-                                              controller.parkingStatus.value ==
-                                                      "Pending"
-                                                  ? Colors.amber
-                                                  : controller.parkingStatus
-                                                              .value ==
-                                                          "Inprogress"
-                                                      ? const Color(0xFF39C16B)
-                                                      : const Color(0xFFdc143c),
+                                          color: controller.parkingStatus.value == "Pending"
+            ? Colors.amber
+            : controller.parkingStatus.value == "Inprogress"
+                ? const Color(0xFF39C16B)
+                :controller.parkingStatus.value == "Cancelled"? Color(0xFFDC143c): const Color(0xFF24a0e1),
+       
                                           fontWeight: FontWeight.w500),
                                 ),
                               ],
@@ -135,7 +133,8 @@ class MyBookings extends StatelessWidget {
                           SizedBox(
                             height: 20.h,
                           ),
-                          RoundAbout(controller: controller, isDarkMode: isDarkMode),
+                          RoundAbout(
+                              controller: controller, isDarkMode: isDarkMode),
                           SizedBox(
                             height: 5.h,
                           ),
@@ -168,11 +167,13 @@ class MyBookings extends StatelessWidget {
                                     booking.documentId,
                                   ),
                                   child: _buildButtonContainer(
-                                      controller.parkingStatus.value),
+                                      controller.parkingStatus.value,
+                                      booking.documentId),
                                 )
                               : controller.parkingStatus.value == "Inprogress"
                                   ? _buildButtonContainer(
-                                      controller.parkingStatus.value)
+                                      controller.parkingStatus.value,
+                                      booking.documentId)
                                   : const SizedBox()
                         ],
                       )))
@@ -252,7 +253,7 @@ class MyBookings extends StatelessWidget {
     }
   }
 
-  Widget _buildButtonContainer(String status) {
+  Widget _buildButtonContainer(String status, String documentId) {
     return status == "Pending"
         ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -271,7 +272,7 @@ class MyBookings extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => controller.cancelBooking(),
+                onTap: () => controller.cancelBooking(documentId),
                 child: Container(
                   alignment: Alignment.center,
                   height: 70.h,
@@ -331,26 +332,18 @@ class TimeCounter extends StatelessWidget {
             child: booking.status == "Pending"
                 ? Text(
                     "00 : 00",
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall
-                        ?.copyWith(
-                            fontSize: 45.sp,
-                            fontWeight: FontWeight.w900),
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        fontSize: 45.sp, fontWeight: FontWeight.w900),
                   )
                 : booking.status == "Completed"
                     ? Text(
                         controller.timeCounter(
-                            booking.timeDifference[
-                                    "difference"] ??
-                                ""),
+                            booking.timeDifference["difference"] ?? ""),
                         style: Theme.of(context)
                             .textTheme
                             .displaySmall
                             ?.copyWith(
-                                fontSize: 45.sp,
-                                fontWeight:
-                                    FontWeight.w900),
+                                fontSize: 45.sp, fontWeight: FontWeight.w900),
                       )
                     : Text.rich(
                         TextSpan(
@@ -364,9 +357,7 @@ class TimeCounter extends StatelessWidget {
                                   .displaySmall
                                   ?.copyWith(
                                       fontSize: 45.sp,
-                                      fontWeight:
-                                          FontWeight
-                                              .w900),
+                                      fontWeight: FontWeight.w900),
                             ),
                             TextSpan(
                               text: " hrs",
@@ -374,8 +365,7 @@ class TimeCounter extends StatelessWidget {
                                   .textTheme
                                   .displaySmall
                                   ?.copyWith(
-                                      fontSize: 30
-                                          .sp, // Smaller font size
+                                      fontSize: 30.sp, // Smaller font size
                                       fontWeight: FontWeight
                                           .w400), // Lighter font weight
                             ),
@@ -386,13 +376,10 @@ class TimeCounter extends StatelessWidget {
                                   .displaySmall
                                   ?.copyWith(
                                       fontSize: 45.sp,
-                                      fontWeight:
-                                          FontWeight
-                                              .w900),
+                                      fontWeight: FontWeight.w900),
                             ),
                             TextSpan(
-                              text: controller
-                                  .minutes.value
+                              text: controller.minutes.value
                                   .toString()
                                   .padLeft(2, '0'),
                               style: Theme.of(context)
@@ -400,9 +387,7 @@ class TimeCounter extends StatelessWidget {
                                   .displaySmall
                                   ?.copyWith(
                                       fontSize: 45.sp,
-                                      fontWeight:
-                                          FontWeight
-                                              .w900),
+                                      fontWeight: FontWeight.w900),
                             ),
                           ],
                         ),
@@ -410,9 +395,7 @@ class TimeCounter extends StatelessWidget {
                             .textTheme
                             .displaySmall
                             ?.copyWith(
-                                fontSize: 45.sp,
-                                fontWeight:
-                                    FontWeight.w900),
+                                fontSize: 45.sp, fontWeight: FontWeight.w900),
                       ),
           ),
           Container(
@@ -421,13 +404,9 @@ class TimeCounter extends StatelessWidget {
             width: 90.w,
             child: Text(
               "min",
-              style: Theme.of(context)
-                  .textTheme
-                  .displaySmall
-                  ?.copyWith(
-                      fontSize:
-                          30.sp, // Smaller font size
-                      fontWeight: FontWeight.w400),
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  fontSize: 30.sp, // Smaller font size
+                  fontWeight: FontWeight.w400),
             ),
           )
         ],
@@ -448,6 +427,7 @@ class RoundAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(controller.parkingStatus.value);
     return Container(
       height: 212.h,
       width: 212.h,
@@ -455,16 +435,13 @@ class RoundAbout extends StatelessWidget {
       decoration: BoxDecoration(
         color: controller.parkingStatus.value == "Pending"
             ? Colors.amber
-            : controller.parkingStatus.value ==
-                    "Inprogress"
+            : controller.parkingStatus.value == "Inprogress"
                 ? const Color(0xFF39C16B)
-                : const Color(0xFFdc143c),
+                :controller.parkingStatus.value == "Cancelled"? Color(0xFFDC143c): const Color(0xFF24a0e1),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: isDarkMode
-                ? Colors.white38
-                : Colors.black.withOpacity(0.3),
+            color: isDarkMode ? Colors.white38 : Colors.black.withOpacity(0.3),
             spreadRadius: 2,
             blurRadius: 10,
             offset: const Offset(0, 4),
@@ -473,8 +450,7 @@ class RoundAbout extends StatelessWidget {
       ),
       child: Container(
         height: 170.h,
-        padding: EdgeInsets.symmetric(
-            vertical: 40.h, horizontal: 20.h),
+        padding: EdgeInsets.symmetric(vertical: 40.h, horizontal: 20.h),
         width: 170.h,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black26),
@@ -482,9 +458,8 @@ class RoundAbout extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: isDarkMode
-                  ? Colors.white38
-                  : Colors.black.withOpacity(0.3),
+              color:
+                  isDarkMode ? Colors.white38 : Colors.black.withOpacity(0.3),
               spreadRadius: -3,
               blurRadius: 5,
               offset: const Offset(0, 2),
@@ -499,8 +474,7 @@ class RoundAbout extends StatelessWidget {
             decoration: const BoxDecoration(
               // color: Colors.blue,
               image: DecorationImage(
-                image: AssetImage(
-                    "assets/images/vehicle.png"),
+                image: AssetImage("assets/images/vehicle.png"),
               ),
             ),
           ),
@@ -540,21 +514,18 @@ class QrCodeHeader extends StatelessWidget {
             height: 50.h,
             width: 70.h,
             child: Shimmer.fromColors(
-              baseColor: isDarkMode
-                  ? Colors.white
-                  : AppColors.scaffoldColorDark,
-              highlightColor:
-                  controller.parkingStatus.value == "Pending"
-                      ? Colors.amber
-                      : controller.parkingStatus.value == "Inprogress"
-                          ? const Color(0xFF39C16B)
-                          : const Color(0xFFdc143c),
+              baseColor:
+                  isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
+              highlightColor: controller.parkingStatus.value == "Pending"
+                  ? Colors.amber
+                  : controller.parkingStatus.value == "Inprogress"
+                      ? const Color(0xFF39C16B)
+                      : const Color(0xFF24a0e1),
               child: Icon(
                 Icons.qr_code,
                 size: 30.h,
-                color: isDarkMode
-                    ? Colors.white
-                    : theme.scaffoldBackgroundColor,
+                color:
+                    isDarkMode ? Colors.white : theme.scaffoldBackgroundColor,
               ),
             ),
           )

@@ -42,7 +42,7 @@ class BookingList extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15.h),
-              controller.bookings.value.isEmpty 
+              controller.bookings.value.isEmpty
                   ? const Text("You have no prior activity")
                   : Column(
                       children: List.generate(
@@ -58,7 +58,6 @@ class BookingList extends StatelessWidget {
   }
 }
 
-
 class ParkingHistoryCard extends StatelessWidget {
   const ParkingHistoryCard({Key? key, required this.bookingData})
       : super(key: key);
@@ -67,20 +66,16 @@ class ParkingHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: () {
-  Get.toNamed(
-    "/my_bookings",
-    arguments: {
-      'booking': bookingData,
-      "price":bookingData.timeDifference["price"] ?? ""
- 
- 
-    },
-  );
-},
-
+        Get.toNamed(
+          "/my_bookings",
+          arguments: {
+            'booking': bookingData,
+            "price": bookingData.timeDifference["price"] ?? ""
+          },
+        );
+      },
       child: Card(
         color: Get.theme.scaffoldBackgroundColor,
         elevation: 4,
@@ -104,7 +99,9 @@ class ParkingHistoryCard extends StatelessWidget {
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        bookingData.timestamp['date']?.split("-")[1].capitalize ??
+                        bookingData.timestamp['date']
+                                ?.split("-")[1]
+                                .capitalize ??
                             "",
                         style: Theme.of(context)
                             .textTheme
@@ -125,22 +122,27 @@ class ParkingHistoryCard extends StatelessWidget {
                         height: 12,
                         decoration: BoxDecoration(
                           color: bookingData.status == "Completed"
-                              ? Color(0xFFdc143c)
-                              : bookingData.status != "Pending"
-                                  ? Color(0xFF39C16B)
-                                  : AppColors.accentColor,
+                              ? Color(0xFF24a0e1)
+                              : bookingData.status == "Pending"
+                                  ? AppColors.accentColor
+                                  : bookingData.status == "Cancelled"
+                                      ? Color(0xFFDC143c)
+                                      : Color(0xFF39C16B) ,
                           shape: BoxShape.circle,
                         ),
                       ),
                       SizedBox(width: 8),
                       Text(bookingData.status,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: bookingData.status == "Completed"
-                                  ? Color(0xFFdc143c)
-                                  : bookingData.status != "Pending"
-                                      ? Color(0xFF39C16B)
-                                      : AppColors.accentColor)),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                   color: bookingData.status == "Completed"
+                              ? Color(0xFF24a0e1)
+                              : bookingData.status == "Pending"
+                                  ? AppColors.accentColor
+                                  : bookingData.status == "Cancelled"
+                                      ? Color(0xFFDC143c)
+                                      : Color(0xFF39C16B) ,),)
                     ],
                   ),
                 ],
@@ -166,12 +168,13 @@ class ParkingHistoryCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+                      Icon(Icons.access_time,
+                          size: 16, color: Colors.grey[600]),
                       SizedBox(width: 4),
-                   Text(
-        bookingData.timeDifference["difference"] ?? "",
-        style: TextStyle(color: Colors.grey[700]),
-      )
+                      Text(
+                        bookingData.timeDifference["difference"] ?? "",
+                        style: TextStyle(color: Colors.grey[700]),
+                      )
                     ],
                   ),
                   Text(

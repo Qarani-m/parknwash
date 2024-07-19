@@ -122,8 +122,19 @@ class MyBookingController extends GetxController {
     parkingStatus.value = "Inprogress";
   }
 
-  void cancelBooking() {
-    print("Cancel");
+  void cancelBooking(String docId) async{
+     Map<String, dynamic> data = {
+      'status': 'Cancelled',
+    };
+    await FirebaseFirestore.instance
+        .collection("bookings")
+        .doc(docId)
+        .update(data)
+        .catchError((error) {
+      // Handle errors here
+      print("Failed to update document: $error");
+    });
+    parkingStatus.value = "Cancelled";
   }
 
   @override
