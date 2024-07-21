@@ -1,12 +1,9 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class CheckoutController extends GetxController {
@@ -112,7 +109,7 @@ class BootomSheet extends StatelessWidget {
           SizedBox(
             height: 30.h,
           ),
-          Container(
+          SizedBox(
             height: 50.h,
             width: 60.w,
             child: LoadingAnimationWidget.staggeredDotsWave(

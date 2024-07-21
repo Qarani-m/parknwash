@@ -14,7 +14,6 @@ import 'package:parknwash/src/features/home/screen/booking_list.dart';
 import 'package:parknwash/src/features/home/screen/home_page.dart';
 import 'package:parknwash/src/features/home/screen/my_bookings.dart';
 import 'package:parknwash/src/features/home/screen/navigation_screen.dart';
-import 'package:parknwash/src/features/home/widgets/checkout.dart';
 import 'package:parknwash/src/features/parking/screens/booking_finished.dart';
 import 'package:parknwash/src/features/parking/screens/locations.dart';
 import 'package:parknwash/src/features/parking/screens/parking_details.dart';

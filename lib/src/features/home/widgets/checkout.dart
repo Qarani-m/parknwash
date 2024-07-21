@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/checkout_controller.dart';
@@ -12,6 +11,8 @@ class CheckoutPage extends StatelessWidget {
 
   String _phoneNumber = '';
 
+  CheckoutPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +24,9 @@ class CheckoutPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildParkingSummary(context),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildPaymentForm(context),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildPaymentInfo(
                 context,
                 "After clicking 'Pay with M-Pesa', you'll receive a prompt on your phone to complete the payment.",
@@ -57,14 +58,14 @@ class CheckoutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Parking Summary',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 15.h),
             _buildSummaryRow(  context, 'Duration:', '${controller.time.value} hours'),
-            _buildSummaryRow(  context, 'Location:', '${controller.location.value}'),
-            Divider(),
+            _buildSummaryRow(  context, 'Location:', controller.location.value),
+            const Divider(),
             _buildSummaryRow(  context, 'Total:', 'Ksh ${controller.total.value} ', isTotal: true),
           ],
         ),
@@ -99,11 +100,11 @@ class CheckoutPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Payment: M-Pesa',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 height: 50.h,
                 child: TextFormField(
@@ -120,7 +121,7 @@ class CheckoutPage extends StatelessWidget {
                         .bodySmall
                         ?.copyWith(fontWeight: FontWeight.w400),
                  
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
@@ -146,7 +147,7 @@ class CheckoutPage extends StatelessWidget {
                     color: AppColors.accentColor,
                     borderRadius: BorderRadius.all(Radius.circular(20.sp))
                   ),
-                  child: Text('Pay \Ksh ${controller.total.value} with M-Pesa', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.scaffoldColorDark),),
+                  child: Text('Pay Ksh ${controller.total.value} with M-Pesa', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.scaffoldColorDark),),
                 ),
               ),
                
@@ -164,17 +165,17 @@ class CheckoutPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Icon(Icons.info_outline, color:warning?Color(0xFFDc143c): Colors.blue),
-            SizedBox(width: 16),
+            Icon(Icons.info_outline, color:warning?const Color(0xFFDc143c): Colors.blue),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Payment Process',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     info,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
