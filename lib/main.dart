@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/auth/controllers/helpers/auth_service.dart';
@@ -29,6 +30,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
+       await dotenv.load(fileName: ".env"); 
   WidgetsFlutterBinding.ensureInitialized();
   await AwesomeNotifications().initialize(null, [
     NotificationChannel(
@@ -47,6 +49,7 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) async {
     await GetStorage.init();
+
 
     runApp(const MyApp());
   });

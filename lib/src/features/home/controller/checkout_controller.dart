@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,6 +8,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/home/controller/my_booking_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CheckoutController extends GetxController {
   MyBookingController controller = Get.find<MyBookingController>();
@@ -52,7 +55,6 @@ class CheckoutController extends GetxController {
   }
 
   Future<String?> getRate(String documentId) async {
-    print(documentId);
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
         .collection('lots')
         .doc(documentId)
@@ -78,55 +80,75 @@ class CheckoutController extends GetxController {
     }
   }
 
-  void sendRequest(BookingData bookingData) async {
-    BookingData updatedBookingData = bookingData.copyWith(status: "Completed");
-    print(updatedBookingData);
-    controller.changeParkingStatus("Completed");
-
-    await updateStuff(bookingData.documentId);
-    Get.offNamed("/my_bookings", arguments: {
-      "booking": updatedBookingData,
-      "price": total.value,
-      "complete": true
+  Future<void> sendPaymentRequest(
+      double amount, String phoneNumber, String documentId) async {
+    final apiUrl = dotenv.env['PAYMENTS_API_URL'];
+    final url =
+        Uri.parse('${apiUrl}/payments'); // Replace with your backend URL
+    final headers = {"Content-Type": "application/json"};
+    final body = json.encode({
+      "amount": amount,
+      "phoneNumber": phoneNumber,
+      "paymentId": documentId
     });
 
-    // Get.bottomSheet(
-    //   BootomSheet(),
-    //   isDismissible: false,  // Prevent user from dismissing the sheet
-    // );
+    try {
+      Get.bottomSheet(
+        BootomSheet(),
+      );
 
-    // // Wait for 1 minute, then close the bottom sheet and show error
-    // Future.delayed(Duration(seconds: 3), () {
-    //   // Close the bottom sheet
-    //   Get.back();
+      final response = await http.post(url, headers: headers, body: body);
 
-    //   // Show error message
-    //   Get.snackbar(
-    //     'Error',
-    //     'Something went wrong',
-    //     snackPosition: SnackPosition.TOP,
-    //     backgroundColor: Colors.red,
-    //     colorText: Colors.white,
-    //     duration: Duration(seconds: 3),
-    //   );
-    // });
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData["success"] == true) {
+            Get.back();
+
+          Get.snackbar("Success", responseData["message"],
+              snackPosition: SnackPosition.TOP);
+            await updateStuff(documentId);
+      
+        } else {
+          Get.back();
+          Get.snackbar(
+            "Failed",
+            responseData["message"],
+          );
+        }
+      } else {
+          Get.back();
+
+        Get.snackbar("Error", 'Could not process payment, please try again' ,
+            snackPosition: SnackPosition.TOP);
+      }
+    } catch (e) {
+          Get.back();
+
+      Get.snackbar("Error", "Some Error Happened, please try again",
+          snackPosition: SnackPosition.TOP);
+    }
   }
-}
 
-Future<void> updateStuff(String docId) async {
-  Map<String, dynamic> data = {
-    'left': Timestamp.now(),
-    'status': 'Completed',
-  };
+  void sendRequest(BookingData bookingData) async {
+    await sendPaymentRequest(double.parse(total.value), phoneController.text,
+        bookingData.documentId);
+  }
 
-  if (await lookForPayment(docId)) {
-    await FirebaseFirestore.instance
-        .collection("bookings")
-        .doc(docId)
-        .update(data)
-        .catchError((error) {
-      print("Failed to update document: $error");
-    });
+  Future<void> updateStuff(String docId) async {
+    Map<String, dynamic> data = {
+      'left': Timestamp.now(),
+      'status': 'Completed',
+    };
+
+    if (await lookForPayment(docId)) {
+      controller.changeParkingStatus("Completed");
+
+      await FirebaseFirestore.instance
+          .collection("bookings")
+          .doc(docId)
+          .update(data)
+          .catchError((error) {});
+    }
   }
 }
 
