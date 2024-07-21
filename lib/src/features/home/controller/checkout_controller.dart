@@ -102,8 +102,7 @@ class CheckoutController extends GetxController {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData["success"] == true) {
-            Get.back();
-
+          Get.back();
           Get.snackbar("Success", responseData["message"],
               snackPosition: SnackPosition.TOP);
             await updateStuff(documentId);
