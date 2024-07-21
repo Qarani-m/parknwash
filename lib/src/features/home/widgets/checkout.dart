@@ -19,38 +19,49 @@ class CheckoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     controller.phoneController.text = bookingData.phone;
     controller.bookingData.value = bookingData;
-    controller.getFirestoreData(bookingData.lotId, bookingData.documentId, bookingData.cat);
-    return Scaffold(
-      backgroundColor: Get.theme.scaffoldBackgroundColor,
-      body: Obx(()=>SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(top: 50.h, left: 23.w, right: 23.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildParkingSummary(context),
-              const SizedBox(height: 16),
-              _buildPaymentForm(context),
-              const SizedBox(height: 16),
-              _buildPaymentInfo(
-                  context,
-                  "After clicking 'Pay with M-Pesa', you'll receive a prompt on your phone to complete the payment.",
-                  false),
-              SizedBox(
-                height: 20.h,
+    controller.getFirestoreData(
+        bookingData.lotId, bookingData.documentId, bookingData.cat);
+    return Container(
+        // backgroundColor: Get.theme.scaffoldBackgroundColor,
+        decoration: BoxDecoration(
+            color: Get.theme.scaffoldBackgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.sp),
+              topRight: Radius.circular(20.sp),
+            )),
+        child: Obx(
+          () => SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: 50.h, left: 23.w, right: 23.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildParkingSummary(
+                    bookingData,
+                    context,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildPaymentForm(bookingData, context),
+                  const SizedBox(height: 16),
+                  _buildPaymentInfo(
+                      context,
+                      "After clicking 'Pay with M-Pesa', you'll receive a prompt on your phone to complete the payment.",
+                      false),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  _buildPaymentInfo(
+                      context,
+                      "The generated QR code for payment is only valid for 30 minutes. Please ensure you collect your car within this time to avoid additional charges.",
+                      true),
+                ],
               ),
-              _buildPaymentInfo(
-                  context,
-                  "The generated QR code for payment is only valid for 30 minutes. Please ensure you collect your car within this time to avoid additional charges.",
-                  true),
-            ],
+            ),
           ),
-        ),
-      ),)
-    );
+        ));
   }
 
-  Widget _buildParkingSummary(BuildContext context) {
+  Widget _buildParkingSummary(BookingData bookingData, BuildContext context) {
     return Card(
       shadowColor: Colors.white.withOpacity(0.1),
       color: Get.theme.scaffoldBackgroundColor,
@@ -105,7 +116,8 @@ class CheckoutPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentForm(BuildContext context) {
+  Widget _buildPaymentForm(BookingData bookingData, BuildContext context) {
+    print(bookingData);
     return Card(
       shadowColor: Colors.white.withOpacity(0.1),
       color: Get.theme.scaffoldBackgroundColor,
@@ -151,7 +163,11 @@ class CheckoutPage extends StatelessWidget {
               ),
               SizedBox(height: 30.h),
               GestureDetector(
-                onTap: () => controller.sendRequest(bookingData),
+                onTap: () {
+       Navigator.pop(context);
+
+                  controller.sendRequest(bookingData);
+                },
                 child: Container(
                   alignment: Alignment.center,
                   height: 55.h,

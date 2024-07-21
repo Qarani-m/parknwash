@@ -20,6 +20,10 @@ class MyBookingController extends GetxController {
   RxInt rates = 40.obs;
   late Timer timer;
 
+
+
+
+
   String timeCounter(String timeDifference) {
     final regex = RegExp(r'(\d+)');
     final matches = regex.allMatches(timeDifference);
@@ -171,17 +175,7 @@ class MyBookingController extends GetxController {
   void endParking(BookingData booking) {
     Get.bottomSheet(
         isScrollControlled: true,
-        Container(
-          height: 1000.h,
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-              color: Get.theme.scaffoldBackgroundColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.sp),
-                topRight: Radius.circular(20.sp),
-              )),
-          child: CheckoutPage(bookingData: booking),
-        ));
+        CheckoutPage(bookingData: booking));
   }
 
   void qrCodeTapped(String status) {
@@ -193,6 +187,8 @@ class MyBookingController extends GetxController {
     }else if(status == "Pending"){
 
     } else{
+
+      
 
     }
   }

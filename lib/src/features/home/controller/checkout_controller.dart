@@ -4,10 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:parknwash/src/features/home/controller/my_booking_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 
 class CheckoutController extends GetxController {
+  MyBookingController controller = Get.find<MyBookingController>();
+
   RxString time = "0".obs;
   RxString location = "Downtown Lot".obs;
   RxDouble rates = 50.0.obs;
@@ -75,9 +78,17 @@ class CheckoutController extends GetxController {
     }
   }
 
-  void sendRequest(BookingData bookingData) async{
-   await  updateStuff(bookingData.documentId);
-    Get.offAllNamed("/my_bookings", arguments: {"bookingData": bookingData});
+  void sendRequest(BookingData bookingData) async {
+    BookingData updatedBookingData = bookingData.copyWith(status: "Completed");
+    print(updatedBookingData);
+    controller.changeParkingStatus("Completed");
+
+    await updateStuff(bookingData.documentId);
+    Get.offNamed("/my_bookings", arguments: {
+      "booking": updatedBookingData,
+      "price": total.value,
+      "complete": true
+    });
 
     // Get.bottomSheet(
     //   BootomSheet(),
@@ -102,26 +113,22 @@ class CheckoutController extends GetxController {
   }
 }
 
-  Future<void> updateStuff(String docId) async {
-        Map<String, dynamic> data = {
-      'left': Timestamp.now(),
-      'status': 'Completed',
-    };
+Future<void> updateStuff(String docId) async {
+  Map<String, dynamic> data = {
+    'left': Timestamp.now(),
+    'status': 'Completed',
+  };
 
-      await FirebaseFirestore.instance
-        .collection("bookings")
-        .doc(docId)
-        .update(data)
-        .catchError((error) {
-      // Handle errors here
-      print("Failed to update document: $error");
-    });
-    // parkingStatus.value = "Inprogress";
-
-
-
-
-  }
+  await FirebaseFirestore.instance
+      .collection("bookings")
+      .doc(docId)
+      .update(data)
+      .catchError((error) {
+    // Handle errors here
+    print("Failed to update document: $error");
+  });
+  // parkingStatus.value = "Inprogress";
+}
 
 class BootomSheet extends StatelessWidget {
   const BootomSheet({
