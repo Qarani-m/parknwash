@@ -102,21 +102,25 @@ class CheckoutController extends GetxController {
   }
 }
 
-  Future<Timestamp?> updateStuff(String docId) async {
+  Future<void> updateStuff(String docId) async {
         Map<String, dynamic> data = {
       'left': Timestamp.now(),
       'status': 'Completed',
     };
 
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection('bookings')
+      await FirebaseFirestore.instance
+        .collection("bookings")
         .doc(docId)
-        .get();
-    if (documentSnapshot.exists) {
-      return documentSnapshot['entered'] as Timestamp;
-    } else {
-      return null;
-    }
+        .update(data)
+        .catchError((error) {
+      // Handle errors here
+      print("Failed to update document: $error");
+    });
+    // parkingStatus.value = "Inprogress";
+
+
+
+
   }
 
 class BootomSheet extends StatelessWidget {
