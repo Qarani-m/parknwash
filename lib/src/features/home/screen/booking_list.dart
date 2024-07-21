@@ -59,8 +59,7 @@ class BookingList extends StatelessWidget {
 }
 
 class ParkingHistoryCard extends StatelessWidget {
-  const ParkingHistoryCard({Key? key, required this.bookingData})
-      : super(key: key);
+  const ParkingHistoryCard({super.key, required this.bookingData});
 
   final BookingData bookingData;
 
@@ -122,32 +121,32 @@ class ParkingHistoryCard extends StatelessWidget {
                         height: 12,
                         decoration: BoxDecoration(
                           color: bookingData.status == "Completed"
-                              ? Color(0xFF24a0e1)
+                              ? const Color(0xFF24a0e1)
                               : bookingData.status == "Pending"
                                   ? AppColors.accentColor
                                   : bookingData.status == "Cancelled"
-                                      ? Color(0xFFDC143c)
-                                      : Color(0xFF39C16B) ,
+                                      ? const Color(0xFFDC143c)
+                                      : const Color(0xFF39C16B) ,
                           shape: BoxShape.circle,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(bookingData.status,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w400,
                                    color: bookingData.status == "Completed"
-                              ? Color(0xFF24a0e1)
+                              ? const Color(0xFF24a0e1)
                               : bookingData.status == "Pending"
                                   ? AppColors.accentColor
                                   : bookingData.status == "Cancelled"
-                                      ? Color(0xFFDC143c)
-                                      : Color(0xFF39C16B) ,),)
+                                      ? const Color(0xFFDC143c)
+                                      : const Color(0xFF39C16B) ,),)
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Parking details
               Text(
                 bookingData.realName,
@@ -161,7 +160,7 @@ class ParkingHistoryCard extends StatelessWidget {
                     .bodySmall
                     ?.copyWith(color: Colors.grey[600]),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Duration and cost
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,7 +169,7 @@ class ParkingHistoryCard extends StatelessWidget {
                     children: [
                       Icon(Icons.access_time,
                           size: 16, color: Colors.grey[600]),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
                         bookingData.timeDifference["difference"] ?? "",
                         style: TextStyle(color: Colors.grey[700]),
@@ -178,7 +177,7 @@ class ParkingHistoryCard extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    '\Ksh ${bookingData.timeDifference["price"] ?? ""}',
+                    'Ksh ${bookingData.timeDifference["price"] ?? ""}',
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -186,7 +185,7 @@ class ParkingHistoryCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Entry and exit times
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,7 +194,7 @@ class ParkingHistoryCard extends StatelessWidget {
                     children: [
                       Icon(Icons.calendar_today,
                           size: 16, color: Colors.grey[600]),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text('Entered: ${bookingData.timestamp["time"]}',
                           style: Theme.of(context)
                               .textTheme

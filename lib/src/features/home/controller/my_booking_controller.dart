@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
 
 class MyBookingController extends GetxController {
@@ -29,7 +28,7 @@ class MyBookingController extends GetxController {
   }
 
   void startTimer(String status) {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       status == "Pending" ? somefunction() : counter();
     });
   }
@@ -77,7 +76,7 @@ class MyBookingController extends GetxController {
           : formatHourDifference(timeWhenParkingStarted) *
               int.parse(rates.split(",")[cat]);
     } else {
-      return null;
+      return;
     }
   }
 

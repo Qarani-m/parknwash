@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/home/controller/my_booking_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
@@ -95,7 +94,7 @@ class MyBookings extends StatelessWidget {
                                 Text(
                                   booking.status == "Completed"
                                       ? completedPrice
-                                      : "\Ksh ${controller.price.value.toStringAsFixed(2)}",
+                                      : "Ksh ${controller.price.value.toStringAsFixed(2)}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
@@ -123,7 +122,7 @@ class MyBookings extends StatelessWidget {
             ? Colors.amber
             : controller.parkingStatus.value == "Inprogress"
                 ? const Color(0xFF39C16B)
-                :controller.parkingStatus.value == "Cancelled"? Color(0xFFDC143c): const Color(0xFF24a0e1),
+                :controller.parkingStatus.value == "Cancelled"? const Color(0xFFDC143c): const Color(0xFF24a0e1),
        
                                           fontWeight: FontWeight.w500),
                                 ),
@@ -268,7 +267,7 @@ class MyBookings extends StatelessWidget {
                 ),
                 child: Text(
                   _getButtonText(status),
-                  style: TextStyle(color: AppColors.scaffoldColorDark),
+                  style: const TextStyle(color: AppColors.scaffoldColorDark),
                 ),
               ),
               GestureDetector(
@@ -299,7 +298,7 @@ class MyBookings extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.sp),
               ),
               child: Text(_getButtonText(status),
-                  style: TextStyle(color: AppColors.scaffoldColorDark)),
+                  style: const TextStyle(color: AppColors.scaffoldColorDark)),
             ),
           );
   }
@@ -437,7 +436,7 @@ class RoundAbout extends StatelessWidget {
             ? Colors.amber
             : controller.parkingStatus.value == "Inprogress"
                 ? const Color(0xFF39C16B)
-                :controller.parkingStatus.value == "Cancelled"? Color(0xFFDC143c): const Color(0xFF24a0e1),
+                :controller.parkingStatus.value == "Cancelled"? const Color(0xFFDC143c): const Color(0xFF24a0e1),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
