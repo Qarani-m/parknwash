@@ -119,15 +119,35 @@ Future<void> updateStuff(String docId) async {
     'status': 'Completed',
   };
 
-  await FirebaseFirestore.instance
-      .collection("bookings")
-      .doc(docId)
-      .update(data)
-      .catchError((error) {
-    // Handle errors here
-    print("Failed to update document: $error");
-  });
-  // parkingStatus.value = "Inprogress";
+  if (await lookForPayment(docId)) {
+    await FirebaseFirestore.instance
+        .collection("bookings")
+        .doc(docId)
+        .update(data)
+        .catchError((error) {
+      print("Failed to update document: $error");
+    });
+  }
+}
+
+Future<bool> lookForPayment(String documentId) async {
+  try {
+    CollectionReference payments =
+        FirebaseFirestore.instance.collection('payments');
+    DocumentSnapshot doc = await payments.doc(documentId).get();
+    if (doc.exists) {
+      return true;
+    } else {
+      Get.snackbar("Error", "An error Occured, Payment not recieved",
+          snackPosition: SnackPosition.TOP);
+
+      return false;
+    }
+  } catch (e) {
+    Get.snackbar("Error", "Some Error Happened ",
+        snackPosition: SnackPosition.TOP);
+    return false;
+  }
 }
 
 class BootomSheet extends StatelessWidget {
