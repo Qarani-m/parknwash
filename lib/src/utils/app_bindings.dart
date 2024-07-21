@@ -4,6 +4,7 @@ import 'package:parknwash/src/features/auth/controllers/login_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/onboarding_controller.dart';
 import 'package:parknwash/src/features/auth/controllers/signup_controller.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
+import 'package:parknwash/src/features/home/controller/checkout_controller.dart';
 import 'package:parknwash/src/features/home/controller/homecontroller.dart';
 import 'package:parknwash/src/features/home/controller/my_booking_controller.dart';
 import 'package:parknwash/src/features/parking/controllers/booking_finished_controller.dart';
@@ -31,6 +32,7 @@ class AppBindings extends Bindings {
     Get.put<ParkingDetailsController>(ParkingDetailsController());
     Get.put<BookingListController>(BookingListController());
     Get.put<MyBookingController>(MyBookingController());
+    Get.put<CheckoutController>(CheckoutController());
 
   }
 }

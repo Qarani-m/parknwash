@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
+import 'package:parknwash/src/features/home/widgets/checkout.dart';
 
 class MyBookingController extends GetxController {
   BookingListController listController = Get.find<BookingListController>();
@@ -29,7 +31,7 @@ class MyBookingController extends GetxController {
   }
 
   void startTimer(String status) {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       status == "Pending" ? somefunction() : counter();
     });
   }
@@ -77,7 +79,7 @@ class MyBookingController extends GetxController {
           : formatHourDifference(timeWhenParkingStarted) *
               int.parse(rates.split(",")[cat]);
     } else {
-      return null;
+      return;
     }
   }
 
@@ -122,8 +124,8 @@ class MyBookingController extends GetxController {
     parkingStatus.value = "Inprogress";
   }
 
-  void cancelBooking(String docId) async{
-     Map<String, dynamic> data = {
+  void cancelBooking(String docId) async {
+    Map<String, dynamic> data = {
       'status': 'Cancelled',
     };
     await FirebaseFirestore.instance
@@ -135,6 +137,61 @@ class MyBookingController extends GetxController {
       print("Failed to update document: $error");
     });
     parkingStatus.value = "Cancelled";
+  }
+
+  Future<void> navigation(String lotId) async {
+    try {
+      CollectionReference lots = FirebaseFirestore.instance.collection('lots');
+      DocumentSnapshot documentSnapshot = await lots.doc(lotId).get();
+      if (documentSnapshot.exists) {
+        var coords = documentSnapshot.get('coords');
+        if (coords != null && coords is GeoPoint) {
+          double latitude = coords.latitude;
+          double longitude = coords.longitude;
+
+          Get.toNamed("/navigation_screen",
+              arguments: {"lat": latitude, "lng": longitude});
+        } else {
+          Get.snackbar("Error", "Some Error Occured, 😪",
+              snackPosition: SnackPosition.TOP);
+        }
+      } else {
+        Get.snackbar("Error", "Some Error Occured, 😪",
+            snackPosition: SnackPosition.TOP);
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Some Error Occured, 😪",
+          snackPosition: SnackPosition.TOP);
+    }
+  }
+
+  void endParking() {
+    Get.bottomSheet(
+        isScrollControlled: true,
+        Container(
+          height: 1000.h,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+              color: Get.theme.scaffoldBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.sp),
+                topRight: Radius.circular(20.sp),
+              )),
+          child: CheckoutPage(),
+        ));
+  }
+
+  void qrCodeTapped(String status) {
+    if (status == "Inprogress") {
+      Get.snackbar("Info", "End parking session to generate a Qr code",
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.only(bottom: 20.h),
+          backgroundColor: Get.theme.scaffoldBackgroundColor);
+    }else if(status == "Pending"){
+
+    } else{
+
+    }
   }
 
   @override

@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:parknwash/src/features/home/controller/my_booking_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
@@ -24,8 +23,6 @@ class MyBookings extends StatelessWidget {
     controller.changeParkingStatus(booking.status);
     final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
-
-    // controller.hours.value =
 
     controller.timeCounter(booking.timeDifference["difference"] ?? "");
 
@@ -95,7 +92,7 @@ class MyBookings extends StatelessWidget {
                                 Text(
                                   booking.status == "Completed"
                                       ? completedPrice
-                                      : "\Ksh ${controller.price.value.toStringAsFixed(2)}",
+                                      : "Ksh ${controller.price.value.toStringAsFixed(2)}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
@@ -119,12 +116,19 @@ class MyBookings extends StatelessWidget {
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(
-                                          color: controller.parkingStatus.value == "Pending"
-            ? Colors.amber
-            : controller.parkingStatus.value == "Inprogress"
-                ? const Color(0xFF39C16B)
-                :controller.parkingStatus.value == "Cancelled"? Color(0xFFDC143c): const Color(0xFF24a0e1),
-       
+                                          color: controller
+                                                      .parkingStatus.value ==
+                                                  "Pending"
+                                              ? Colors.amber
+                                              : controller.parkingStatus
+                                                          .value ==
+                                                      "Inprogress"
+                                                  ? const Color(0xFF39C16B)
+                                                  : controller.parkingStatus
+                                                              .value ==
+                                                          "Cancelled"
+                                                      ? const Color(0xFFDC143c)
+                                                      : const Color(0xFF24a0e1),
                                           fontWeight: FontWeight.w500),
                                 ),
                               ],
@@ -168,12 +172,15 @@ class MyBookings extends StatelessWidget {
                                   ),
                                   child: _buildButtonContainer(
                                       controller.parkingStatus.value,
-                                      booking.documentId),
+                                      booking.documentId, booking,),
                                 )
+
+                                
                               : controller.parkingStatus.value == "Inprogress"
                                   ? _buildButtonContainer(
+                                    
                                       controller.parkingStatus.value,
-                                      booking.documentId)
+                                      booking.documentId, booking,)
                                   : const SizedBox()
                         ],
                       )))
@@ -253,7 +260,7 @@ class MyBookings extends StatelessWidget {
     }
   }
 
-  Widget _buildButtonContainer(String status, String documentId) {
+  Widget _buildButtonContainer(String status, String documentId, BookingData booking) {
     return status == "Pending"
         ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -268,7 +275,7 @@ class MyBookings extends StatelessWidget {
                 ),
                 child: Text(
                   _getButtonText(status),
-                  style: TextStyle(color: AppColors.scaffoldColorDark),
+                  style: const TextStyle(color: AppColors.scaffoldColorDark),
                 ),
               ),
               GestureDetector(
@@ -289,18 +296,42 @@ class MyBookings extends StatelessWidget {
               ),
             ],
           )
-        : GestureDetector(
-            child: Container(
-              alignment: Alignment.center,
-              height: 70.h,
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                color: AppColors.accentColor,
-                borderRadius: BorderRadius.circular(20.sp),
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: ()=>controller.endParking(),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 70.h,
+                  width: 180.w,
+                  decoration: BoxDecoration(
+                    color: AppColors.accentColor,
+                    borderRadius: BorderRadius.circular(20.sp),
+                  ),
+                  child: Text(
+                    _getButtonText(status),
+                    style: const TextStyle(color: AppColors.scaffoldColorDark),
+                  ),
+                ),
               ),
-              child: Text(_getButtonText(status),
-                  style: TextStyle(color: AppColors.scaffoldColorDark)),
-            ),
+              GestureDetector(
+                onTap: () => controller.navigation(booking.lotId),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 70.h,
+                  width: 130.w,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF39C16B),
+                    borderRadius: BorderRadius.circular(20.sp),
+                  ),
+                  child: const Text(
+                    "Navigation",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           );
   }
 }
@@ -437,7 +468,9 @@ class RoundAbout extends StatelessWidget {
             ? Colors.amber
             : controller.parkingStatus.value == "Inprogress"
                 ? const Color(0xFF39C16B)
-                :controller.parkingStatus.value == "Cancelled"? Color(0xFFDC143c): const Color(0xFF24a0e1),
+                : controller.parkingStatus.value == "Cancelled"
+                    ? const Color(0xFFDC143c)
+                    : const Color(0xFF24a0e1),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
@@ -509,23 +542,30 @@ class QrCodeHeader extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_back,
               )),
-          Container(
-            alignment: Alignment.centerRight,
-            height: 50.h,
-            width: 70.h,
-            child: Shimmer.fromColors(
-              baseColor:
-                  isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
-              highlightColor: controller.parkingStatus.value == "Pending"
-                  ? Colors.amber
-                  : controller.parkingStatus.value == "Inprogress"
-                      ? const Color(0xFF39C16B)
-                      : const Color(0xFF24a0e1),
-              child: Icon(
-                Icons.qr_code,
-                size: 30.h,
-                color:
-                    isDarkMode ? Colors.white : theme.scaffoldBackgroundColor,
+         controller.parkingStatus.value=="Cancelled"?SizedBox( height: 50.h,): GestureDetector(
+            onTap: ()=>controller.qrCodeTapped(controller.parkingStatus.value),
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 50.h,
+              width: 70.h,
+              child: Shimmer.fromColors(
+                baseColor:
+                    isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
+                highlightColor: controller.parkingStatus.value == "Pending"
+                    ? Colors.amber
+                    : controller.parkingStatus.value ==  "Completed"
+                              ? const Color(0xFF24a0e1).withOpacity(0.1)
+                              : controller.parkingStatus.value == "Pending"
+                                  ? AppColors.accentColor.withOpacity(0.1)
+                                  : controller.parkingStatus.value == "Cancelled"
+                                      ? const Color(0xFFDC143c).withOpacity(0.1)
+                                      : const Color(0xFF39C16B).withOpacity(0.1),
+                child: Icon(
+                  Icons.qr_code,
+                  size: 30.h,
+                  color:
+                      isDarkMode ? Colors.white : theme.scaffoldBackgroundColor,
+                ),
               ),
             ),
           )
@@ -534,3 +574,20 @@ class QrCodeHeader extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
