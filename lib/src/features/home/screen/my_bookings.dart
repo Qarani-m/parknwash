@@ -24,8 +24,6 @@ class MyBookings extends StatelessWidget {
     final theme = Get.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    // controller.hours.value =
-
     controller.timeCounter(booking.timeDifference["difference"] ?? "");
 
     controller.getWhenParkingStarted(
@@ -544,27 +542,30 @@ class QrCodeHeader extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_back,
               )),
-          Container(
-            alignment: Alignment.centerRight,
-            height: 50.h,
-            width: 70.h,
-            child: Shimmer.fromColors(
-              baseColor:
-                  isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
-              highlightColor: controller.parkingStatus.value == "Pending"
-                  ? Colors.amber
-                  : controller.parkingStatus.value ==  "Completed"
-                            ? const Color(0xFF24a0e1).withOpacity(0.1)
-                            : controller.parkingStatus.value == "Pending"
-                                ? AppColors.accentColor.withOpacity(0.1)
-                                : controller.parkingStatus.value == "Cancelled"
-                                    ? const Color(0xFFDC143c).withOpacity(0.1)
-                                    : const Color(0xFF39C16B).withOpacity(0.1),
-              child: Icon(
-                Icons.qr_code,
-                size: 30.h,
-                color:
-                    isDarkMode ? Colors.white : theme.scaffoldBackgroundColor,
+         controller.parkingStatus.value=="Cancelled"?SizedBox( height: 50.h,): GestureDetector(
+            onTap: ()=>controller.qrCodeTapped(controller.parkingStatus.value),
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 50.h,
+              width: 70.h,
+              child: Shimmer.fromColors(
+                baseColor:
+                    isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
+                highlightColor: controller.parkingStatus.value == "Pending"
+                    ? Colors.amber
+                    : controller.parkingStatus.value ==  "Completed"
+                              ? const Color(0xFF24a0e1).withOpacity(0.1)
+                              : controller.parkingStatus.value == "Pending"
+                                  ? AppColors.accentColor.withOpacity(0.1)
+                                  : controller.parkingStatus.value == "Cancelled"
+                                      ? const Color(0xFFDC143c).withOpacity(0.1)
+                                      : const Color(0xFF39C16B).withOpacity(0.1),
+                child: Icon(
+                  Icons.qr_code,
+                  size: 30.h,
+                  color:
+                      isDarkMode ? Colors.white : theme.scaffoldBackgroundColor,
+                ),
               ),
             ),
           )
@@ -573,3 +574,20 @@ class QrCodeHeader extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

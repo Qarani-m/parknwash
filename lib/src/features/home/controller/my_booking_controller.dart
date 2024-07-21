@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
+import 'package:parknwash/src/features/home/widgets/checkout.dart';
 
 class MyBookingController extends GetxController {
   BookingListController listController = Get.find<BookingListController>();
@@ -145,24 +148,50 @@ class MyBookingController extends GetxController {
         if (coords != null && coords is GeoPoint) {
           double latitude = coords.latitude;
           double longitude = coords.longitude;
-           
+
           Get.toNamed("/navigation_screen",
               arguments: {"lat": latitude, "lng": longitude});
         } else {
-          Get.snackbar("Error","Some Error Occured, 😪", snackPosition:SnackPosition.TOP );
+          Get.snackbar("Error", "Some Error Occured, 😪",
+              snackPosition: SnackPosition.TOP);
         }
       } else {
-          Get.snackbar("Error","Some Error Occured, 😪", snackPosition:SnackPosition.TOP );
-
+        Get.snackbar("Error", "Some Error Occured, 😪",
+            snackPosition: SnackPosition.TOP);
       }
     } catch (e) {
-          Get.snackbar("Error","Some Error Occured, 😪", snackPosition:SnackPosition.TOP );
-
+      Get.snackbar("Error", "Some Error Occured, 😪",
+          snackPosition: SnackPosition.TOP);
     }
   }
 
   void endParking() {
-    print("End parking");
+    Get.bottomSheet(
+        isScrollControlled: true,
+        Container(
+          height: 1000.h,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+              color: Get.theme.scaffoldBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.sp),
+                topRight: Radius.circular(20.sp),
+              )),
+          child: CheckoutPage(),
+        ));
+  }
+
+  void qrCodeTapped(String status) {
+    if (status == "Inprogress") {
+      Get.snackbar("Info", "End parking session to generate a Qr code",
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.only(bottom: 20.h),
+          backgroundColor: Get.theme.scaffoldBackgroundColor);
+    }else if(status == "Pending"){
+
+    } else{
+
+    }
   }
 
   @override
