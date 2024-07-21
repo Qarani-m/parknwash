@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
+import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/features/home/widgets/checkout.dart';
 
 class MyBookingController extends GetxController {
@@ -73,6 +74,8 @@ class MyBookingController extends GetxController {
       String lotId = data['lotId'] ?? "";
 
       String rates = await getRate(lotId) ?? "";
+
+      
       print(rates.split(","));
       price.value = status == "Pending"
           ? 0.0
@@ -165,7 +168,7 @@ class MyBookingController extends GetxController {
     }
   }
 
-  void endParking() {
+  void endParking(BookingData booking) {
     Get.bottomSheet(
         isScrollControlled: true,
         Container(
@@ -177,7 +180,7 @@ class MyBookingController extends GetxController {
                 topLeft: Radius.circular(20.sp),
                 topRight: Radius.circular(20.sp),
               )),
-          child: CheckoutPage(),
+          child: CheckoutPage(bookingData: booking),
         ));
   }
 

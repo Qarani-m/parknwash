@@ -300,7 +300,7 @@ class MyBookings extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: ()=>controller.endParking(),
+                onTap: ()=>controller.endParking(booking),
                 child: Container(
                   alignment: Alignment.center,
                   height: 70.h,
