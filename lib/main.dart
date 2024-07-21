@@ -13,6 +13,7 @@ import 'package:parknwash/src/features/auth/screens/register.dart';
 import 'package:parknwash/src/features/home/screen/booking_list.dart';
 import 'package:parknwash/src/features/home/screen/home_page.dart';
 import 'package:parknwash/src/features/home/screen/my_bookings.dart';
+import 'package:parknwash/src/features/home/screen/navigation_screen.dart';
 import 'package:parknwash/src/features/parking/screens/booking_finished.dart';
 import 'package:parknwash/src/features/parking/screens/locations.dart';
 import 'package:parknwash/src/features/parking/screens/parking_details.dart';
@@ -163,6 +164,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             GetPage(name: "/booking_finished", page: () => BookingFinished()),
             GetPage(name: "/my_bookings", page: () => MyBookings()),
             GetPage(name: "/booking_list", page: () => BookingList()),
+            GetPage(name: "/navigation_screen", page: () => NavigationScreen()),
           ],
         );
       },

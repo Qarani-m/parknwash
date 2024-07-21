@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
 
 class MyBookingController extends GetxController {
@@ -121,8 +122,8 @@ class MyBookingController extends GetxController {
     parkingStatus.value = "Inprogress";
   }
 
-  void cancelBooking(String docId) async{
-     Map<String, dynamic> data = {
+  void cancelBooking(String docId) async {
+    Map<String, dynamic> data = {
       'status': 'Cancelled',
     };
     await FirebaseFirestore.instance
@@ -134,6 +135,35 @@ class MyBookingController extends GetxController {
       print("Failed to update document: $error");
     });
     parkingStatus.value = "Cancelled";
+  }
+
+  Future<void> navigation(String lotId) async {
+    try {
+      CollectionReference lots = FirebaseFirestore.instance.collection('lots');
+      DocumentSnapshot documentSnapshot = await lots.doc(lotId).get();
+      if (documentSnapshot.exists) {
+        var coords = documentSnapshot.get('coords');
+        if (coords != null && coords is GeoPoint) {
+          double latitude = coords.latitude;
+          double longitude = coords.longitude;
+           
+          Get.toNamed("/navigation_screen",
+              arguments: {"lat": latitude, "lng": longitude});
+        } else {
+          Get.snackbar("Error","Some Error Occured, 😪", snackPosition:SnackPosition.TOP );
+        }
+      } else {
+          Get.snackbar("Error","Some Error Occured, 😪", snackPosition:SnackPosition.TOP );
+
+      }
+    } catch (e) {
+          Get.snackbar("Error","Some Error Occured, 😪", snackPosition:SnackPosition.TOP );
+
+    }
+  }
+
+  void endParking() {
+    print("End parking");
   }
 
   @override

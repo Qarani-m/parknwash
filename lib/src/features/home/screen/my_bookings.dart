@@ -118,12 +118,19 @@ class MyBookings extends StatelessWidget {
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(
-                                          color: controller.parkingStatus.value == "Pending"
-            ? Colors.amber
-            : controller.parkingStatus.value == "Inprogress"
-                ? const Color(0xFF39C16B)
-                :controller.parkingStatus.value == "Cancelled"? const Color(0xFFDC143c): const Color(0xFF24a0e1),
-       
+                                          color: controller
+                                                      .parkingStatus.value ==
+                                                  "Pending"
+                                              ? Colors.amber
+                                              : controller.parkingStatus
+                                                          .value ==
+                                                      "Inprogress"
+                                                  ? const Color(0xFF39C16B)
+                                                  : controller.parkingStatus
+                                                              .value ==
+                                                          "Cancelled"
+                                                      ? const Color(0xFFDC143c)
+                                                      : const Color(0xFF24a0e1),
                                           fontWeight: FontWeight.w500),
                                 ),
                               ],
@@ -167,12 +174,15 @@ class MyBookings extends StatelessWidget {
                                   ),
                                   child: _buildButtonContainer(
                                       controller.parkingStatus.value,
-                                      booking.documentId),
+                                      booking.documentId, booking,),
                                 )
+
+                                
                               : controller.parkingStatus.value == "Inprogress"
                                   ? _buildButtonContainer(
+                                    
                                       controller.parkingStatus.value,
-                                      booking.documentId)
+                                      booking.documentId, booking,)
                                   : const SizedBox()
                         ],
                       )))
@@ -252,7 +262,7 @@ class MyBookings extends StatelessWidget {
     }
   }
 
-  Widget _buildButtonContainer(String status, String documentId) {
+  Widget _buildButtonContainer(String status, String documentId, BookingData booking) {
     return status == "Pending"
         ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -288,18 +298,42 @@ class MyBookings extends StatelessWidget {
               ),
             ],
           )
-        : GestureDetector(
-            child: Container(
-              alignment: Alignment.center,
-              height: 70.h,
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                color: AppColors.accentColor,
-                borderRadius: BorderRadius.circular(20.sp),
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: ()=>controller.endParking(),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 70.h,
+                  width: 180.w,
+                  decoration: BoxDecoration(
+                    color: AppColors.accentColor,
+                    borderRadius: BorderRadius.circular(20.sp),
+                  ),
+                  child: Text(
+                    _getButtonText(status),
+                    style: const TextStyle(color: AppColors.scaffoldColorDark),
+                  ),
+                ),
               ),
-              child: Text(_getButtonText(status),
-                  style: const TextStyle(color: AppColors.scaffoldColorDark)),
-            ),
+              GestureDetector(
+                onTap: () => controller.navigation(booking.lotId),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 70.h,
+                  width: 130.w,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF39C16B),
+                    borderRadius: BorderRadius.circular(20.sp),
+                  ),
+                  child: const Text(
+                    "Navigation",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           );
   }
 }
@@ -436,7 +470,9 @@ class RoundAbout extends StatelessWidget {
             ? Colors.amber
             : controller.parkingStatus.value == "Inprogress"
                 ? const Color(0xFF39C16B)
-                :controller.parkingStatus.value == "Cancelled"? const Color(0xFFDC143c): const Color(0xFF24a0e1),
+                : controller.parkingStatus.value == "Cancelled"
+                    ? const Color(0xFFDC143c)
+                    : const Color(0xFF24a0e1),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
@@ -517,9 +553,13 @@ class QrCodeHeader extends StatelessWidget {
                   isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
               highlightColor: controller.parkingStatus.value == "Pending"
                   ? Colors.amber
-                  : controller.parkingStatus.value == "Inprogress"
-                      ? const Color(0xFF39C16B)
-                      : const Color(0xFF24a0e1),
+                  : controller.parkingStatus.value ==  "Completed"
+                            ? const Color(0xFF24a0e1).withOpacity(0.1)
+                            : controller.parkingStatus.value == "Pending"
+                                ? AppColors.accentColor.withOpacity(0.1)
+                                : controller.parkingStatus.value == "Cancelled"
+                                    ? const Color(0xFFDC143c).withOpacity(0.1)
+                                    : const Color(0xFF39C16B).withOpacity(0.1),
               child: Icon(
                 Icons.qr_code,
                 size: 30.h,

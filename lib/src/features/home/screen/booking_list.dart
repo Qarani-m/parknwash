@@ -75,137 +75,165 @@ class ParkingHistoryCard extends StatelessWidget {
           },
         );
       },
-      child: Card(
-        color: Get.theme.scaffoldBackgroundColor,
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Date section
-                  Column(
-                    children: [
-                      Text(
-                        bookingData.timestamp['date']?.split("-")[2] ?? "",
+      child: LIstCard(bookingData: bookingData),
+    );
+  }
+}
+
+class LIstCard extends StatelessWidget {
+  const LIstCard({
+    super.key,
+    required this.bookingData,
+  });
+
+  final BookingData bookingData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Get.theme.scaffoldBackgroundColor,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: bookingData.status == "Completed"
+                            ? const Color(0xFF24a0e1).withOpacity(0.1)
+                            : bookingData.status == "Pending"
+                                ? AppColors.accentColor.withOpacity(0.1)
+                                : bookingData.status == "Cancelled"
+                                    ? const Color(0xFFDC143c).withOpacity(0.1)
+                                    : const Color(0xFF39C16B).withOpacity(0.1),
+          width: 2.0, // Border width
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Date section
+                Column(
+                  children: [
+                    Text(
+                      bookingData.timestamp['date']?.split("-")[2] ?? "",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      bookingData.timestamp['date']
+                              ?.split("-")[1]
+                              .capitalize ??
+                          "",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      bookingData.timestamp['date']?.split("-")[0] ?? "",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+                // Status indicator
+                Row(
+                  children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: bookingData.status == "Completed"
+                            ? const Color(0xFF24a0e1)
+                            : bookingData.status == "Pending"
+                                ? AppColors.accentColor
+                                : bookingData.status == "Cancelled"
+                                    ? const Color(0xFFDC143c)
+                                    : const Color(0xFF39C16B),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      bookingData.status,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: bookingData.status == "Completed"
+                                ? const Color(0xFF24a0e1)
+                                : bookingData.status == "Pending"
+                                    ? AppColors.accentColor
+                                    : bookingData.status == "Cancelled"
+                                        ? const Color(0xFFDC143c)
+                                        : const Color(0xFF39C16B),
+                          ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Parking details
+            Text(
+              bookingData.realName,
+              textAlign: TextAlign.left,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Text(
+              bookingData.name,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 16),
+            // Duration and cost
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.access_time,
+                        size: 16, color: Colors.grey[600]),
+                    const SizedBox(width: 4),
+                    Text(
+                      bookingData.timeDifference["difference"] ?? "",
+                      style: TextStyle(color: Colors.grey[700]),
+                    )
+                  ],
+                ),
+                Text(
+                  'Ksh ${bookingData.timeDifference["price"] ?? ""}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Entry and exit times
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.calendar_today,
+                        size: 16, color: Colors.grey[600]),
+                    const SizedBox(width: 4),
+                    Text('Entered: ${bookingData.timestamp["time"]}',
                         style: Theme.of(context)
                             .textTheme
-                            .bodySmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        bookingData.timestamp['date']
-                                ?.split("-")[1]
-                                .capitalize ??
-                            "",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        bookingData.timestamp['date']?.split("-")[0] ?? "",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                  // Status indicator
-                  Row(
-                    children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: bookingData.status == "Completed"
-                              ? const Color(0xFF24a0e1)
-                              : bookingData.status == "Pending"
-                                  ? AppColors.accentColor
-                                  : bookingData.status == "Cancelled"
-                                      ? const Color(0xFFDC143c)
-                                      : const Color(0xFF39C16B) ,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(bookingData.status,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                   color: bookingData.status == "Completed"
-                              ? const Color(0xFF24a0e1)
-                              : bookingData.status == "Pending"
-                                  ? AppColors.accentColor
-                                  : bookingData.status == "Cancelled"
-                                      ? const Color(0xFFDC143c)
-                                      : const Color(0xFF39C16B) ,),)
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Parking details
-              Text(
-                bookingData.realName,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              Text(
-                bookingData.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Colors.grey[600]),
-              ),
-              const SizedBox(height: 16),
-              // Duration and cost
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.access_time,
-                          size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
-                      Text(
-                        bookingData.timeDifference["difference"] ?? "",
-                        style: TextStyle(color: Colors.grey[700]),
-                      )
-                    ],
-                  ),
-                  Text(
-                    'Ksh ${bookingData.timeDifference["price"] ?? ""}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Entry and exit times
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today,
-                          size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
-                      Text('Entered: ${bookingData.timestamp["time"]}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
+                            .bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
