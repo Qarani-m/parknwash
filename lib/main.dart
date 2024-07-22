@@ -22,6 +22,7 @@ import 'package:parknwash/src/features/profile/screens/favourite_lots.dart';
 import 'package:parknwash/src/features/profile/screens/notification.dart';
 import 'package:parknwash/src/features/profile/screens/payment_history.dart';
 import 'package:parknwash/src/features/profile/screens/profile_main.dart';
+import 'package:parknwash/src/features/washing/screens/washing_homepage.dart';
 import 'package:parknwash/src/utils/app_bindings.dart';
 import 'package:parknwash/src/utils/themes/theme.dart';
 import 'package:get_storage/get_storage.dart';
@@ -168,6 +169,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             GetPage(name: "/my_bookings", page: () => MyBookings()),
             GetPage(name: "/booking_list", page: () => BookingList()),
             GetPage(name: "/navigation_screen", page: () => NavigationScreen()),
+            GetPage(name: "/washing_homepage", page: () => WashingHomepage()),
           ],
         );
       },

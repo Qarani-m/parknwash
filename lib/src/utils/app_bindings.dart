@@ -14,6 +14,7 @@ import 'package:parknwash/src/features/profile/controller/favourites_controller.
 import 'package:parknwash/src/features/profile/controller/notifications_controller.dart';
 import 'package:parknwash/src/features/profile/controller/payment_history_controller.dart';
 import 'package:parknwash/src/features/profile/controller/profile_controller.dart';
+import 'package:parknwash/src/features/washing/controllers/washing_homepage_controller.dart';
 
 class AppBindings extends Bindings {
   @override
@@ -33,6 +34,7 @@ class AppBindings extends Bindings {
     Get.put<BookingListController>(BookingListController());
     Get.put<MyBookingController>(MyBookingController());
     Get.put<CheckoutController>(CheckoutController());
+    Get.put<WashingHomepageController>(WashingHomepageController());
 
   }
 }

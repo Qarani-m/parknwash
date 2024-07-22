@@ -94,7 +94,7 @@ class HomePage extends StatelessWidget {
               onTap: (value) {
                 controller.activeIndex.value = value;
                 if (value == 0) {
-                  print("First icon pressed");
+                  Get.toNamed("/washing_homepage");
                 } else {
                   Get.toNamed("/booking_list");
                 }

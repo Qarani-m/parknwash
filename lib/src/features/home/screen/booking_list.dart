@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BookingList extends StatelessWidget {
   BookingList({super.key});
@@ -41,9 +42,20 @@ class BookingList extends StatelessWidget {
                   ],
                 ),
               ),
+
+
+
+
+
+
               SizedBox(height: 15.h),
-              controller.bookings.value.isEmpty
-                  ? const Text("You have no prior activity")
+              controller.bookings.value.isEmpty 
+                  ?controller.stopLoading.value? Container(
+                    height: 20.h,
+                    width:30.w,
+
+                    
+                    child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.accentColor, size: 40.sp)) : const Text("You have no prior activity")
                   : Column(
                       children: List.generate(
                           controller.bookings.value.length,

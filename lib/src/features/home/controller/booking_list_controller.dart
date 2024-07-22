@@ -10,11 +10,9 @@ class BookingListController extends GetxController {
   RxList<BookingData> bookings = <BookingData>[].obs;
   RxBool isLoading = true.obs;
   RxString documentId = "".obs;
-
-
+  RxBool stopLoading = true.obs;
 
   final box = GetStorage();
-
 
   @override
   Future<void> onInit() async {
@@ -29,6 +27,18 @@ class BookingListController extends GetxController {
     return uid;
   }
 
+  Future<String?> getRate(String lotId) async {
+    // Access the specific document using the lotId
+    DocumentSnapshot documentSnapshot =
+        await FirebaseFirestore.instance.collection('lots').doc(lotId).get();
+
+    // Check if the document exists and return the 'rates' field
+    if (documentSnapshot.exists) {
+      return documentSnapshot['rates'];
+    } else {
+      return null;
+    }
+  }
 
   Future<void> getBookings(String targetUid) async {
     try {
@@ -43,10 +53,9 @@ class BookingListController extends GetxController {
       if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          
 
           theData.add(BookingData(
-            documentId:doc.id,
+              documentId: doc.id,
               realName: data['realName'],
               eta: data["eta"] ?? 0,
               lotId: data['lotId'] ?? "",
@@ -56,7 +65,7 @@ class BookingListController extends GetxController {
               timestamp: await parseFirestoreTimestamp(
                   data['entered'] ?? Timestamp(2, 0)),
               timeDifference: await formatHourDifference(
-                  data["entered"]?? Timestamp.now(),
+                  data["entered"] ?? Timestamp.now(),
                   data['left'] ?? Timestamp.now(),
                   data['status'],
                   data['cat'],
@@ -66,6 +75,7 @@ class BookingListController extends GetxController {
               name: data["name"] ?? ""));
         }
         bookings.value = theData;
+        stopLoading.value = false;
       } else {
         Get.snackbar("No activity", "No bookings found");
       }
@@ -129,19 +139,6 @@ class BookingListController extends GetxController {
             '$wholeHours hr${wholeHours != 1 ? 's' : ''} $minutes min${minutes != 1 ? 's' : ''}',
         "price": price.toString()
       };
-    }
-  }
-
-  Future<String?> getRate(String lotId) async {
-    // Access the specific document using the lotId
-    DocumentSnapshot documentSnapshot =
-        await FirebaseFirestore.instance.collection('lots').doc(lotId).get();
-
-    // Check if the document exists and return the 'rates' field
-    if (documentSnapshot.exists) {
-      return documentSnapshot['rates'];
-    } else {
-      return null;
     }
   }
 }

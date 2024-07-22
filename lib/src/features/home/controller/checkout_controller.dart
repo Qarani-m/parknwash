@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,7 +11,10 @@ import 'package:parknwash/src/features/home/controller/my_booking_controller.dar
 import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/io.dart';
 import 'dart:convert';
+
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class CheckoutController extends GetxController {
   MyBookingController controller = Get.find<MyBookingController>();
@@ -80,66 +85,109 @@ class CheckoutController extends GetxController {
     }
   }
 
-  Future<void> sendPaymentRequest(
-      double amount, String phoneNumber, String documentId) async {
+  RxBool paymentUpdate = false.obs;
+  StreamSubscription<DocumentSnapshot>? _paymentSubscription;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> sendPaymentRequest(double amount, String phoneNumber,
+      String documentId, String userId) async {
     final apiUrl = dotenv.env['PAYMENTS_API_URL'];
-    final url =
-        Uri.parse('${apiUrl}/payments'); // Replace with your backend URL
+    final url = Uri.parse('${apiUrl}/stkpush'); // Replace with your backend URL
     final headers = {"Content-Type": "application/json"};
     final body = json.encode({
-      "amount": amount,
-      "phoneNumber": phoneNumber,
-      "paymentId": documentId
+      // "amount": amount.toString(),
+      // "phoneNumber": phoneNumber,
+
+      "amount": "1",
+      "phoneNumber": "254704847676",
+      "bookingData": documentId,
+      "userId": userId
     });
 
     try {
       Get.bottomSheet(
         BootomSheet(),
       );
-
       final response = await http.post(url, headers: headers, body: body);
-
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        if (responseData["success"] == true) {
-          Get.back();
-          Get.snackbar("Success", responseData["message"],
-              snackPosition: SnackPosition.TOP);
-            await updateStuff(documentId);
-      
-        } else {
-          Get.back();
-          Get.snackbar(
-            "Failed",
-            responseData["message"],
-          );
-        }
-      } else {
-          Get.back();
 
-        Get.snackbar("Error", 'Could not process payment, please try again' ,
+        Get.back();
+        Get.snackbar("Success", responseData["message"],
+            snackPosition: SnackPosition.TOP, duration: Duration(seconds: 30));
+         listenToPaymentDocument(documentId,  responseData['paymendId']);
+      } else {
+        Get.back();
+
+        Get.snackbar(
+            "Error", 'Could not process your payment, please try again',
             snackPosition: SnackPosition.TOP);
       }
     } catch (e) {
-          Get.back();
+      Get.back();
 
       Get.snackbar("Error", "Some Error Happened, please try again",
           snackPosition: SnackPosition.TOP);
     }
   }
 
-  void sendRequest(BookingData bookingData) async {
-    await sendPaymentRequest(double.parse(total.value), phoneController.text,
-        bookingData.documentId);
+   RxString paymentStatus = 'waiting'.obs;
+
+ void listenToPaymentDocument(String documentId ,String paymendId) {
+    // Cancel any existing subscription
+    _paymentSubscription?.cancel();
+
+    // Start a new subscription
+    _paymentSubscription = _firestore
+        .collection('payments')
+        .doc(documentId)
+        .snapshots()
+        .listen((documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        final data = documentSnapshot.data() as Map<String, dynamic>;
+        
+        // Update the payment status
+        paymentStatus.value = data['status'] ?? 'processing';
+
+        // Check for the specific condition that indicates a successful payment
+        if (data['status'] == 'completed') {
+          paymentUpdate.value = true;
+          Get.snackbar("Payment Successful", "Your payment has been processed successfully",
+              snackPosition: SnackPosition.TOP, duration: Duration(seconds: 10));
+         await updateStuff(documentId,  paymendId);
+
+          
+          // Stop listening after successful payment
+          _paymentSubscription?.cancel();
+        } else if (data['status'] == 'failed') {
+          Get.snackbar("Payment Failed", "Your payment could not be processed",
+              snackPosition: SnackPosition.TOP);
+          
+          // You might want to stop listening here as well, or allow retries
+          _paymentSubscription?.cancel();
+        }
+        
+        // You can add more conditions here for other status values
+      } else {
+        print("Document does not exist");
+      }
+    }, onError: (error) {
+      print("Error listening to payment document: $error");
+    });
   }
 
-  Future<void> updateStuff(String docId) async {
+  void sendRequest(BookingData bookingData) async {
+    await sendPaymentRequest(double.parse(total.value), phoneController.text,
+        bookingData.documentId, bookingData.userId);
+  }
+
+  Future<void> updateStuff(String docId ,String paymentid) async {
     Map<String, dynamic> data = {
       'left': Timestamp.now(),
       'status': 'Completed',
     };
 
-    if (await lookForPayment(docId)) {
+    if (await lookForPayment(paymentid)) {
       controller.changeParkingStatus("Completed");
 
       await FirebaseFirestore.instance
@@ -149,25 +197,32 @@ class CheckoutController extends GetxController {
           .catchError((error) {});
     }
   }
-}
 
-Future<bool> lookForPayment(String documentId) async {
-  try {
-    CollectionReference payments =
-        FirebaseFirestore.instance.collection('payments');
-    DocumentSnapshot doc = await payments.doc(documentId).get();
-    if (doc.exists) {
-      return true;
-    } else {
-      Get.snackbar("Error", "An error Occured, Payment not recieved",
+  Future<bool> lookForPayment(String documentId) async {
+    try {
+      CollectionReference payments =
+          FirebaseFirestore.instance.collection('payments');
+      DocumentSnapshot doc = await payments.doc(documentId).get();
+      if (doc.exists) {
+        return true;
+      } else {
+        Get.snackbar("Error", "An error Occured, Payment not recieved",
+            snackPosition: SnackPosition.TOP);
+
+        return false;
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Some Error Happened ",
           snackPosition: SnackPosition.TOP);
-
       return false;
     }
-  } catch (e) {
-    Get.snackbar("Error", "Some Error Happened ",
-        snackPosition: SnackPosition.TOP);
-    return false;
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    _paymentSubscription?.cancel();
   }
 }
 
@@ -180,6 +235,7 @@ class BootomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 200.h,
+      padding: EdgeInsets.only(left: 23.w, right: 23.w, top: 20.h),
       decoration: BoxDecoration(
           color: Get.theme.scaffoldBackgroundColor,
           borderRadius: BorderRadius.only(
@@ -195,7 +251,8 @@ class BootomSheet extends StatelessWidget {
             height: 50.h,
             width: double.maxFinite,
             child: Text(
-              "PLease wait while we process your payment",
+              textAlign: TextAlign.center,
+              "Hello,  Please enter your M-Pesa PIN to complete the transaction.",
               style: Theme.of(Get.context!)
                   .textTheme
                   .bodyMedium
