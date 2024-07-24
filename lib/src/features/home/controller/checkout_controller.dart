@@ -30,11 +30,20 @@ class CheckoutController extends GetxController {
 
   TextEditingController phoneController = TextEditingController();
   final box = GetStorage();
+  RxBool paymentUpdate = false.obs;
+
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late Stream<DocumentSnapshot> documentStream;
+
+  RxString paymentsDocId = "base_id".obs;
 
   @override
   void onInit() {
+    documentStream =
+        firestore.collection('payments').doc(paymentsDocId.value).snapshots();
     phoneController.text = "";
     total.value = (int.parse(time.value) * rates.value).toString();
+
     super.onInit();
   }
 
@@ -85,10 +94,6 @@ class CheckoutController extends GetxController {
     }
   }
 
-  RxBool paymentUpdate = false.obs;
-  StreamSubscription<DocumentSnapshot>? _paymentSubscription;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   Future<void> sendPaymentRequest(double amount, String phoneNumber,
       String documentId, String userId) async {
     final apiUrl = dotenv.env['PAYMENTS_API_URL'];
@@ -113,9 +118,9 @@ class CheckoutController extends GetxController {
         final responseData = json.decode(response.body);
 
         Get.back();
+        paymentsDocId.value = responseData['paymendId'];
         Get.snackbar("Success", responseData["message"],
             snackPosition: SnackPosition.TOP, duration: Duration(seconds: 30));
-         listenToPaymentDocument(documentId,  responseData['paymendId']);
       } else {
         Get.back();
 
@@ -131,57 +136,12 @@ class CheckoutController extends GetxController {
     }
   }
 
-   RxString paymentStatus = 'waiting'.obs;
-
- void listenToPaymentDocument(String documentId ,String paymendId) {
-    // Cancel any existing subscription
-    _paymentSubscription?.cancel();
-
-    // Start a new subscription
-    _paymentSubscription = _firestore
-        .collection('payments')
-        .doc(documentId)
-        .snapshots()
-        .listen((documentSnapshot) async {
-      if (documentSnapshot.exists) {
-        final data = documentSnapshot.data() as Map<String, dynamic>;
-        
-        // Update the payment status
-        paymentStatus.value = data['status'] ?? 'processing';
-
-        // Check for the specific condition that indicates a successful payment
-        if (data['status'] == 'completed') {
-          paymentUpdate.value = true;
-          Get.snackbar("Payment Successful", "Your payment has been processed successfully",
-              snackPosition: SnackPosition.TOP, duration: Duration(seconds: 10));
-         await updateStuff(documentId,  paymendId);
-
-          
-          // Stop listening after successful payment
-          _paymentSubscription?.cancel();
-        } else if (data['status'] == 'failed') {
-          Get.snackbar("Payment Failed", "Your payment could not be processed",
-              snackPosition: SnackPosition.TOP);
-          
-          // You might want to stop listening here as well, or allow retries
-          _paymentSubscription?.cancel();
-        }
-        
-        // You can add more conditions here for other status values
-      } else {
-        print("Document does not exist");
-      }
-    }, onError: (error) {
-      print("Error listening to payment document: $error");
-    });
-  }
-
   void sendRequest(BookingData bookingData) async {
     await sendPaymentRequest(double.parse(total.value), phoneController.text,
         bookingData.documentId, bookingData.userId);
   }
 
-  Future<void> updateStuff(String docId ,String paymentid) async {
+  Future<void> updateStuff(String docId, String paymentid) async {
     Map<String, dynamic> data = {
       'left': Timestamp.now(),
       'status': 'Completed',
@@ -222,7 +182,6 @@ class CheckoutController extends GetxController {
   void onClose() {
     // TODO: implement onClose
     super.onClose();
-    _paymentSubscription?.cancel();
   }
 }
 
