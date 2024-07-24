@@ -19,6 +19,14 @@ class Homecontroller extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+
+    for (var key in box.getKeys()) {
+      // Your code here
+      print(key);
+    }
+
+    print(box.read("userData"));
+
     bool isNotificationsAllowed =
         await AwesomeNotifications().isNotificationAllowed();
     if (!isNotificationsAllowed) {
@@ -107,7 +115,4 @@ class Homecontroller extends GetxController {
   }
 
   RxInt activeIndex = 0.obs;
-
-  
-
 }

@@ -73,7 +73,7 @@ class BookingFinished extends StatelessWidget {
                             ))
                       },
                     )),),
-          PageHeader(controller: locationscontroller, showQrCode: true,),
+          PageHeader(controller: locationscontroller, showQrCode: true,goToHomePage: true,),
         ],
       ),
     );

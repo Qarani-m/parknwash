@@ -1,5 +1,3 @@
-
-
 class BookingData {
   final int eta;
   final String lotId;
@@ -30,7 +28,7 @@ class BookingData {
 
   factory BookingData.fromJson(Map<String, dynamic> json) {
     return BookingData(
-      documentId:json['documentId'],
+        documentId: json['documentId'],
         cat: json['cat'],
         timeDifference: json['timeDifference'],
         eta: json['eta'],
@@ -46,7 +44,7 @@ class BookingData {
 
   Map<String, dynamic> toJson() {
     return {
-      "documentId":documentId,
+      "documentId": documentId,
       "cat": cat,
       "timeDifference": timeDifference,
       'eta': eta,
@@ -59,5 +57,39 @@ class BookingData {
       'vehicleRegNo': vehicleRegNo,
       'realName': realName
     };
+  }
+    BookingData copyWith({
+    int? eta,
+    String? lotId,
+    String? phone,
+    String? status,
+    Map<String, String>? timestamp,
+    String? userId,
+    String? vehicleRegNo,
+    String? name,
+    String? realName,
+    int? cat,
+    String? documentId,
+    Map<String, String>? timeDifference,
+  }) {
+    return BookingData(
+      eta: eta ?? this.eta,
+      lotId: lotId ?? this.lotId,
+      phone: phone ?? this.phone,
+      status: status ?? this.status,
+      timestamp: timestamp ?? this.timestamp,
+      userId: userId ?? this.userId,
+      vehicleRegNo: vehicleRegNo ?? this.vehicleRegNo,
+      name: name ?? this.name,
+      realName: realName ?? this.realName,
+      cat: cat ?? this.cat,
+      documentId: documentId ?? this.documentId,
+      timeDifference: timeDifference ?? this.timeDifference,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'BookingData{documentId: $documentId, cat: $cat, timeDifference: $timeDifference, eta: $eta, lotId: $lotId, phone: $phone, status: $status, timestamp: $timestamp, userId: $userId, vehicleRegNo: $vehicleRegNo, name: $name, realName: $realName}';
   }
 }

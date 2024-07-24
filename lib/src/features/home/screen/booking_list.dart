@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
 import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BookingList extends StatelessWidget {
   BookingList({super.key});
@@ -43,7 +44,13 @@ class BookingList extends StatelessWidget {
               ),
               SizedBox(height: 15.h),
               controller.bookings.value.isEmpty
-                  ? const Text("You have no prior activity")
+                  ? controller.stopLoading.value
+                      ? Container(
+                          height: 20.h,
+                          width: 30.w,
+                          child: LoadingAnimationWidget.staggeredDotsWave(
+                              color: AppColors.accentColor, size: 40.sp))
+                      : const Text("You have no prior activity")
                   : Column(
                       children: List.generate(
                           controller.bookings.value.length,
@@ -95,16 +102,7 @@ class LIstCard extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: bookingData.status == "Completed"
-                            ? const Color(0xFF24a0e1).withOpacity(0.1)
-                            : bookingData.status == "Pending"
-                                ? AppColors.accentColor.withOpacity(0.1)
-                                : bookingData.status == "Cancelled"
-                                    ? const Color(0xFFDC143c).withOpacity(0.1)
-                                    : const Color(0xFF39C16B).withOpacity(0.1),
-          width: 2.0, // Border width
-        ),
+        //
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -125,9 +123,7 @@ class LIstCard extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      bookingData.timestamp['date']
-                              ?.split("-")[1]
-                              .capitalize ??
+                      bookingData.timestamp['date']?.split("-")[1].capitalize ??
                           "",
                       style: Theme.of(context)
                           .textTheme
@@ -196,8 +192,7 @@ class LIstCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.access_time,
-                        size: 16, color: Colors.grey[600]),
+                    Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
                     const SizedBox(width: 4),
                     Text(
                       bookingData.timeDifference["difference"] ?? "",

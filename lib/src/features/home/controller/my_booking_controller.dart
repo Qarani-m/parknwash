@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:parknwash/src/features/home/controller/booking_list_controller.dart';
+import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/features/home/widgets/checkout.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class MyBookingController extends GetxController {
   BookingListController listController = Get.find<BookingListController>();
@@ -73,6 +76,7 @@ class MyBookingController extends GetxController {
       String lotId = data['lotId'] ?? "";
 
       String rates = await getRate(lotId) ?? "";
+
       print(rates.split(","));
       price.value = status == "Pending"
           ? 0.0
@@ -128,15 +132,21 @@ class MyBookingController extends GetxController {
     Map<String, dynamic> data = {
       'status': 'Cancelled',
     };
-    await FirebaseFirestore.instance
-        .collection("bookings")
-        .doc(docId)
-        .update(data)
-        .catchError((error) {
-      // Handle errors here
-      print("Failed to update document: $error");
-    });
+    print("========================");
     parkingStatus.value = "Cancelled";
+    try {
+      await FirebaseFirestore.instance
+          .collection("bookings")
+          .doc(docId)
+          .update(data)
+          .catchError((error) {
+        Get.snackbar("Failed", "Something went wrong");
+      });
+      parkingStatus.value = "Cancelled";
+    } catch (e) {
+      parkingStatus.value = "Pending";
+      Get.snackbar("Failed", "Something went wrong");
+    }
   }
 
   Future<void> navigation(String lotId) async {
@@ -165,20 +175,9 @@ class MyBookingController extends GetxController {
     }
   }
 
-  void endParking() {
+  void endParking(BookingData booking) {
     Get.bottomSheet(
-        isScrollControlled: true,
-        Container(
-          height: 1000.h,
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-              color: Get.theme.scaffoldBackgroundColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.sp),
-                topRight: Radius.circular(20.sp),
-              )),
-          child: CheckoutPage(),
-        ));
+        isScrollControlled: true, CheckoutPage(bookingData: booking));
   }
 
   void qrCodeTapped(String status) {
@@ -187,11 +186,8 @@ class MyBookingController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           margin: EdgeInsets.only(bottom: 20.h),
           backgroundColor: Get.theme.scaffoldBackgroundColor);
-    }else if(status == "Pending"){
-
-    } else{
-
-    }
+    } else if (status == "Pending") {
+    } else {}
   }
 
   @override

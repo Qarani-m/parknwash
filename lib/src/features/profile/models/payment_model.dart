@@ -9,13 +9,6 @@ class PaymentModel {
   final String referenceId;
   final DateTime createdAt;
 
-  /// Creates a [PaymentModel] with the given parameters.
-  ///
-  /// [amount] - The amount of the payment.
-  /// [lotId] - The ID of the lot associated with the payment.
-  /// [expired] - Indicates whether the payment is expired.
-  /// [referenceId] - The reference ID of the payment.
-  /// [createdAt] - The date and time when the payment was created.
   PaymentModel({
     required this.uid,
     required this.amount,
@@ -25,11 +18,7 @@ class PaymentModel {
     required this.createdAt,
   });
 
-  /// Creates a [PaymentModel] from a map (e.g., Firestore document).
-  ///
-  /// [map] - A map containing the payment data.
-  ///
-  /// Returns a [PaymentModel] instance populated with the data from the map.
+
   factory PaymentModel.fromMap(Map<String, dynamic> map) {
     return PaymentModel(
       uid: map['uid'] ?? '',
