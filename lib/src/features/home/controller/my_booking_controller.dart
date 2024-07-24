@@ -132,15 +132,21 @@ class MyBookingController extends GetxController {
     Map<String, dynamic> data = {
       'status': 'Cancelled',
     };
-    await FirebaseFirestore.instance
-        .collection("bookings")
-        .doc(docId)
-        .update(data)
-        .catchError((error) {
-      // Handle errors here
-      print("Failed to update document: $error");
-    });
+    print("========================");
     parkingStatus.value = "Cancelled";
+    try {
+      await FirebaseFirestore.instance
+          .collection("bookings")
+          .doc(docId)
+          .update(data)
+          .catchError((error) {
+        Get.snackbar("Failed", "Something went wrong");
+      });
+      parkingStatus.value = "Cancelled";
+    } catch (e) {
+      parkingStatus.value = "Pending";
+      Get.snackbar("Failed", "Something went wrong");
+    }
   }
 
   Future<void> navigation(String lotId) async {
@@ -181,53 +187,12 @@ class MyBookingController extends GetxController {
           margin: EdgeInsets.only(bottom: 20.h),
           backgroundColor: Get.theme.scaffoldBackgroundColor);
     } else if (status == "Pending") {
-    } else {
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
+    } else {}
   }
-
-
- 
- 
-
 
   @override
   void onClose() {
     timer.cancel();
-    super.onClose(); 
+    super.onClose();
   }
 }
-       
