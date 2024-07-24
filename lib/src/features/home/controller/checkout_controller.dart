@@ -101,10 +101,10 @@ class CheckoutController extends GetxController {
     final headers = {"Content-Type": "application/json"};
     final body = json.encode({
       // "amount": amount.toString(),
-      // "phoneNumber": phoneNumber,
+      "phoneNumber": phoneNumber.trim(),
 
       "amount": "1",
-      "phoneNumber": "254704847676",
+      // "phoneNumber": "254708815304",
       "bookingData": documentId,
       "userId": userId
     });

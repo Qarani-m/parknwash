@@ -27,16 +27,25 @@ class BookingListController extends GetxController {
     return uid;
   }
 
-  Future<String?> getRate(String lotId) async {
-    // Access the specific document using the lotId
-    DocumentSnapshot documentSnapshot =
-        await FirebaseFirestore.instance.collection('lots').doc(lotId).get();
+  Future<Map<String, dynamic>> getRate(String lotId) async {
+    try {
+      DocumentSnapshot documentSnapshot =
+          await FirebaseFirestore.instance.collection('lots').doc(lotId).get();
 
-    // Check if the document exists and return the 'rates' field
-    if (documentSnapshot.exists) {
-      return documentSnapshot['rates'];
-    } else {
-      return null;
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        return {
+          "rates": data['rates'] ?? "",
+          "name": data['name'] ?? "",
+          "realName": data['realName'] ?? ""
+        };
+      } else {
+        return {"rates": "", "name": "", "realName": ""};
+      }
+    } catch (e) {
+      print("Error fetching rate: $e");
+      return {"rates": "", "name": "", "realName": ""};
     }
   }
 
@@ -53,10 +62,13 @@ class BookingListController extends GetxController {
       if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          Map<String, dynamic> rateData = await getRate(data['lotId']);
+          String realName = rateData['realName'];
+          String seName = rateData['name'];
 
           theData.add(BookingData(
               documentId: doc.id,
-              realName: data['realName'],
+              realName: realName ?? "",
               eta: data["eta"] ?? 0,
               lotId: data['lotId'] ?? "",
               phone: data['phone'] ?? "",
@@ -72,7 +84,7 @@ class BookingListController extends GetxController {
                   data['lotId']),
               userId: data["userId"] ?? "",
               vehicleRegNo: data['vehicleRegNo'] ?? "",
-              name: data["name"] ?? ""));
+              name: seName ?? ""));
         }
         bookings.value = theData;
         stopLoading.value = false;
@@ -114,7 +126,9 @@ class BookingListController extends GetxController {
     Duration difference = endDateTime.difference(startDateTime);
     double hours = difference.inMinutes / 60.0;
 
-    String? rates = await getRate(lotId);
+    Map<String, dynamic> rateData = await getRate(lotId);
+    String rates = rateData['rates'];
+
     String price =
         (hours * int.parse(rates!.split(",")[cat])).toStringAsFixed(2);
 

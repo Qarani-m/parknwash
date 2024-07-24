@@ -11,11 +11,13 @@ class PageHeader extends StatelessWidget {
     super.key,
     required this.controller,
     this.showQrCode = false,
+    this.goToHomePage = false
   });
   final LocationsController controller;
   BookingFinishedController bookingFinishedController =
       Get.find<BookingFinishedController>();
   final bool showQrCode;
+  final bool goToHomePage;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class PageHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              onTap: () => Get.back(),
+              onTap: () => goToHomePage?Get.offAllNamed("/home"): Get.back(),
               child: Container(
                 alignment: Alignment.center,
                 height: 50.w,
@@ -46,9 +48,8 @@ class PageHeader extends StatelessWidget {
                 child: Center(
                   child: Icon(
                     Icons.arrow_back_ios,
-                    color: isDarkMode
-                        ? Colors.white
-                        : AppColors.scaffoldColorDark,
+                    color:
+                        isDarkMode ? Colors.white : AppColors.scaffoldColorDark,
                   ),
                 ),
               ),

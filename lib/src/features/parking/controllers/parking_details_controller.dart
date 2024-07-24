@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -52,6 +54,7 @@ class ParkingDetailsController extends GetxController {
 
   Future<String?> getThePositionDetails() async {
     String partId = box.read("selectedPlace") ?? "";
+
     if (partId.isEmpty) {
       print("Error: partId is empty");
       return null;
@@ -69,7 +72,6 @@ class ParkingDetailsController extends GetxController {
       for (var doc in querySnapshot.docs) {
         String docId = doc.id;
         if (docId.toLowerCase().startsWith(partId.toLowerCase())) {
-          print("Full Document ID: $docId");
           return docId;
         }
       }
@@ -80,25 +82,35 @@ class ParkingDetailsController extends GetxController {
     return null;
   }
 
-Future<void> saveBooking() async {
-    try {
-      String? lotId = await getThePositionDetails();
-      String? userId = box.read('useId');
-      int eta = int.parse(hrsController.text) * 60 + int.parse(minutesController.text);
-      String status = "Pending";
-      String vehicleRegNo = vehicleRegController.text;
-      String phone = phoneController.text;
+  String generateTimestampId() {
+    return Timestamp.now().microsecondsSinceEpoch.toString();
+  }
 
+  Future<void> saveBooking() async {
+    String? lotId = await getThePositionDetails();
+
+    String? userId = jsonDecode(box.read('userData'))['uid'];
+    int eta =
+        int.parse(hrsController.text) * 60 + int.parse(minutesController.text);
+
+    String status = "Pending";
+    String vehicleRegNo = vehicleRegController.text;
+    String phone = phoneController.text;
+    int cat = int.parse(box.read("category"));
+    String docId = generateTimestampId();
+
+    try {
       if (lotId != null && userId != null) {
         // Create a new document in the 'bookings' collection
-        await FirebaseFirestore.instance.collection('bookings').add({
+        await FirebaseFirestore.instance.collection('bookings').doc(docId).set({
           'lotId': lotId,
           'userId': userId,
           'eta': eta,
           'status': status,
           'vehicleRegNo': vehicleRegNo,
           'phone': phone,
-          'timestamp': FieldValue.serverTimestamp(),
+          'timestamp': Timestamp.now(),
+          'cat': cat ?? 0,
         });
 
         // Show success snackbar
@@ -125,6 +137,7 @@ Future<void> saveBooking() async {
         );
       }
     } catch (e) {
+      print(e);
       // Show error snackbar if an exception occurs
       Get.snackbar(
         'Error',
@@ -138,8 +151,6 @@ Future<void> saveBooking() async {
   }
 
   void initatePayment(String cat) {
-    String consumerSecret = "kxUnaJKvqrnYxzea";
-    String consumerKey = "IPQMSpMGRKm6g45rrCzZRmt1C3xR4MII";
     saveBooking();
   }
 }

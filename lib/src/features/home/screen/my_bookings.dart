@@ -36,201 +36,203 @@ class MyBookings extends StatelessWidget {
     checkoutController.paymentsDocId.value = "base_id";
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: 40.h, left: 23.w, right: 23.w),
-        child: Obx(
-          () => Column(
-            children: [
-              QrCodeHeader(
-                  isDarkMode: isDarkMode, controller: controller, theme: theme),
-              StreamBuilder<DocumentSnapshot>(
-                  stream: firestore
-                      .collection('payments')
-                      .doc(checkoutController.paymentsDocId.value)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-
-                    if (!snapshot.hasData) {
-                      return Center(child: Text('Document does not exist'));
-                    }
-                    Map<String, dynamic> data =
-                        snapshot.data?.data() as Map<String, dynamic>;
-
-                    if (data["status"] == "completed") {
-                      controller.parkingStatus.value = "Completed";
-                      checkoutController.updateStuff(
-                          booking.documentId, snapshot.data!.id);
-                    }
-                    String payStatus = " ";
-                    return Obx(()=> SingleChildScrollView(
-                          child: controller.isLoading.value
-                              ? Center(
-                                  child: LoadingAnimationWidget.staggeredDotsWave(
-                                      color: AppColors.accentColor, size: 40.h),
-                                )
-                              : Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      height: 35.h,
-                                      width: double.maxFinite,
-                                      child: Text(
-                                        booking.vehicleRegNo,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w800),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(top: 40.h, left: 23.w, right: 23.w),
+          child: Obx(
+            () => Column(
+              children: [
+                QrCodeHeader(
+                    isDarkMode: isDarkMode, controller: controller, theme: theme),
+                StreamBuilder<DocumentSnapshot>(
+                    stream: firestore
+                        .collection('payments')
+                        .doc(checkoutController.paymentsDocId.value)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+        
+                      if (!snapshot.hasData) {
+                        return Center(child: Text('Document does not exist'));
+                      }
+                      Map<String, dynamic> data =
+                          snapshot.data?.data() as Map<String, dynamic>;
+        
+                      if (data["status"] == "completed") {
+                        controller.parkingStatus.value = "Completed";
+                        checkoutController.updateStuff(
+                            booking.documentId, snapshot.data!.id);
+                      }
+                      String payStatus = " ";
+                      return Obx(()=> SingleChildScrollView(
+                            child: controller.isLoading.value
+                                ? Center(
+                                    child: LoadingAnimationWidget.staggeredDotsWave(
+                                        color: AppColors.accentColor, size: 40.h),
+                                  )
+                                : Column(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        height: 35.h,
+                                        width: double.maxFinite,
+                                        child: Text(
+                                          booking.vehicleRegNo,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(
+                                                  fontWeight: FontWeight.w800),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      height: 45.h,
-                                      width: double.maxFinite,
-                                      child: Text(
-                                        booking.name,
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                                color: const Color(0xFF929292)),
+                                      SizedBox(
+                                        height: 5.h,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                      width: double.maxFinite,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Price: ",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.copyWith(
-                                                    color:
-                                                        const Color(0xFF929292)),
-                                          ),
-                                          Text(
-                                            booking.status == "Completed"
-                                                ? completedPrice
-                                                : "Ksh ${controller.price.value.toStringAsFixed(2)}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.copyWith(
-                                                    fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
+                                      Container(
+                                        alignment: Alignment.center,
+                                        height: 45.h,
+                                        width: double.maxFinite,
+                                        child: Text(
+                                          booking.name,
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                  color: const Color(0xFF929292)),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    SizedBox(
-                                      height: 25.h,
-                                      width: double.maxFinite,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "${controller.parkingStatus.value}, ${payStatus}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.copyWith(
-                                                    color: controller
-                                                                .parkingStatus
-                                                                .value ==
-                                                            "Pending"
-                                                        ? Colors.amber
-                                                        : controller.parkingStatus
-                                                                    .value ==
-                                                                "Inprogress"
-                                                            ? const Color(
-                                                                0xFF39C16B)
-                                                            : controller.parkingStatus
-                                                                        .value ==
-                                                                    "Cancelled"
-                                                                ? const Color(
-                                                                    0xFFDC143c)
-                                                                : const Color(
-                                                                    0xFF24a0e1),
-                                                    fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
+                                      SizedBox(
+                                        height: 20.h,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    RoundAbout(
-                                        controller: controller,
-                                        isDarkMode: isDarkMode),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    TimeCounter(
-                                        booking: booking, controller: controller),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      height: 25.h,
-                                      width: double.maxFinite,
-                                      child: Text(
-                                        " ${booking.timestamp['time'] ?? ""} ${booking.timestamp['date'] ?? ""}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                                color: const Color(0xFF929292)),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    _zoneHolder(context, isDarkMode),
-                                    SizedBox(
-                                      height: 25.h,
-                                    ),
-                                    controller.parkingStatus.value == "Pending"
-                                        ? GestureDetector(
-                                            onTap: () => controller.checkIn(
-                                              booking.documentId,
+                                      SizedBox(
+                                        height: 20.h,
+                                        width: double.maxFinite,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Price: ",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                      color:
+                                                          const Color(0xFF929292)),
                                             ),
-                                            child: _buildButtonContainer(
-                                              controller.parkingStatus.value,
-                                              booking.documentId,
-                                              booking,
+                                            Text(
+                                              booking.status == "Completed"
+                                                  ? completedPrice
+                                                  : "Ksh ${controller.price.value.toStringAsFixed(2)}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                      fontWeight: FontWeight.w500),
                                             ),
-                                          )
-                                        : controller.parkingStatus.value ==
-                                                "Inprogress"
-                                            ? _buildButtonContainer(
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      SizedBox(
+                                        height: 25.h,
+                                        width: double.maxFinite,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "${controller.parkingStatus.value}, ${payStatus}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                      color: controller
+                                                                  .parkingStatus
+                                                                  .value ==
+                                                              "Pending"
+                                                          ? Colors.amber
+                                                          : controller.parkingStatus
+                                                                      .value ==
+                                                                  "Inprogress"
+                                                              ? const Color(
+                                                                  0xFF39C16B)
+                                                              : controller.parkingStatus
+                                                                          .value ==
+                                                                      "Cancelled"
+                                                                  ? const Color(
+                                                                      0xFFDC143c)
+                                                                  : const Color(
+                                                                      0xFF24a0e1),
+                                                      fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      RoundAbout(
+                                          controller: controller,
+                                          isDarkMode: isDarkMode),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      TimeCounter(
+                                          booking: booking, controller: controller),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        height: 25.h,
+                                        width: double.maxFinite,
+                                        child: Text(
+                                          " ${booking.timestamp['time'] ?? ""} ${booking.timestamp['date'] ?? ""}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                  color: const Color(0xFF929292)),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      _zoneHolder(context, isDarkMode),
+                                      SizedBox(
+                                        height: 25.h,
+                                      ),
+                                      controller.parkingStatus.value == "Pending"
+                                          ? GestureDetector(
+                                              onTap: () => controller.checkIn(
+                                                booking.documentId,
+                                              ),
+                                              child: _buildButtonContainer(
                                                 controller.parkingStatus.value,
                                                 booking.documentId,
                                                 booking,
-                                              )
-                                            : const SizedBox()
-                                  ],
-                                )),
-                    );
-                  })
-            ],
+                                              ),
+                                            )
+                                          : controller.parkingStatus.value ==
+                                                  "Inprogress"
+                                              ? _buildButtonContainer(
+                                                  controller.parkingStatus.value,
+                                                  booking.documentId,
+                                                  booking,
+                                                )
+                                              : const SizedBox()
+                                    ],
+                                  )),
+                      );
+                    })
+              ],
+            ),
           ),
         ),
       ),

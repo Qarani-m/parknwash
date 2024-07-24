@@ -42,20 +42,15 @@ class BookingList extends StatelessWidget {
                   ],
                 ),
               ),
-
-
-
-
-
-
               SizedBox(height: 15.h),
-              controller.bookings.value.isEmpty 
-                  ?controller.stopLoading.value? Container(
-                    height: 20.h,
-                    width:30.w,
-
-                    
-                    child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.accentColor, size: 40.sp)) : const Text("You have no prior activity")
+              controller.bookings.value.isEmpty
+                  ? controller.stopLoading.value
+                      ? Container(
+                          height: 20.h,
+                          width: 30.w,
+                          child: LoadingAnimationWidget.staggeredDotsWave(
+                              color: AppColors.accentColor, size: 40.sp))
+                      : const Text("You have no prior activity")
                   : Column(
                       children: List.generate(
                           controller.bookings.value.length,
@@ -107,7 +102,7 @@ class LIstCard extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        // 
+        //
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -128,9 +123,7 @@ class LIstCard extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      bookingData.timestamp['date']
-                              ?.split("-")[1]
-                              .capitalize ??
+                      bookingData.timestamp['date']?.split("-")[1].capitalize ??
                           "",
                       style: Theme.of(context)
                           .textTheme
@@ -199,8 +192,7 @@ class LIstCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.access_time,
-                        size: 16, color: Colors.grey[600]),
+                    Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
                     const SizedBox(width: 4),
                     Text(
                       bookingData.timeDifference["difference"] ?? "",

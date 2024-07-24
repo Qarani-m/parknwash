@@ -16,12 +16,16 @@ class Homecontroller extends GetxController {
 
   final box = GetStorage();
 
- 
-
   @override
   Future<void> onInit() async {
     super.onInit();
 
+    for (var key in box.getKeys()) {
+      // Your code here
+      print(key);
+    }
+
+    print(box.read("userData"));
 
     bool isNotificationsAllowed =
         await AwesomeNotifications().isNotificationAllowed();
