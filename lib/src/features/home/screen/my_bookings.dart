@@ -34,6 +34,7 @@ class MyBookings extends StatelessWidget {
         booking.documentId, booking.cat, booking.status);
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     late Stream<DocumentSnapshot> documentStream;
+    checkoutController.paymentsDocId.value= "base_id";
 
     return Scaffold(
       body: Padding(

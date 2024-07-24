@@ -107,16 +107,7 @@ class LIstCard extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: bookingData.status == "Completed"
-                            ? const Color(0xFF24a0e1).withOpacity(0.1)
-                            : bookingData.status == "Pending"
-                                ? AppColors.accentColor.withOpacity(0.1)
-                                : bookingData.status == "Cancelled"
-                                    ? const Color(0xFFDC143c).withOpacity(0.1)
-                                    : const Color(0xFF39C16B).withOpacity(0.1),
-          width: 2.0, // Border width
-        ),
+        // 
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),

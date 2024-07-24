@@ -22,7 +22,7 @@ class CheckoutController extends GetxController {
   RxString time = "0".obs;
   RxString location = "Downtown Lot".obs;
   RxDouble rates = 50.0.obs;
-  RxString mobile = "0704847676".obs;
+  RxString mobile = "0700000000".obs;
 
   Rxn<BookingData> bookingData = Rxn<BookingData>();
 
