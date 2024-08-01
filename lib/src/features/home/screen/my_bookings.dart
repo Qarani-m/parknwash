@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -51,11 +50,11 @@ class MyBookings extends StatelessWidget {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
         
                       if (!snapshot.hasData) {
-                        return Center(child: Text('Document does not exist'));
+                        return const Center(child: Text('Document does not exist'));
                       }
                       Map<String, dynamic> data =
                           snapshot.data?.data() as Map<String, dynamic>;
@@ -147,7 +146,7 @@ class MyBookings extends StatelessWidget {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "${controller.parkingStatus.value}, ${payStatus}",
+                                              "${controller.parkingStatus.value}, $payStatus",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyMedium

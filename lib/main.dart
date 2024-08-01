@@ -169,7 +169,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             GetPage(name: "/my_bookings", page: () => MyBookings()),
             GetPage(name: "/booking_list", page: () => BookingList()),
             GetPage(name: "/navigation_screen", page: () => NavigationScreen()),
-            GetPage(name: "/washing_homepage", page: () => WashingHomepage()),
+            GetPage(name: "/washing_homepage", page: () => const WashingHomepage()),
           ],
         );
       },

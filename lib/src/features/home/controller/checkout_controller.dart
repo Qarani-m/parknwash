@@ -11,10 +11,8 @@ import 'package:parknwash/src/features/home/controller/my_booking_controller.dar
 import 'package:parknwash/src/features/home/models/booking_model.dart';
 import 'package:parknwash/src/utils/constants/colors.dart';
 import 'package:http/http.dart' as http;
-import 'package:web_socket_channel/io.dart';
 import 'dart:convert';
 
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class CheckoutController extends GetxController {
   MyBookingController controller = Get.find<MyBookingController>();
@@ -97,7 +95,7 @@ class CheckoutController extends GetxController {
   Future<void> sendPaymentRequest(double amount, String phoneNumber,
       String documentId, String userId) async {
     final apiUrl = dotenv.env['PAYMENTS_API_URL'];
-    final url = Uri.parse('${apiUrl}/stkpush'); // Replace with your backend URL
+    final url = Uri.parse('$apiUrl/stkpush'); // Replace with your backend URL
     final headers = {"Content-Type": "application/json"};
     final body = json.encode({
       // "amount": amount.toString(),
@@ -111,7 +109,7 @@ class CheckoutController extends GetxController {
 
     try {
       Get.bottomSheet(
-        BootomSheet(),
+        const BootomSheet(),
       );
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
@@ -120,7 +118,7 @@ class CheckoutController extends GetxController {
         Get.back();
         paymentsDocId.value = responseData['paymendId'];
         Get.snackbar("Success", responseData["message"],
-            snackPosition: SnackPosition.TOP, duration: Duration(seconds: 30));
+            snackPosition: SnackPosition.TOP, duration: const Duration(seconds: 30));
       } else {
         Get.back();
 

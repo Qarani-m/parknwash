@@ -45,7 +45,7 @@ class BookingList extends StatelessWidget {
               SizedBox(height: 15.h),
               controller.bookings.value.isEmpty
                   ? controller.stopLoading.value
-                      ? Container(
+                      ? SizedBox(
                           height: 20.h,
                           width: 30.w,
                           child: LoadingAnimationWidget.staggeredDotsWave(

@@ -130,7 +130,7 @@ class BookingListController extends GetxController {
     String rates = rateData['rates'];
 
     String price =
-        (hours * int.parse(rates!.split(",")[cat])).toStringAsFixed(2);
+        (hours * int.parse(rates.split(",")[cat])).toStringAsFixed(2);
 
     if (hours < 1) {
       int minutes = (hours * 60).round();
